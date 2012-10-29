@@ -13,9 +13,10 @@ class Grid extends Tag
 	 */
 	protected $cols = array();
 
-	public function __construct($preset=null)
+	public function __construct($preset=null, $classOrAttributes = array())
 	{
-		$this->setTagname('div');
+		parent::__construct('div', '', $classOrAttributes);
+
 		$this->addClass('row-fluid');
 
 		if(is_array($preset))

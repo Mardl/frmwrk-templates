@@ -4,22 +4,19 @@ namespace Templates\Html;
 
 class Form extends Tag
 {
-	public function __construct($action=null)
+	public function __construct($method='post', $classOrAttributes = array())
 	{
-		parent::__construct('form');
-		if(!is_null($action))
-		{
-			$this->setAction($action);
-		}
+		parent::__construct('form', '', $classOrAttributes);
+		$this->method($method);
 	}
 
-	public function setMethod($value)
+	public function method($value)
 	{
 		return $this->addAttribute('method', $value);
 	}
 
-	public function setAction($value)
+	public function action($value)
 	{
-		return $this->addAttribute('value', $value);
+		return $this->addAttribute('action', $value);
 	}
 }

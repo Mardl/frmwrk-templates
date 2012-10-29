@@ -26,9 +26,9 @@ class Widget extends Tag
 	 * @param string $headerText
 	 * @param bool $flat
 	 */
-	public function __construct($headerText='', $flat=true)
+	public function __construct($headerText='', $flat=true, $classOrAttributes = array())
 	{
-		$this->setTagname('div');
+		parent::__construct('div', '', $classOrAttributes);
 
 		$this->initHead();
 		$this->initContent();

@@ -13,14 +13,28 @@ class Tag
 	/**
 	 * CONSTRUCTOR
 	 *
-	 * @param null $tag
-	 * @param array $value
-	 * @return void
+	 * @param $tag
+	 * @param array|string $value or array of Tags
+	 * @param array|string $classOrAttributes
 	 */
-	public function __construct($tag=null, $value=array())
+	public function __construct($tag, $value=array(), $classOrAttributes = array())
 	{
 		$this->tagName = $tag;
 		$this->tagValue = $value;
+		if (!empty($classOrAttributes))
+		{
+			if (is_array($classOrAttributes))
+			{
+				foreach($classOrAttributes as $name => $attr)
+				{
+					$this->addAttribute($name,$attr);
+				}
+			}
+			else
+			{
+				$this->addClass($classOrAttributes);
+			}
+		}
 	}
 
 	public function setId($id)
@@ -40,6 +54,7 @@ class Tag
 	/**
 	 * Tagname
 	 * @param string $tag
+	 * @deprecated Tagename on consturcor
 	 */
 	public function setTagname($tag) {
 		$this->tagName = $tag;
