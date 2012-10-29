@@ -3,7 +3,6 @@
 namespace Templates\Srabon;
 
 use Templates\Html\Tag,
-	Templates\Html\Div,
 	Templates\Exceptions\Layout as LayoutException;
 
 class Grid extends Tag
@@ -30,8 +29,7 @@ class Grid extends Tag
 
 	private function initCol($width)
 	{
-		$col = new Div();
-		$col->addClass('span' . $width);
+		$col = new Tag('div','','span' . $width);
 		$this->cols[] = $col;
 		parent::addValue($col);
 		return $col;

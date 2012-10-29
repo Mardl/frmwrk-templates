@@ -2,8 +2,7 @@
 
 namespace Templates\Srabon;
 
-use Templates\Html\Div,
-	Templates\Html\Tag;
+use Templates\Html\Tag;
 
 class PageHeader extends Tag
 {

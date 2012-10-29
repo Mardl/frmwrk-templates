@@ -2,7 +2,6 @@
 
 namespace Templates\Srabon;
 
-use Templates\Html\Div;
 use Templates\Html\Tag;
 use Templates\Html\Anchor;
 

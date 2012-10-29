@@ -2,8 +2,7 @@
 
 namespace Templates\Srabon;
 
-use Templates\Html\Div,
-	Templates\Html\Tag;
+use	Templates\Html\Tag;
 
 class Widget extends Tag
 {
@@ -65,8 +64,7 @@ class Widget extends Tag
 	protected function initHead()
 	{
 		$this->header = new Tag('h5');
-		$div = new Div();
-		$div->addClass('widget-head')->addValue($this->header);
+		$div = new Tag('div',$this->header,'widget-head');
 
 		parent::addValue($div);
 	}
@@ -77,21 +75,15 @@ class Widget extends Tag
 	 */
 	protected function initContent()
 	{
-		$this->content = new Div();
-		$this->content->addClass('well');
+		$this->content = new Tag('div','','well');
 
 		if(!$this->flat)
 		{
 			$this->content->addClass('white-box');
 		}
 
-		$wrap1 = new Div();
-		$wrap1->addClass('widget-box');
-		$wrap1->addValue($this->content);
-
-		$wrap2 = new Div();
-		$wrap2->addClass('widget-content');
-		$wrap2->addValue($wrap1);
+		$wrap1 = new Tag('div',$this->content,'widget-box');
+		$wrap2 = new Tag('div',$wrap1,'widget-content');
 
 		parent::addValue($wrap2);
 	}

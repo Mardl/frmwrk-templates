@@ -19,7 +19,7 @@ class Tag
 	 */
 	public function __construct($tag, $value=array(), $classOrAttributes = array())
 	{
-		$this->tagName = $tag;
+		$this->tagName = strtolower($tag);
 		$this->tagValue = $value;
 		if (!empty($classOrAttributes))
 		{
