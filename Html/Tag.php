@@ -9,6 +9,7 @@ class Tag
 	protected $tagAttributes = array();
 	protected $tagStyle = array();
 	protected $forceClose = true;
+	protected $formatOutput = '';
 
 	/**
 	 * CONSTRUCTOR
@@ -42,6 +43,10 @@ class Tag
 		return $this->addAttribute('id', $id);
 	}
 
+	public function setFormat($format)
+	{
+		$this->formatOutput = $format;
+	}
 	/**
 	 * TO-STRING
 	 *
@@ -54,7 +59,6 @@ class Tag
 	/**
 	 * Tagname
 	 * @param string $tag
-	 * @deprecated Tagename on consturcor
 	 */
 	public function setTagname($tag) {
 		$this->tagName = $tag;
@@ -71,6 +75,11 @@ class Tag
 		return $this;
 	}
 
+	public function hasValue()
+	{
+		return !empty($this->tagValue);
+	}
+
 	/**
 	 * Getter für Tag-Wert
 	 * @return array|mixed
@@ -81,7 +90,12 @@ class Tag
 	}
 
 	private function renderToString($value) {
-		if(is_string($value) || is_int($value)) {
+		if(is_string($value) || is_int($value))
+		{
+			if (!empty($this->formatOutput))
+			{
+				return sprintf($this->formatOutput,$value);
+			}
 			return $value;
 		}
 
@@ -129,6 +143,20 @@ class Tag
 		}
 		$this->tagValue[] = $value;
 		return $this;
+	}
+
+	/**
+	 * Liefert die Anzahl der Values zurück
+	 *
+	 * @return int
+	 */
+	public function countValues()
+	{
+		if (is_array($this->tagValue))
+		{
+			return count($this->tagValue);
+		}
+		return 0;
 	}
 
 	/**
