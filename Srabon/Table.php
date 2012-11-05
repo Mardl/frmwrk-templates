@@ -9,6 +9,7 @@ class Table extends \Templates\Html\Table
 
 	private $flat = true;
 	private $tools = false;
+	private $nosearch = false;
 	private $datatable = true;
 	private $headline = '';
 
@@ -39,25 +40,32 @@ class Table extends \Templates\Html\Table
 	{
 		$this->tools = false;
 		$this->flat = true;
+		$this->nosearch=true;
+	}
+	public function noDatatable()
+	{
 		$this->datatable=false;
 	}
 
 	public function toString()
 	{
-
-		$type = 'data-tbl-nosearch table-bordered';
 		$typeWidget = 'nonboxy-widget';
+		$type = 'data-tbl-nothing table-bordered';
 		if ($this->datatable)
 		{
 			$type = 'data-tbl-simple table-bordered';
 		}
-		if(!$this->flat)
+		if ($this->nosearch && $this->datatable)
+		{
+			$type = 'data-tbl-nosearch table-bordered';
+		}
+		if(!$this->flat && $this->datatable)
 		{
 			$type = 'data-tbl-boxy';
 			$typeWidget = 'widget-block';
 
 		}
-		if ($this->tools)
+		if ($this->tools && $this->datatable)
 		{
 			$type = 'data-tbl-tools';
 			$typeWidget = 'widget-block';
@@ -68,17 +76,17 @@ class Table extends \Templates\Html\Table
 		// Widget Bauen
 		$divWidget = new Tag('div','',$typeWidget);
 		$div = new Tag('div',new Tag('h5',$this->headline),'widget-head');
-		$divWidget->addValue($div);
+		$divWidget->append($div);
 
 		if(!$this->flat || $this->tools)
 		{
 			$wrap1 = new Tag('div',$strOutTable,'widget-box');
 			$wrap2 = new Tag('div',$wrap1,'widget-content');
-			$divWidget->addValue($wrap2);
+			$divWidget->append($wrap2);
 		}
 		else
 		{
-			$divWidget->addValue($strOutTable);
+			$divWidget->append($strOutTable);
 		}
 
 		return $divWidget->toString();

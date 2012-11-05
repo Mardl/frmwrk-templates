@@ -30,12 +30,7 @@ class Anchor extends Tag
 	 */
 	public function getHref()
 	{
-		if(!$this->hasAttribute('href'))
-		{
-			return '';
-		}
-
-		return $this->tagAttributes['href'];
+		return $this->getAttribute('href','');
 	}
 
 	/**

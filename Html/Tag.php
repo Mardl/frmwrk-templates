@@ -5,23 +5,28 @@ namespace Templates\Html;
 class Tag
 {
 	protected $tagName = null;
-	protected $tagValue = array();
+	protected $tagInner = array();
 	protected $tagAttributes = array();
 	protected $tagStyle = array();
 	protected $forceClose = true;
 	protected $formatOutput = '';
 
 	/**
-	 * CONSTRUCTOR
-	 *
-	 * @param $tag
-	 * @param array|string $value or array of Tags
-	 * @param array|string $classOrAttributes
+	 * @param string $tag  Default = div-Tag
+	 * @param array $inner
+	 * @param array $classOrAttributes
 	 */
-	public function __construct($tag, $value=array(), $classOrAttributes = array())
+	public function __construct($tag='div', $inner=array(), $classOrAttributes = array())
 	{
+		if (empty($tag))
+		{
+			$tag = 'div';
+		}
 		$this->tagName = strtolower($tag);
-		$this->tagValue = $value;
+		if (!empty($inner))
+		{
+			$this->set($inner);
+		}
 		if (!empty($classOrAttributes))
 		{
 			if (is_array($classOrAttributes))
@@ -38,11 +43,29 @@ class Tag
 		}
 	}
 
+	/**
+	 *
+	 * Setzen von Attribut ID
+	 *
+	 * @param $id
+	 * @return Tag
+	 */
 	public function setId($id)
 	{
 		return $this->addAttribute('id', $id);
 	}
 
+	public function getId()
+	{
+		return $this->getAttribute('id');
+	}
+
+	/**
+	 *
+	 * Format für Output-Formatierung im format sprintf
+	 *
+	 * @param $format
+	 */
 	public function setFormat($format)
 	{
 		$this->formatOutput = $format;
@@ -65,30 +88,27 @@ class Tag
 	}
 
 	/**
-	 * Setter für Tag-Wert
-	 * @param mixed $value
-	 * @return Tag
+	 * @return bool
 	 */
-	public function setValue($value)
+	public function hasInner()
 	{
-		$this->tagValue = $value;
-		return $this;
-	}
-
-	public function hasValue()
-	{
-		return !empty($this->tagValue);
+		return !empty($this->tagInner);
 	}
 
 	/**
 	 * Getter für Tag-Wert
 	 * @return array|mixed
 	 */
-	public function getValue()
+	public function getInner()
 	{
-		return $this->tagValue;
+		return $this->tagInner;
 	}
 
+	/**
+	 * @param $value
+	 * @return string
+	 * @throws \Templates\Exceptions\Convert
+	 */
 	private function renderToString($value) {
 		if(is_string($value) || is_int($value))
 		{
@@ -119,9 +139,9 @@ class Tag
 		return $string;
 	}
 
-	public function getValueAsString()
+	public function getInnerAsString()
 	{
-		return $this->renderToString($this->tagValue);
+		return $this->renderToString($this->tagInner);
 	}
 
 	/**
@@ -131,18 +151,9 @@ class Tag
 	 * @param mixed $value
 	 * @return Tag
 	 */
-	public function addValue($value)
+	public function addInner($value)
 	{
-		if(!is_array($this->tagValue))
-		{
-			$preset = array();
-			if(!empty($this->tagValue)) {
-				$preset = array($this->tagValue);
-			}
-			$this->tagValue = $preset;
-		}
-		$this->tagValue[] = $value;
-		return $this;
+		return $this->append($value);
 	}
 
 	/**
@@ -150,13 +161,13 @@ class Tag
 	 *
 	 * @return int
 	 */
-	public function countValues()
+	public function countInners()
 	{
-		if (is_array($this->tagValue))
+		if (is_array($this->tagInner))
 		{
-			return count($this->tagValue);
+			return count($this->tagInner);
 		}
-		return 0;
+		return empty($this->tagInner) ? 0 : 1;
 	}
 
 	/**
@@ -170,6 +181,33 @@ class Tag
 	{
 		$this->tagAttributes[$name] = $value;
 		return $this;
+	}
+
+	/**
+	 * @param $name
+	 * @return Tag
+	 */
+	public function removeAttribute($name)
+	{
+		if ($this->hasAttribute($name))
+		{
+			unset($this->tagAttributes[$name]);
+		}
+		return $this;
+	}
+
+	/**
+	 * @param $name
+	 * @param null $default
+	 * @return null|string
+	 */
+	public function getAttribute($name,$default=null)
+	{
+		if ($this->hasAttribute($name))
+		{
+			return $this->tagAttributes[$name];
+		}
+		return $default;
 	}
 
 	/**
@@ -274,10 +312,10 @@ class Tag
 		$str .= '<';
 		$str .= $this->tagName . ' ';
 		$str .= $this->renderAttributes();
-		if(!empty($this->tagValue) || $this->forceClose) {
+		if(!empty($this->tagInner) || $this->forceClose) {
 			$str .= '>';
 		}
-		$str .= $this->getValueAsString();
+		$str .= $this->getInnerAsString();
 		$str .= $this->getCloseTag();
 		return $str;
 	}
@@ -297,35 +335,83 @@ class Tag
 	 */
 	protected function getCloseTag()
 	{
-		if(!empty($this->tagValue) || $this->forceClose)
+		if(!empty($this->tagInner) || $this->forceClose)
 		{
 			return '</' . $this->tagName . '>';
 		}
 		return ' />';
 	}
 
+	/**
+	 * Initialisiert den InnetTag und setzt ihn komplett neu
+	 *
+	 * @param $value
+	 * @return Tag
+	 */
+	public function set($value)
+	{
+		$this->tagInner='';
+		$this->append($value);
+		return $this;
+	}
+
+
+	/**
+	 *
+	 * Hängt an den InnerTag einen neuen hinzu
+	 *
+	 * @param $value
+	 * @return Tag
+	 */
 	public function append($value)
 	{
-		$this->addValue($value);
+		if (empty($value))
+		{
+			return $this;
+		}
+		if(!is_array($this->tagInner))
+		{
+			$preset = array();
+			if(!empty($this->tagInner)) {
+				$preset = array($this->tagInner);
+			}
+			$this->tagInner = $preset;
+		}
+		$this->tagInner[] = $value;
 		return $this;
 	}
 
+	/**
+	 *
+	 * Hängt vor dem innerTag einen neuen hinzu
+	 *
+	 * @param $value
+	 * @return Tag
+	 */
 	public function prepend($value)
 	{
-		if(!is_array($this->tagValue))
+		if(!is_array($this->tagInner))
 		{
-			$this->tagValue = array($this->tagValue);
+			$this->tagInner = array($this->tagInner);
 		}
-		array_splice($this->tagValue, 0, 0, array($value));
+		array_splice($this->tagInner, 0, 0, array($value));
 		return $this;
 	}
 
+	/**
+	 * @param Tag $obj
+	 * @return Tag
+	 */
 	public function appendTo(Tag $obj)
 	{
 		$obj->append($this);
 		return $this;
 	}
 
+	/**
+	 * @param Tag $obj
+	 * @return Tag
+	 */
 	public function prependTo(Tag $obj)
 	{
 		$obj->prepend($this);

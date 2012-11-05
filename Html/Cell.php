@@ -16,7 +16,7 @@ class Cell extends Tag
 	{
 		parent::__construct('td','',$classOrAttributes);
 
-		$this->addValue($value);
+		$this->append($value);
 
 		if ($header)
 		{

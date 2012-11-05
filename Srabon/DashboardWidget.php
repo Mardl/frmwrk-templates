@@ -36,9 +36,9 @@ class DashboardWidget extends Tag
 		$anchor = new Anchor($href,array($this->inlineIcons,$span));
 
 		$content = new Tag('div','','dashboard-wid-content');
-		$content->addValue($anchor);
+		$content->append($anchor);
 
-		parent::addValue($content);
+		parent::append($content);
 	}
 
 	/**

@@ -19,7 +19,7 @@ class Row extends Tag
 		{
 			foreach ($values as $column)
 			{
-				$this->addValue($column);
+				$this->addCell($column);
 			}
 		}
 
@@ -31,16 +31,16 @@ class Row extends Tag
 		$this->header = true;
 	}
 
-	public function addValue($cell)
+	public function addCell($cell)
 	{
 		if ($cell instanceof Cell)
 		{
-			return parent::addValue($cell);
+			return parent::append($cell);
 		}
 
 		$cellNew = new Cell($cell,$this->header);
 
-		return parent::addValue($cellNew);
+		return parent::append($cellNew);
 	}
 
 	/**
@@ -50,7 +50,7 @@ class Row extends Tag
 	 */
 	public function getCell($pos)
 	{
-		$allCells = $this->getValue();
+		$allCells = $this->getInner();
 		if (is_array($allCells))
 		{
 			if (isset($allCells[$pos]))
@@ -72,11 +72,10 @@ class Row extends Tag
 	 */
 	public function setCell($pos,Cell $cell)
 	{
-		$allCells= $this->getValue();
+		$allCells= $this->getInner();
 		if (is_array($allCells))
 		{
 			$allCells[$pos] = $cell;
-			$this->setValue($allCells);
 		}
 
 		return $this;
@@ -87,7 +86,7 @@ class Row extends Tag
 	{
 		if ($this->header)
 		{
-			foreach($this->tagValue as $cell)
+			foreach($this->tagInner as $cell)
 			{
 				if ($cell instanceof Cell)
 				{

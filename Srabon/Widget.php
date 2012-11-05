@@ -12,6 +12,11 @@ class Widget extends Tag
 	protected $header = null;
 
 	/**
+	 * @var Tag
+	 */
+	protected $footer = null;
+
+	/**
 	 * @var Div
 	 */
 	protected $content = null;
@@ -28,15 +33,18 @@ class Widget extends Tag
 	public function __construct($headerText='', $flat=true, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
+		$this->flat = $flat;
 
 		$this->initHead();
 		$this->initContent();
+		$this->initFoot();
 
-		if(!empty($headerText)) {
+		if(!empty($headerText))
+		{
 			$this->setHeader($headerText);
 		}
 
-		$this->flat = $flat;
+
 	}
 
 	/**
@@ -66,7 +74,13 @@ class Widget extends Tag
 		$this->header = new Tag('h5');
 		$div = new Tag('div',$this->header,'widget-head');
 
-		parent::addValue($div);
+		parent::append($div);
+	}
+
+
+	protected function initFoot()
+	{
+		$this->footer = new Tag('div','','well');
 	}
 
 	/**
@@ -76,16 +90,10 @@ class Widget extends Tag
 	protected function initContent()
 	{
 		$this->content = new Tag('div','','well');
-
-		if(!$this->flat)
-		{
-			$this->content->addClass('white-box');
-		}
-
 		$wrap1 = new Tag('div',$this->content,'widget-box');
 		$wrap2 = new Tag('div',$wrap1,'widget-content');
 
-		parent::addValue($wrap2);
+		parent::append($wrap2);
 	}
 
 	/**
@@ -94,25 +102,16 @@ class Widget extends Tag
 	 */
 	public function setHeader($header)
 	{
-		$this->header->addValue($header);
+		$this->header->append($header);
 	}
 
 	/**
-	 * Setter für den Inhaltsbereich der Widget-Box
-	 * @param mixed $content
+	 * Setter für den Header-Text der Widget-Box
+	 * @param string|mixed $header
 	 */
-	public function setValue($content)
+	public function setFooter($footer)
 	{
-		$this->content->setValue($content);
-	}
-
-	/**
-	 * Setter für den Inhaltsbereich der Widget-Box
-	 * @param mixed $content
-	 */
-	public function addValue($content)
-	{
-		$this->content->addValue($content);
+		$this->footer->append($footer);
 	}
 
 	public function append($value)
@@ -125,13 +124,20 @@ class Widget extends Tag
 		$this->content->prepend($value);
 	}
 
-	public function toString() {
+	public function toString()
+	{
 		$type = 'nonboxy-widget';
 		if(!$this->flat)
 		{
+			$this->content->addClass('white-box');
 			$type = 'widget-block';
 		}
 		$this->addClass($type);
+		if ($this->footer->countInners() > 0)
+		{
+			$div = new Tag('div',$this->footer,'widget-bottom');
+			parent::append($div);
+		}
 		return parent::toString();
 	}
 }

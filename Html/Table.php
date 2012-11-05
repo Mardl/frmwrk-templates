@@ -34,15 +34,14 @@ class Table extends Tag
 
 	private function setMaxCell(Row $row)
 	{
-		$max = $row->countValues();
+		$max = $row->countInners();
 
 		if ($this->maxCell == 0 || $this->maxCell == $max)
 		{
 			$this->maxCell = $max;
 			return;
 		}
-		$line = $this->countValues();
-		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row '.($line+1).'. Erste Definition: '.$this->maxCell.' Columns.');
+		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row '.($max+1).'. Erste Definition: '.$this->maxCell.' Columns.');
 	}
 
 	public function addHeader($row)
@@ -50,12 +49,16 @@ class Table extends Tag
 		if (is_array($row))
 		{
 			$newRow = new Row($row);
-			$row = $newRow;
+		}
+		else
+		{
+			$newRow = $row;
 		}
 
-		$this->setMaxCell($row);
 
-		$this->headerRow[] = $row;
+		$this->setMaxCell($newRow);
+
+		$this->headerRow[] = $newRow;
 	}
 
 	public function addFooter($row)
@@ -71,40 +74,39 @@ class Table extends Tag
 		$this->footerRow[] = $row;
 	}
 
-	public function addValue($value)
+	public function addRow($value)
 	{
 		if (!is_array($value))
 		{
 			if ($value instanceof Row)
 			{
 				$this->setMaxCell($value);
-				return parent::addValue($value);
+				return parent::append($value);
 			}
-			throw new \InvalidArgumentException('AddValue von Table benötigt Instanze von Row');
+			throw new \InvalidArgumentException('addRow von Table benötigt Instanze von Row');
 
 		}
 		$newRow = new Row();
-		foreach($value as $row)
+		foreach($value as $rowOrCell)
 		{
-			if (is_object($row))
+			if (is_object($rowOrCell))
 			{
-				if ($row instanceof Row)
+				if ($rowOrCell instanceof Row)
 				{
-					$this->setMaxCell($row);
-					parent::addValue($row);
+					$this->addRow($rowOrCell);
 					continue;
 				}
 			}
-			$newRow->addValue($row);
+			$newRow->addCell($rowOrCell);
 		}
 
-		if (!$newRow->hasValue())
+		if (!$newRow->hasInner())
 		{
 			return $this;
 		}
 
 		$this->setMaxCell($newRow);
-		return parent::addValue($newRow);
+		return parent::append($newRow);
 	}
 
 	/**
@@ -114,7 +116,7 @@ class Table extends Tag
 	 */
 	public function getRow($pos = false)
 	{
-		$allRows = $this->getValue();
+		$allRows = $this->getInner();
 		if (is_array($allRows))
 		{
 			if (false === $pos )
@@ -140,11 +142,11 @@ class Table extends Tag
 	 */
 	public function setRow($pos,Row $row)
 	{
-		$allRows= $this->getValue();
+		$allRows= $this->getInner();
 		if (is_array($allRows))
 		{
 			$allRows[$pos] = $row;
-			$this->setValue($allRows);
+			//$this->append($allRows);
 		}
 
 		return $this;
@@ -156,7 +158,7 @@ class Table extends Tag
 	 */
 	public function addAttrColumn($column, $classOrAttributes = array())
 	{
-		foreach($this->getValue() as $row)
+		foreach($this->getInner() as $row)
 		{
 			/**
 			 * @var $row \Templates\Html\Row
@@ -178,9 +180,9 @@ class Table extends Tag
 		return $this;
 	}
 
-	public function setFormatColumn($column, $sprintfFormat)
+	public function formatColumn($column, $sprintfFormat)
 	{
-		foreach($this->getValue() as $row)
+		foreach($this->getInner() as $row)
 		{
 			/**
 			 * @var $row \Templates\Html\Row
@@ -226,9 +228,9 @@ class Table extends Tag
 			$tFoot = '<tfoot>'.$footerRow.'</tfoot>';
 		}
 
-		$strRow = '<tbody>'.parent::$this->getValueAsString().'</tbody>';
+		$strRow = '<tbody>'.parent::$this->getInnerAsString().'</tbody>';
 
-		$this->setValue($tHead.$strRow.$tFoot);
+		$this->set($tHead.$strRow.$tFoot);
 
 		return parent::toString();
 	}

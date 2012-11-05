@@ -22,7 +22,7 @@ class PageHeader extends Tag
 
 		$this->header = new Tag('h1',$headerText);
 
-		parent::addValue($this->header);
+		parent::append($this->header);
 
 	}
 	/**
@@ -31,14 +31,14 @@ class PageHeader extends Tag
 	 */
 	public function setHeader($headerText)
 	{
-		$this->header->setValue($headerText);
+		$this->header->append($headerText);
 	}
 
 	public function toString()
 	{
 		$strOut = parent::toString();
 		$grid = new Grid();
-		$grid->setValue($strOut);
+		$grid->append($strOut);
 
 		return $grid->toString();
 	}

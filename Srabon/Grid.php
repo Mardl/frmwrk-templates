@@ -31,7 +31,7 @@ class Grid extends Tag
 	{
 		$col = new Tag('div','','span' . $width);
 		$this->cols[] = $col;
-		parent::addValue($col);
+		parent::append($col);
 		return $col;
 	}
 
@@ -53,17 +53,13 @@ class Grid extends Tag
 	{
 		$col = $this->getCol($key);
 		/** @var $col Div */
-		$col->addValue($value);
+		$col->append($value);
 	}
 
-	public function setValue($value)
+	public function append($value)
 	{
 		$col = $this->initCol(12);
-		$col->addValue($value);
+		$col->append($value);
 	}
 
-	public function addValue($value)
-	{
-		$this->setValue($value);
-	}
 }
