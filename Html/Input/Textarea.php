@@ -24,5 +24,4 @@ class Textarea extends \Templates\Html\Input
 		$this->value=$value;
 	}
 
-
 }

@@ -30,7 +30,7 @@ class Widget extends Tag
 	 * @param string $headerText
 	 * @param bool $flat
 	 */
-	public function __construct($headerText='', $flat=true, $classOrAttributes = array())
+	public function __construct($headerText='', $value=array(), $flat=true, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
 		$this->flat = $flat;
@@ -42,6 +42,10 @@ class Widget extends Tag
 		if(!empty($headerText))
 		{
 			$this->setHeader($headerText);
+		}
+		if (!empty($value))
+		{
+			$this->append($value);
 		}
 
 

@@ -28,7 +28,7 @@ class Tabs extends \Templates\Srabon\Widget
 
 	public function __construct($headerText='', $flat=false, $classOrAttributes = array())
 	{
-		parent::__construct($headerText, $flat, $classOrAttributes);
+		parent::__construct($headerText, '', $flat, $classOrAttributes);
 
 	}
 

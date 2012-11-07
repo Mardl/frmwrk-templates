@@ -75,8 +75,11 @@ class Table extends \Templates\Html\Table
 
 		// Widget Bauen
 		$divWidget = new Tag('div','',$typeWidget);
-		$div = new Tag('div',new Tag('h5',$this->headline),'widget-head');
-		$divWidget->append($div);
+		if (!empty($this->headline))
+		{
+			$div = new Tag('div',new Tag('h5',$this->headline),'widget-head');
+			$divWidget->append($div);
+		}
 
 		if(!$this->flat || $this->tools)
 		{

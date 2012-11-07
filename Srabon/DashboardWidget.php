@@ -19,6 +19,8 @@ class DashboardWidget extends Tag
 	private $inlineIcons = '';
 
 
+	private $content = '';
+
 	/**
 	 * @param string $headerText
 	 * @param bool $flat
@@ -33,12 +35,24 @@ class DashboardWidget extends Tag
 		}
 		$this->inlineIcons = new Tag('i','',$classOrAttributes);
 		$span = new Tag('span',$title,'dasboard-icon-title');
-		$anchor = new Anchor($href,array($this->inlineIcons,$span));
+		$anchor = $this->createAnchor($href,array($this->inlineIcons,$span));
 
-		$content = new Tag('div','','dashboard-wid-content');
-		$content->append($anchor);
+		$this->content = new Tag('div','','dashboard-wid-content');
+		$this->content->append($anchor);
 
-		parent::append($content);
+		parent::append($this->content);
+	}
+
+	public function hasAnchor()
+	{
+		$link = trim($this->content->getInnerAsString());
+		return !empty($link);
+	}
+
+	protected function createAnchor($href,$linktext)
+	{
+		$href = new \Templates\Srabon\Anchor($href,$linktext);
+		return $href;
 	}
 
 	/**
@@ -61,7 +75,8 @@ class DashboardWidget extends Tag
 	/**
 	 * @return string
 	 */
-	public function toString() {
+	public function toString()
+	{
 		$type = 'dashboard-icons-colors';
 		if(!$this->colorIcon)
 		{

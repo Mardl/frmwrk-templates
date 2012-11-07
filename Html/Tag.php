@@ -134,7 +134,7 @@ class Tag
 		$string = '';
 		if(is_array($value)) {
 			foreach($value as $vals) {
-				$string .= $this->renderToString($vals) . "\n";
+				$string .= $this->renderToString($vals);// . "\r\n";
 			}
 		}
 		return $string;
