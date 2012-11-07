@@ -88,9 +88,6 @@ class Form extends Tag
 					}
 
 				}
-
-
-
 			}
 		}
 		elseif ( $container instanceof \Templates\Html\Input )

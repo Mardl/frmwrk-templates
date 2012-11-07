@@ -109,7 +109,8 @@ class Tag
 	 * @return string
 	 * @throws \Templates\Exceptions\Convert
 	 */
-	private function renderToString($value) {
+	protected function renderToString($value)
+	{
 		if(is_string($value) || is_int($value))
 		{
 			if (!empty($this->formatOutput))
@@ -259,7 +260,16 @@ class Tag
 			$this->tagAttributes['class'] = array();
 		}
 
-		$this->tagAttributes['class'][] = $class;
+		$this->tagAttributes['class'][$class] = $class;
+		return $this;
+	}
+
+	public function removeClass($class)
+	{
+		if (isset($this->tagAttributes['class'][$class]))
+		{
+			unset($this->tagAttributes['class'][$class]);
+		}
 		return $this;
 	}
 

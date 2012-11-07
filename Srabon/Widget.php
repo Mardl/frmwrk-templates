@@ -48,24 +48,6 @@ class Widget extends Tag
 	}
 
 	/**
-	 * Ändern den Widget-Typ von Block auf Nonboxy
-	 * @return void
-	 */
-	public function flat()
-	{
-		$this->flat = true;
-	}
-
-	/**
-	 * Ändern den Widget-Typ von Nonboxy auf Block
-	 * @return void
-	 */
-	public function widget()
-	{
-		$this->flat = false;
-	}
-
-	/**
 	 * Erstellt den Header-Bereich sowie das H-Tag der Widget-Box
 	 * @return void
 	 */
@@ -90,6 +72,10 @@ class Widget extends Tag
 	protected function initContent()
 	{
 		$this->content = new Tag('div','','well');
+		if(!$this->flat)
+		{
+			$this->content->addClass('white-box');
+		}
 		$wrap1 = new Tag('div',$this->content,'widget-box');
 		$wrap2 = new Tag('div',$wrap1,'widget-content');
 
@@ -126,13 +112,9 @@ class Widget extends Tag
 
 	public function toString()
 	{
-		$type = 'nonboxy-widget';
-		if(!$this->flat)
-		{
-			$this->content->addClass('white-box');
-			$type = 'widget-block';
-		}
+		$type = !$this->flat ? 'widget-block' : 'nonboxy-widget';
 		$this->addClass($type);
+
 		if ($this->footer->countInners() > 0)
 		{
 			$div = new Tag('div',$this->footer,'widget-bottom');
