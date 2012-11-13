@@ -8,21 +8,31 @@ class Radio extends \Templates\Html\Input
 
 	public function __construct($name, $selectedValue='', $opt = array(),$required=false, $placeholder='', $classOrAttributes = array())
 	{
-
 		parent::__construct($name, $selectedValue, $placeholder ,$required, 'radio', $classOrAttributes);
 
+		$this->setOption($opt);
+	}
+
+	public function addOption($value, $title, $selected = false)
+	{
+		$this->options[] = array($value,$title,$selected);
+
+	}
+
+	public function setOption($opt)
+	{
 		if (!empty($opt))
 		{
 			foreach($opt as $value => $title)
 			{
-				$this->addOption($value, $title, $value == $selectedValue);
+				$this->addOption($value, $title, $value == $this->getValue());
 			}
 		}
 	}
 
-	public function addOption($value, $title, $selected = false){
-		$this->options[] = array($value,$title,$selected);
-
+	public function getOptions()
+	{
+		return $this->options;
 	}
 
 	public function validate()
@@ -61,7 +71,7 @@ class Radio extends \Templates\Html\Input
 
 
 			$radioLabel = new \Templates\Html\Tag('label');
-			foreach($this->getAttribute('class') as $class)
+			foreach($this->getAttribute('class',array()) as $class)
 			{
 				$radioLabel->addClass($class);
 			}

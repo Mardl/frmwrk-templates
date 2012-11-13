@@ -13,6 +13,8 @@ class Select extends \Templates\Html\Input
 	{
 		parent::__construct($name, $selectedValue, $placeholder,$required, 'select', $classOrAttributes);
 
+		$this->setOption($opt);
+
 		$this->setTagname('select');
 		$this->removeAttribute('type');
 		$this->removeAttribute('value');
@@ -40,6 +42,34 @@ class Select extends \Templates\Html\Input
 		}
 
 		return true;
+	}
+
+	public function setOption($opt)
+	{
+		$finish = array();
+
+		foreach($opt as $key => $value)
+		{
+			if ( is_array($value) )
+			{
+				if (isset($finish[ $key ]))
+				{
+					continue;
+				}
+				foreach($opt[ $key ] as $keyNeu => $valueNeu)
+				{
+
+					$this->addOptionGrouped($keyNeu, $valueNeu, $key, $selectedValue == $keyNeu);
+				}
+				$finish[ $key ] = $key;
+			}
+			else
+			{
+				$this->addOption($key,$value,$this->getValue() == $key);
+			}
+		}
+
+		return $this;
 	}
 
 	public function addOption($value, $tag, $selected = false)
