@@ -13,8 +13,8 @@ class Button extends \Templates\Html\Input\Button
 		parent::__construct($name,$value,$classOrAttributes);
 
 
-		$this->addClass('button');
-		$this->addClass('button_red');
+		//$this->addClass('button');
+		//$this->addClass('button_red');
 
 		/*if (empty($this->defaultClass))
 		{

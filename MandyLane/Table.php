@@ -24,15 +24,15 @@ class Table extends \Templates\Html\Table
 		{
 			if ($i % 2 == false)
 			{
-
-				$this->addAttrColumn($i,'column0');
+				$this->addAttrColumn($i,'con0');
 			}
 			else
 			{
-				$this->addAttrColumn($i,'column1');
+				$this->addAttrColumn($i,'con1');
 			}
 		}
 	}
+
 
 	public function toString()
 	{
