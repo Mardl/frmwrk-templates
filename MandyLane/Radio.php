@@ -47,6 +47,11 @@ class Radio extends \Templates\Html\Input\Radio
 			$span->addClass('radio-label');
 			$span->addClass('radio-label'.'-'.$option[0]);
 
+			if(empty($label))
+			{
+				$span->addClass('radio-label-notext');
+			}
+
 			$radio->append($span);
 
 			$arRadios[] = $radio;
