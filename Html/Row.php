@@ -23,23 +23,26 @@ class Row extends Tag
 			}
 		}
 
-	}
+		if($header)
+		{
+			$this->header();
+		}
 
+	}
 
 	public function header()
 	{
 		$this->header = true;
 	}
 
-	public function addCell($cell)
+	public function addCell($cell, $classOrAttributes = array())
 	{
-		if ($cell instanceof Cell)
+		if ($cell instanceof \Templates\Html\Cell)
 		{
 			return parent::append($cell);
 		}
 
-		$cellNew = new Cell($cell,$this->header);
-
+		$cellNew = new  \Templates\Html\Cell($cell,$this->header, $classOrAttributes);
 		return parent::append($cellNew);
 	}
 
@@ -88,7 +91,7 @@ class Row extends Tag
 		{
 			foreach($this->tagInner as $cell)
 			{
-				if ($cell instanceof Cell)
+				if ($cell instanceof \Templates\Html\Cell)
 				{
 					$cell->header();
 				}
