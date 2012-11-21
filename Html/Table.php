@@ -5,18 +5,24 @@ namespace Templates\Html;
 class Table extends Tag
 {
 
-	private $headerRow = array();
-	private $footerRow = array();
-	private $maxCell = 0;
+	protected $headerRow = array();
+	protected $footerRow = array();
+	protected $maxCell = 0;
 
+	/**
+	 * @var \Templates\Html\Row
+	 */
+	private $rowClass;
 
 	/**
 	 * @param bool $header
 	 * @param array $classOrAttributes
 	 */
-	public function __construct($classOrAttributes = array())
+	public function __construct($classOrAttributes = array(),$rowNamespace='\Templates\Html\Row')
 	{
 		parent::__construct('table','',$classOrAttributes);
+
+		$this->rowClass = $rowNamespace;
 
 		if (!$this->hasAttribute('cellpadding'))
 		{
@@ -48,16 +54,14 @@ class Table extends Tag
 	{
 		if (is_array($row))
 		{
-			$newRow = new Row($row);
+			$newRow = new $this->rowClass($row);
 		}
 		else
 		{
 			$newRow = $row;
 		}
 
-
 		$this->setMaxCell($newRow);
-
 		$this->headerRow[] = $newRow;
 	}
 
@@ -65,7 +69,7 @@ class Table extends Tag
 	{
 		if (is_array($row))
 		{
-			$newRow = new Row($row);
+			$newRow = new $this->rowClass($row);
 			$row = $newRow;
 		}
 
@@ -78,7 +82,7 @@ class Table extends Tag
 	{
 		if (!is_array($value))
 		{
-			if ($value instanceof Row)
+			if ($value instanceof \Templates\Html\Row)
 			{
 				$this->setMaxCell($value);
 				return parent::append($value);
@@ -86,12 +90,12 @@ class Table extends Tag
 			throw new \InvalidArgumentException('addRow von Table benötigt Instanze von Row');
 
 		}
-		$newRow = new Row();
+		$newRow = new $this->rowClass();
 		foreach($value as $rowOrCell)
 		{
 			if (is_object($rowOrCell))
 			{
-				if ($rowOrCell instanceof Row)
+				if ($rowOrCell instanceof \Templates\Html\Row)
 				{
 					$this->addRow($rowOrCell);
 					continue;
@@ -138,7 +142,7 @@ class Table extends Tag
 	/**
 	 * @param int $pos
 	 * @param Row $row
-	 * @return Table
+	 * @return \Templates\Html\Table
 	 */
 	public function setRow($pos,Row $row)
 	{
@@ -155,30 +159,20 @@ class Table extends Tag
 	/**
 	 * @param int $column
 	 * @param array|string $classOrAttributes
+	 * @param bool $headrows
+	 * @return \Templates\Html\Table
 	 */
-	public function addAttrColumn($column, $classOrAttributes = array())
+	public function addAttrColumn($column, $classOrAttributes = array(), $headrows = false)
 	{
-		foreach($this->getInner() as $row)
+		$dataArray = $headrows ? $this->headerRow : $this->getInner();
+
+		foreach($dataArray as $row)
 		{
-			/**
-			 * @var $row \Templates\Html\Row
-			 * @var $cell \Templates\Html\Cell
-			 */
-			$cell = $row->getCell($column);
-			if (is_array($classOrAttributes))
-			{
-				foreach($classOrAttributes as $name => $value)
-				{
-					$cell->addAttribute($name,$value);
-				}
-			}
-			else
-			{
-				$cell->addClass($classOrAttributes);
-			}
+			$this->setRowAttributes($column, $row, $classOrAttributes);
 		}
 		return $this;
 	}
+
 
 	public function formatColumn($column, $sprintfFormat)
 	{
@@ -233,6 +227,34 @@ class Table extends Tag
 		$this->set($tHead.$strRow.$tFoot);
 
 		return parent::toString();
+	}
+
+	/**
+	 * @param int $column
+	 * @param $row
+	 * @param array|string $classOrAttributes
+	 * @return \Templates\Html\Table
+	 */
+	private function setRowAttributes($column, $row, $classOrAttributes = array())
+	{
+		/**
+		 * @var $row \Templates\Html\Row
+		 * @var $cell \Templates\Html\Cell
+		 */
+		$cell = $row->getCell($column);
+		if (is_array($classOrAttributes))
+		{
+			foreach($classOrAttributes as $name => $value)
+			{
+				$cell->addAttribute($name,$value);
+			}
+		}
+		else
+		{
+			$cell->addClass($classOrAttributes);
+		}
+
+		return $this;
 	}
 
 
