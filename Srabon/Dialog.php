@@ -75,7 +75,6 @@ class Dialog extends Tag
 	protected function initContent()
 	{
 		$this->content = new Tag('div','','modal-body');
-		$this->content->append(new Tag('div','','error'));
 
 		parent::append($this->content);
 	}

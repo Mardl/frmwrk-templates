@@ -18,6 +18,16 @@ class Textarea extends \Templates\Html\Input
 		$this->removeAttribute('value');
 	}
 
+	public function rows($anz)
+	{
+		$this->addAttribute('rows',$anz);
+	}
+
+	public function cols($anz)
+	{
+		$this->addAttribute('cols',$anz);
+	}
+
 	public function setValue($value)
 	{
 		$this->set($value);

@@ -12,6 +12,8 @@ class Table extends \Templates\Html\Table
 	private $nosearch = false;
 	private $datatable = true;
 	private $headline = '';
+	private $inbox = false;
+	private $options = array();
 
 
 
@@ -20,7 +22,6 @@ class Table extends \Templates\Html\Table
 		parent::__construct($classOrAttributes);
 
 		$this->addClass('table');
-		$this->addClass('dataTable');
 		$this->headline = $headline;
 	}
 
@@ -47,30 +48,98 @@ class Table extends \Templates\Html\Table
 		$this->datatable=false;
 	}
 
+	public function setOption($key, $value, $notOverride=false)
+	{
+		if ($notOverride && isset($this->options[$key]))
+		{
+			return $this;
+		}
+		$this->options[$key] = $value;
+		return $this;
+	}
+
+	/**
+	 * Mehrdimensionales array
+	 *
+	 * @param $key
+	 * @param $key2
+	 * @param $value
+	 */
+	public function setOptions($key, $key2, $value, $notOverride=false)
+	{
+		if ($notOverride && isset($this->options[$key][$key2]))
+		{
+			return $this;
+		}
+		$this->options[$key][$key2] = $value;
+		return $this;
+	}
+
 	public function toString()
 	{
+		$options = array();
 		$typeWidget = 'nonboxy-widget';
 		$type = 'data-tbl-nothing table-bordered';
 		if ($this->datatable)
 		{
+			$this->addClass('dataTable');
 			$type = 'data-tbl-simple table-bordered';
+			$this->setOption('sPaginationType',"full_numbers",true);
+			$this->setOption('iDisplayLength',10,true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
+		}
+
+		if ($this->inbox && $this->datatable)
+		{
+			$type = 'data-tbl-inbox table-bordered';
+			$this->setOption('aaSorting',array(
+				array(1, 'asc'),
+				array(2, 'asc'),
+			));
+			$this->setOption('sPaginationType',"full_numbers",true);
+			$this->setOption('iDisplayLength',10,true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
 		}
 		if ($this->nosearch && $this->datatable)
 		{
 			$type = 'data-tbl-nosearch table-bordered';
+			$this->setOption("bPaginate",false,true);
+			$this->setOption("bLengthChange",true,true);
+			$this->setOption("bFilter",false,true);
+			$this->setOption("bInfo",false,true);
+			$this->setOption("bSort",true,true);
+			$this->setOption("bAutoWidth",true,true);
+
 		}
 		if(!$this->flat && $this->datatable)
 		{
 			$type = 'data-tbl-boxy';
 			$typeWidget = 'widget-block';
+			$this->setOption('sPaginationType',"full_numbers",true);
+			$this->setOption('iDisplayLength',10,true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOption('sDom','<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
+
 
 		}
 		if ($this->tools && $this->datatable)
 		{
 			$type = 'data-tbl-tools';
 			$typeWidget = 'widget-block';
+			$this->setOption('sPaginationType',"full_numbers",true);
+			$this->setOption('iDisplayLength',10,true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOption('sDom','<"tbl-tools-searchbox"fl<"clear">>,<"tbl_tools"CT<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
+			$this->setOptions('oTableTools','sSwfPath','swf/copy_cvs_xls_pdf.swf',true);
 		}
 		$this->addClass($type);
+
+		$optionsstring = !empty($this->options) ? base64_encode(json_encode($this->options)) : '';
+		$this->addAttribute('data-base64',$optionsstring);
+
+
 		$strOutTable = parent::toString();
 
 		// Widget Bauen

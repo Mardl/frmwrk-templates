@@ -21,13 +21,12 @@ class ControlGroup extends \Templates\Html\Tag
 		$this->content = new \Templates\Html\Tag('div');
 		$this->label = new \Templates\Html\Tag('label',$label,'control-label');
 
-		parent::__construct('div','',$classOrAttributes);
+		parent::__construct('div',$value,$classOrAttributes);
 
 		$this->addClass('control-group');
 
 
 		$this->required = $required;
-		$this->append($value);
 
 		$this->initLabel();
 		$this->initConstrols();

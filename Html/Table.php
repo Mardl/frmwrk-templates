@@ -38,9 +38,18 @@ class Table extends Tag
 		}
 	}
 
+	private function countCell()
+	{
+
+	}
+
 	private function setMaxCell(Row $row)
 	{
-		$max = $row->countInners();
+		$max = 0;
+		foreach($row->getInner() as $cell)
+		{
+			$max += $cell->getColspan();
+		}
 
 		if ($this->maxCell == 0 || $this->maxCell == $max)
 		{

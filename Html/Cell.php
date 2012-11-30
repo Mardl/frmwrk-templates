@@ -6,6 +6,7 @@ class Cell extends Tag
 {
 
 	private $header = false;
+	private $colspan=1;
 
 
 	/**
@@ -27,6 +28,18 @@ class Cell extends Tag
 	public function header()
 	{
 		$this->header = true;
+		return $this;
+	}
+
+	public function setColspan($count)
+	{
+		$this->colspan = $count;
+		return $this;
+	}
+
+	public function getColspan()
+	{
+		return $this->colspan;
 	}
 
 	public function toString()
@@ -34,6 +47,10 @@ class Cell extends Tag
 		if($this->header)
 		{
 			$this->setTagname('th');
+		}
+		if ($this->getColspan() > 1)
+		{
+		  	$this->addAttribute('colspan',$this->getColspan());
 		}
 		return parent::toString();
 	}
