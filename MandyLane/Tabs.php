@@ -81,14 +81,15 @@ class Tabs extends \Templates\MandyLane\Widget
 		$page = $this->getPage($index);
 		if (!empty($page))
 		{
-			$page->addClass('active');
+			$page->addClass('ui-state-active');
 			$this->activePage = $index;
 		}
 
 		$title = $this->getPageTitle($index);
 		if (!empty($page))
 		{
-			$title->addClass('active');
+			$title->addClass('ui-tabs-selected');
+			$title->addClass('ui-state-active');
 		}
 	}
 
@@ -117,8 +118,8 @@ class Tabs extends \Templates\MandyLane\Widget
 
 		if (false) // aktive
 		{
-			$li->addClass('active');
-			$pane->addClass('active');
+			$li->addClass('ui-state-active');
+			$pane->addClass('ui-state-active');
 		}
 
 
