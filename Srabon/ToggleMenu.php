@@ -2,7 +2,7 @@
 
 namespace Templates\Srabon;
 
-class ToogleMenu extends \Templates\Html\Tag
+class ToggleMenu extends \Templates\Html\Tag
 {
 
 	private $right = true;

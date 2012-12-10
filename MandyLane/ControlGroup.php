@@ -50,7 +50,7 @@ class ControlGroup extends \Templates\Html\Tag
 	public function toString()
 	{
 /*		$this->initLabel();
-		$this->initConstrols();*/
+		$this->initControls();*/
 		return parent::toString();
 	}
 

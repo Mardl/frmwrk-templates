@@ -232,7 +232,7 @@ class Tag
 	}
 
 	/**
-	 * Überprüft, ob ein bestimmte Style-Wert gesetzt ist
+	 * Überprüft, ob ein bestimmter Style-Wert gesetzt ist
 	 * @param string $name
 	 * @return bool
 	 */
@@ -353,7 +353,7 @@ class Tag
 	}
 
 	/**
-	 * Initialisiert den InnetTag und setzt ihn komplett neu
+	 * Initialisiert den InnerTag und setzt ihn komplett neu
 	 *
 	 * @param $value
 	 * @return Tag

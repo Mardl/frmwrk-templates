@@ -61,5 +61,4 @@ class Grid extends Tag
 		$col = $this->initCol(12);
 		$col->append($value);
 	}
-
 }

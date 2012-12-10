@@ -13,7 +13,7 @@ class Anchor extends \Templates\Html\Anchor
 	 */
 	public function __construct($href,$linkText, $asButton = false, $classOrAttributes = array())
 	{
-		parent::__construct('a',$linkText,$classOrAttributes);
+		parent::__construct($href,$linkText,$classOrAttributes);
 		$this->setHref($href);
 
 		$this->defaultClass = $classOrAttributes;

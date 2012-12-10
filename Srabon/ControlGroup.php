@@ -25,14 +25,10 @@ class ControlGroup extends \Templates\Html\Tag
 
 		$this->addClass('control-group');
 
-
 		$this->required = $required;
 
 		$this->initLabel();
-		$this->initConstrols();
-
-
-
+		$this->initControls();
 	}
 
 	public function setLabel($label)
@@ -53,7 +49,7 @@ class ControlGroup extends \Templates\Html\Tag
 	public function toString()
 	{
 /*		$this->initLabel();
-		$this->initConstrols();*/
+		$this->initControls();*/
 		return parent::toString();
 	}
 
@@ -70,7 +66,7 @@ class ControlGroup extends \Templates\Html\Tag
 		}
 	}
 
-	protected function initConstrols()
+	protected function initControls()
 	{
 		$div = new \Templates\Html\Tag('div',$this->content,'controls');
 		parent::append($div);
