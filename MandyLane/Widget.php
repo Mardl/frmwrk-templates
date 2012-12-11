@@ -27,9 +27,12 @@ class Widget extends Tag
 	protected $style2 = true;
 
 	/**
+	 * Standartmäßig als geschlossen Anzeigen
+	 *
 	 * @var bool
 	 */
 	protected $showhidden = false;
+
 
 	/**
 	 * @param string $headerText
