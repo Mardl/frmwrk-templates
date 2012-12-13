@@ -4,7 +4,6 @@ namespace Templates\Srabon;
 
 class ToggleMenu extends \Templates\Html\Tag
 {
-
 	private $right = true;
 	private $button;
 	private $menu;
@@ -32,8 +31,8 @@ class ToggleMenu extends \Templates\Html\Tag
 				 $this->append($values);
 			}
 		}
-		parent::append($this->menu);
 
+		parent::append($this->menu);
 	}
 
 	public function right()

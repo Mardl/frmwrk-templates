@@ -6,7 +6,6 @@ use \Templates\Html\Tag;
 
 class ControlGroup extends \Templates\Html\Tag
 {
-
 	protected $content = null;
 	protected $label = null;
 	protected $required = false;

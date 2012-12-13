@@ -20,11 +20,11 @@ class PageHeader extends Tag
 		parent::__construct('div', '', $classOrAttributes);
 		$this->addClass('page-header');
 
-		$this->header = new Tag('h1',$headerText);
+		$this->header = new Tag('h1', $headerText);
 
 		parent::append($this->header);
-
 	}
+
 	/**
 	 * Erstellt den Header-Bereich sowie das H-Tag der Widget-Box
 	 * @return void
@@ -42,6 +42,4 @@ class PageHeader extends Tag
 
 		return $grid->toString();
 	}
-
-
 }

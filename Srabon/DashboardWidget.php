@@ -7,7 +7,6 @@ use Templates\Html\Anchor;
 
 class DashboardWidget extends Tag
 {
-
 	/**
 	 * @var bool
 	 */
@@ -17,7 +16,6 @@ class DashboardWidget extends Tag
 	 * @var string|\Templates\Html\Tag
 	 */
 	private $inlineIcons = '';
-
 
 	private $content = '';
 
@@ -63,7 +61,6 @@ class DashboardWidget extends Tag
 		$this->colorIcon = false;
 	}
 
-
 	/**
 	 * DEFAULT: Set Icon from color Layout
 	 */
@@ -85,7 +82,4 @@ class DashboardWidget extends Tag
 		$this->inlineIcons->addClass($type);
 		return parent::toString();
 	}
-
-
-
 }

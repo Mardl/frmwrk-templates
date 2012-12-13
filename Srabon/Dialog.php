@@ -45,8 +45,6 @@ class Dialog extends Tag
 		{
 			$this->append($value);
 		}
-
-
 	}
 
 	/**
@@ -61,7 +59,6 @@ class Dialog extends Tag
 
 		parent::append($div);
 	}
-
 
 	protected function initFoot()
 	{

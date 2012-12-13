@@ -4,7 +4,6 @@ namespace Templates\Srabon;
 
 class Anchor extends \Templates\Html\Anchor
 {
-
 	private $defaultClass = '';
 	/**
 	 * @param $href

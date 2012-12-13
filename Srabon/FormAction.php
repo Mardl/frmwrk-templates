@@ -12,10 +12,10 @@ class FormAction extends \Templates\Html\Tag
 	{
 		parent::__construct('div','',$classOrAttributes);
 		$this->addClass('form-actions');
+
 		if (!empty($buttons))
 		{
 			$this->append($buttons);
 		}
-
 	}
 }

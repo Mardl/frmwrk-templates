@@ -29,7 +29,6 @@ class Tabs extends \Templates\Srabon\Widget
 	public function __construct($headerText='', $flat=false, $classOrAttributes = array())
 	{
 		parent::__construct($headerText, '', $flat, $classOrAttributes);
-
 	}
 
 	public function append($value)
@@ -129,6 +128,7 @@ class Tabs extends \Templates\Srabon\Widget
 
 		return $this;
 	}
+
 	protected function initContent()
 	{
 		$this->navigation = new Tag('ul','','nav-tabs');
@@ -159,5 +159,4 @@ class Tabs extends \Templates\Srabon\Widget
 
 		return parent::toString();
 	}
-
 }

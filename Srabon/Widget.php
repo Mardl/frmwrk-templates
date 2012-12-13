@@ -47,8 +47,6 @@ class Widget extends Tag
 		{
 			$this->append($value);
 		}
-
-
 	}
 
 	/**
@@ -62,7 +60,6 @@ class Widget extends Tag
 
 		parent::append($div);
 	}
-
 
 	protected function initFoot()
 	{

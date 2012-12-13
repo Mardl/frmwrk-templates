@@ -4,7 +4,6 @@ namespace Templates\Srabon;
 
 class Image extends \Templates\Html\Image
 {
-
 	public function __construct($src,$altText='',$titleText='', $classOrAttributes = array())
 	{
 		parent::__construct($src, $altText,$titleText ,  $classOrAttributes);
@@ -26,5 +25,4 @@ class Image extends \Templates\Html\Image
 
 		return $imageDiv->toString();
 	}
-
 }

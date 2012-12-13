@@ -13,6 +13,4 @@ class Checkbox extends \Templates\Html\Input\Checkbox
 		parent::__construct($name, $value, $placeholder, $required, $classOrAttributes);
 		$this->addClass('checkbox');
 	}
-
-
 }
