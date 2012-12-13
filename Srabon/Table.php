@@ -75,7 +75,6 @@ class Table extends \Templates\Html\Table
 
 	public function toString()
 	{
-		$options = array();
 		$typeWidget = 'nonboxy-widget';
 		$type = 'data-tbl-nothing table-bordered';
 		if ($this->datatable)

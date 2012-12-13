@@ -28,10 +28,10 @@ class Textarea extends \Templates\Html\Input
 		$this->addAttribute('cols',$anz);
 	}
 
-	public function setValue($value)
-	{
-		$this->set($value);
-		$this->value=$value;
-	}
+    public function setValue($value)
+    {
+        $this->set($value);
+        $this->value=$value;
+    }
 
 }
