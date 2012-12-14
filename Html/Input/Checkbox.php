@@ -5,7 +5,10 @@ namespace Templates\Html\Input;
 class Checkbox extends \Templates\Html\Input
 {
 	/**
-	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 * @param string $placeholder
+	 * @param bool $required
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($name, $value='', $placeholder='',$required=false, $classOrAttributes = array())

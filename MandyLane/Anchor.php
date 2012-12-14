@@ -6,9 +6,11 @@ class Anchor extends \Templates\Html\Anchor
 {
 
 	private $defaultClass = '';
+
 	/**
-	 * @param $href
+	 * @param string $href
 	 * @param array|string $linkText
+	 * @param bool $asButton
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($href,$linkText, $asButton = false, $classOrAttributes = array())

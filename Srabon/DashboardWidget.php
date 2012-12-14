@@ -20,8 +20,9 @@ class DashboardWidget extends Tag
 	private $content = '';
 
 	/**
-	 * @param string $headerText
-	 * @param bool $flat
+	 * @param string $title
+	 * @param string $href
+	 * @param array $classOrAttributes
 	 */
 	public function __construct($title, $href='', $classOrAttributes = array())
 	{

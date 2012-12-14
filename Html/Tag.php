@@ -12,11 +12,11 @@ class Tag
 	protected $formatOutput = '';
 
 	/**
-	 * @param string $tag  Default = div-Tag
-	 * @param array $inner
+	 * @param string $tag Default = div-Tag
+	 * @param string $inner
 	 * @param array $classOrAttributes
 	 */
-	public function __construct($tag='div', $inner=array(), $classOrAttributes = array())
+	public function __construct($tag='div', $inner='', $classOrAttributes = array())
 	{
 		if (empty($tag))
 		{

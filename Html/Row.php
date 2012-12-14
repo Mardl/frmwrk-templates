@@ -4,10 +4,10 @@ namespace Templates\Html;
 
 class Row extends Tag
 {
-
 	private $header = false;
 
 	/**
+	 * @param array $values
 	 * @param bool $header
 	 * @param array $classOrAttributes
 	 */
@@ -27,7 +27,6 @@ class Row extends Tag
 		{
 			$this->header();
 		}
-
 	}
 
 	public function header()
@@ -47,9 +46,10 @@ class Row extends Tag
 	}
 
 	/**
-	 * @param int $pos
-	 * @return \Templates\Html\Cell
+	 * @param $pos
+	 * @return mixed
 	 * @throws \UnexpectedValueException
+	 * @throws \InvalidArgumentException
 	 */
 	public function getCell($pos)
 	{
@@ -65,13 +65,12 @@ class Row extends Tag
 		}
 
 		throw new \UnexpectedValueException('Keine Rows gesetzt!');
-
 	}
 
 	/**
-	 * @param int $pos
-	 * @param Row $row
-	 * @return Table
+	 * @param $pos
+	 * @param Cell $cell
+	 * @return Row
 	 */
 	public function setCell($pos,Cell $cell)
 	{
@@ -83,7 +82,6 @@ class Row extends Tag
 
 		return $this;
 	}
-
 
 	public function toString()
 	{
@@ -101,5 +99,4 @@ class Row extends Tag
 
 		return parent::toString();
 	}
-
 }

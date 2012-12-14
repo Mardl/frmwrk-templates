@@ -8,6 +8,7 @@ class Row extends \Templates\Html\Row
 	private $header = false;
 
 	/**
+	 * @param array $values
 	 * @param bool $header
 	 * @param array $classOrAttributes
 	 */

@@ -28,9 +28,11 @@ class Widget extends Tag
 
 	/**
 	 * @param string $headerText
+	 * @param string $value
 	 * @param bool $flat
+	 * @param array $classOrAttributes
 	 */
-	public function __construct($headerText='', $value=array(), $flat=true, $classOrAttributes = array())
+	public function __construct($headerText='', $value='', $flat=true, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
 		$this->flat = $flat;
@@ -93,8 +95,8 @@ class Widget extends Tag
 	}
 
 	/**
-	 * Setter für den Header-Text der Widget-Box
-	 * @param string|mixed $header
+	 * Setter für den Footer
+	 * @param $footer
 	 */
 	public function setFooter($footer)
 	{

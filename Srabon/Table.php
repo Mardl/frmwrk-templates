@@ -57,11 +57,13 @@ class Table extends \Templates\Html\Table
 	}
 
 	/**
-	 * Mehrdimensionales array
+	 * Mehrdimensionales Array
 	 *
 	 * @param $key
 	 * @param $key2
 	 * @param $value
+	 * @param bool $notOverride
+	 * @return Table
 	 */
 	public function setOptions($key, $key2, $value, $notOverride=false)
 	{

@@ -24,7 +24,8 @@ class Dialog extends Tag
 
 	/**
 	 * @param string $headerText
-	 * @param bool $flat
+	 * @param array $value
+	 * @param array $classOrAttributes
 	 */
 	public function __construct($headerText='', $value=array(), $classOrAttributes = array())
 	{
@@ -86,8 +87,8 @@ class Dialog extends Tag
 	}
 
 	/**
-	 * Setter für den Header-Text der Widget-Box
-	 * @param string|mixed $header
+	 * Setter für den Footer der Widget-Box
+	 * @param $footer
 	 */
 	public function setFooter($footer)
 	{

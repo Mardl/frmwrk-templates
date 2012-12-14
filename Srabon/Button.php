@@ -5,7 +5,8 @@ namespace Templates\Srabon;
 class Button extends \Templates\Html\Input\Button
 {
 	/**
-	 * @param string $text
+	 * @param string $name
+	 * @param array|string $value
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($name, $value, $classOrAttributes = array())

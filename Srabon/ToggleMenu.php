@@ -9,8 +9,8 @@ class ToggleMenu extends \Templates\Html\Tag
 	private $menu;
 
 	/**
-	 * @param $href
-	 * @param array|string $linkText
+	 * @param string $title
+	 * @param array $menu
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($title,$menu=array(),$classOrAttributes = array())

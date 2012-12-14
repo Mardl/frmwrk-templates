@@ -13,7 +13,7 @@ class PageHeader extends Tag
 
 	/**
 	 * @param string $headerText
-	 * @param bool $flat
+	 * @param array $classOrAttributes
 	 */
 	public function __construct($headerText, $classOrAttributes = array())
 	{
@@ -27,7 +27,8 @@ class PageHeader extends Tag
 
 	/**
 	 * Erstellt den Header-Bereich sowie das H-Tag der Widget-Box
-	 * @return void
+	 *
+	 * @param $headerText
 	 */
 	public function setHeader($headerText)
 	{
