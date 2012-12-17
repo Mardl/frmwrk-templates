@@ -33,7 +33,10 @@ class Widget extends Tag
 
 	/**
 	 * @param string $headerText
-	 * @param bool $flat
+	 * @param array $value
+	 * @param bool $style2
+	 * @param array $classOrAttributes
+	 * @param bool $showhidden
 	 */
 	public function __construct($headerText='', $value=array(), $style2=false, $classOrAttributes = array(), $showhidden = false)
 	{

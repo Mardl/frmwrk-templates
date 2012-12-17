@@ -5,7 +5,10 @@ namespace Templates\Srabon;
 class Checkbox extends \Templates\Html\Input\Checkbox
 {
 	/**
-	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 * @param string $placeholder
+	 * @param bool $required
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($name, $value='', $placeholder='',$required=false, $classOrAttributes = array())
@@ -13,6 +16,4 @@ class Checkbox extends \Templates\Html\Input\Checkbox
 		parent::__construct($name, $value, $placeholder, $required, $classOrAttributes);
 		$this->addClass('checkbox');
 	}
-
-
 }

@@ -15,8 +15,6 @@ class Table extends \Templates\Html\Table
 	private $inbox = false;
 	private $options = array();
 
-
-
 	public function __construct($headline='', $classOrAttributes = array())
 	{
 		parent::__construct($classOrAttributes);
@@ -59,11 +57,13 @@ class Table extends \Templates\Html\Table
 	}
 
 	/**
-	 * Mehrdimensionales array
+	 * Mehrdimensionales Array
 	 *
 	 * @param $key
 	 * @param $key2
 	 * @param $value
+	 * @param bool $notOverride
+	 * @return Table
 	 */
 	public function setOptions($key, $key2, $value, $notOverride=false)
 	{
@@ -85,7 +85,7 @@ class Table extends \Templates\Html\Table
 			$type = 'data-tbl-simple table-bordered';
 			$this->setOption('sPaginationType',"full_numbers",true);
 			$this->setOption('iDisplayLength',10,true);
-			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">'.translate('Einträge pro Seite:').'</span>',true);
 			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
 		}
 
@@ -98,7 +98,7 @@ class Table extends \Templates\Html\Table
 			));
 			$this->setOption('sPaginationType',"full_numbers",true);
 			$this->setOption('iDisplayLength',10,true);
-			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">'.translate('Einträge pro Seite:').'</span>',true);
 			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
 		}
 		if ($this->nosearch && $this->datatable)
@@ -118,7 +118,7 @@ class Table extends \Templates\Html\Table
 			$typeWidget = 'widget-block';
 			$this->setOption('sPaginationType',"full_numbers",true);
 			$this->setOption('iDisplayLength',10,true);
-			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">'.translate('Einträge pro Seite:').'</span>',true);
 			$this->setOption('sDom','<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
 
 
@@ -129,7 +129,7 @@ class Table extends \Templates\Html\Table
 			$typeWidget = 'widget-block';
 			$this->setOption('sPaginationType',"full_numbers",true);
 			$this->setOption('iDisplayLength',10,true);
-			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">Entries per page:</span>',true);
+			$this->setOptions('oLanguage','sLengthMenu','<span class="lenghtMenu"> _MENU_</span><span class="lengthLabel">'.translate('Einträge pro Seite:').'</span>',true);
 			$this->setOption('sDom','<"tbl-tools-searchbox"fl<"clear">>,<"tbl_tools"CT<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
 			$this->setOptions('oTableTools','sSwfPath','swf/copy_cvs_xls_pdf.swf',true);
 		}

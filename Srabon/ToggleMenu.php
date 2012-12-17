@@ -4,14 +4,13 @@ namespace Templates\Srabon;
 
 class ToggleMenu extends \Templates\Html\Tag
 {
-
 	private $right = true;
 	private $button;
 	private $menu;
 
 	/**
-	 * @param $href
-	 * @param array|string $linkText
+	 * @param string $title
+	 * @param array $menu
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($title,$menu=array(),$classOrAttributes = array())
@@ -32,8 +31,8 @@ class ToggleMenu extends \Templates\Html\Tag
 				 $this->append($values);
 			}
 		}
-		parent::append($this->menu);
 
+		parent::append($this->menu);
 	}
 
 	public function right()

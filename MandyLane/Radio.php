@@ -8,8 +8,13 @@ class Radio extends \Templates\Html\Input\Radio
 	protected $showLabel;
 
 	/**
-	 * @param string $text
+	 * @param string $name
+	 * @param string $value
+	 * @param array $opt
+	 * @param bool $required
+	 * @param string $placeholder
 	 * @param array $classOrAttributes
+	 * @param bool $showLabel
 	 */
 	public function __construct($name, $value='', $opt= array(),$required=false, $placeholder='',  $classOrAttributes = array(), $showLabel = true)
 	{

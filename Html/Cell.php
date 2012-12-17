@@ -4,12 +4,11 @@ namespace Templates\Html;
 
 class Cell extends Tag
 {
-
 	private $header = false;
 	private $colspan=1;
 
-
 	/**
+	 * @param string $value
 	 * @param bool $header
 	 * @param array $classOrAttributes
 	 */

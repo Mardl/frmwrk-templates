@@ -15,8 +15,8 @@ class Table extends Tag
 	private $rowClass;
 
 	/**
-	 * @param bool $header
 	 * @param array $classOrAttributes
+	 * @param string $rowNamespace
 	 */
 	public function __construct($classOrAttributes = array(),$rowNamespace='\Templates\Html\Row')
 	{
@@ -123,9 +123,10 @@ class Table extends Tag
 	}
 
 	/**
-	 * @param int $pos
-	 * @return \Templates\Html\Row
+	 * @param bool $pos
+	 * @return mixed
 	 * @throws \UnexpectedValueException
+	 * @throws \InvalidArgumentException
 	 */
 	public function getRow($pos = false)
 	{
@@ -265,7 +266,4 @@ class Table extends Tag
 
 		return $this;
 	}
-
-
-
 }

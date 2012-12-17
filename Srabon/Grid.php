@@ -63,7 +63,7 @@ class Grid extends Tag
 		{
 			return $this->cols[$key];
 		}
-		throw new LayoutException("Die Spalte $key existiert nicht.");
+		throw new LayoutException(translate('Die Spalte %s existiert nicht.', $key));
 	}
 
 	/**

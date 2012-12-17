@@ -13,21 +13,22 @@ class PageHeader extends Tag
 
 	/**
 	 * @param string $headerText
-	 * @param bool $flat
+	 * @param array $classOrAttributes
 	 */
 	public function __construct($headerText, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
 		$this->addClass('page-header');
 
-		$this->header = new Tag('h1',$headerText);
+		$this->header = new Tag('h1', $headerText);
 
 		parent::append($this->header);
-
 	}
+
 	/**
 	 * Erstellt den Header-Bereich sowie das H-Tag der Widget-Box
-	 * @return void
+	 *
+	 * @param $headerText
 	 */
 	public function setHeader($headerText)
 	{
@@ -42,6 +43,4 @@ class PageHeader extends Tag
 
 		return $grid->toString();
 	}
-
-
 }
