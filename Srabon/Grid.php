@@ -12,6 +12,10 @@ class Grid extends Tag
 	 */
 	protected $cols = array();
 
+	/**
+	 * @param null $preset
+	 * @param array $classOrAttributes
+	 */
 	public function __construct($preset=null, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
@@ -27,6 +31,10 @@ class Grid extends Tag
 		}
 	}
 
+	/**
+	 * @param int $width
+	 * @return \Templates\Html\Tag
+	 */
 	private function initCol($width)
 	{
 		$col = new Tag('div','','span' . $width);
@@ -35,11 +43,20 @@ class Grid extends Tag
 		return $col;
 	}
 
+	/**
+	 * @param int $key
+	 * @return bool
+	 */
 	public function hasCol($key)
 	{
 		return array_key_exists($key, $this->cols);
 	}
 
+	/**
+	 * @param int $key
+	 * @return mixed
+	 * @throws \Templates\Exceptions\Layout
+	 */
 	public function getCol($key)
 	{
 		if($this->hasCol($key))
@@ -49,6 +66,10 @@ class Grid extends Tag
 		throw new LayoutException("Die Spalte $key existiert nicht.");
 	}
 
+	/**
+	 * @param int $key
+	 * @param mixed $value
+	 */
 	public function addContent($key, $value)
 	{
 		$col = $this->getCol($key);
@@ -56,6 +77,10 @@ class Grid extends Tag
 		$col->append($value);
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return \Templates\Html\Tag|void
+	 */
 	public function append($value)
 	{
 		$col = $this->initCol(12);
