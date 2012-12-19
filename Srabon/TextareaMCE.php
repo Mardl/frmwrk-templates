@@ -4,9 +4,13 @@ namespace Templates\Srabon;
 
 use \Templates\Html\Tag;
 
+/**
+ * @author Martin Eisenführer
+ * @category Templates
+ * @package Templates/Srabon
+ */
 class TextareaMCE extends \Templates\Html\Input\Textarea
 {
-
 	protected $options = array();
 
 	public function __construct($name, $value='', $placeholder='', $required=false, $classOrAttributes = array())
@@ -36,7 +40,4 @@ class TextareaMCE extends \Templates\Html\Input\Textarea
 
         return parent::toString();
     }
-
-
-
 }
