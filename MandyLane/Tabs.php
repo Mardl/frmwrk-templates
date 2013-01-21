@@ -39,10 +39,11 @@ class Tabs extends \Templates\MandyLane\Widget
 
 	protected function makeAnchor($headline,$id)
 	{
-		$href = new \Templates\Srabon\Anchor('#'.$id,$headline);
+		$href = new \Templates\MandyLane\Anchor('#'.$id,$headline);
 		$href->addAttribute('data-toggle','tab');
 		return $href;
 	}
+
 
 	/**
 	 * @param $index
@@ -78,6 +79,18 @@ class Tabs extends \Templates\MandyLane\Widget
 	 */
 	public function setActive($index)
 	{
+		/*foreach($this->page as $page)
+		{
+			$page->removeClass('ui-state-active');
+			$page->addClass('ui-tabs-hide');
+			$title = $this->getPageTitle($index);
+			if (!empty($title))
+			{
+				$title->removeClass('ui-tabs-selected');
+				$title->removeClass('ui-state-active');
+			}
+		}
+
 		$page = $this->getPage($index);
 		if (!empty($page))
 		{
@@ -86,11 +99,11 @@ class Tabs extends \Templates\MandyLane\Widget
 		}
 
 		$title = $this->getPageTitle($index);
-		if (!empty($page))
+		if (!empty($title))
 		{
 			$title->addClass('ui-tabs-selected');
 			$title->addClass('ui-state-active');
-		}
+		}*/
 	}
 
 	public function addPage($headline,$value,$hideIfEmpty=false)
@@ -134,23 +147,34 @@ class Tabs extends \Templates\MandyLane\Widget
 	{
 		//Navigationsleiste
 		$this->navigation = new Tag('ul');
+		/*
 		$this->navigation->addClass('ui-tabs-nav');
 		$this->navigation->addClass('ui-helper-reset');
 		$this->navigation->addClass('ui-helper-clearfix');
 		$this->navigation->addClass('ui-widget-header');
 		$this->navigation->addClass('ui-corner-all');
+		*/
 
 		$this->content = new Tag('div',array($this->navigation));
-		$this->content->setId('tabs');
+		$this->content->setId(uniqid());
 		$this->content->addClass('tabs');
+		/*
 		$this->content->addClass('ui-tabs');
 		$this->content->addClass('ui-widget');
 		$this->content->addClass('ui-widget-content');
 		$this->content->addClass('ui-corner-all');
+		*/
 
 
 		Tag::append($this->content);
 	}
+
+	public function setCookieName($name)
+	{
+		$this->content->addAttribute('data-cookiename', $name);
+		return $this;
+	}
+
 
 	public function toString()
 	{

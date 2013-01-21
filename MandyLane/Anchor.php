@@ -28,4 +28,11 @@ class Anchor extends \Templates\Html\Anchor
 	{
 		$this->addClass('iconlink');
 	}
+
+	public function addForceAjax($operation, $selector='', $options=array()) {
+		$this->addAttribute('data-ajax', 'true');
+		$this->addAttribute('data-ajax-operation', $operation);
+		$this->addAttribute('data-ajax-options', base64_encode(json_encode($options)));
+		$this->addAttribute('data-ajax-selector', $selector);
+	}
 }
