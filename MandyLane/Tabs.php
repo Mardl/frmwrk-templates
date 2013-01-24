@@ -44,7 +44,6 @@ class Tabs extends \Templates\MandyLane\Widget
 		return $href;
 	}
 
-
 	/**
 	 * @param $index
 	 * @return null|\Templates\Html\Tag
