@@ -30,13 +30,15 @@ class Choosedialog extends \Templates\Html\Input
 		$choosenDataField->addAttribute('data-choosedialog-datafield',$dataValue);
 		$choosenDataField->addAttribute('readonly', 'readonly');
 
-		$button = new Button($name.'_chooser','...');
+		$button = new Anchor($name.'_chooser','...');
+		$button->addClass('iconlink');
 		$button->addClass('choosedialog');
 		$button->addClass('chooserbutton');
 		$button->addAttribute('data-choosedialog-rel', $name);
 		$button->addAttribute('data-choosedialog-source', $dataSource);
 
-		$buttonclear = new Button($name.'_chooser_clear','X');
+		$buttonclear = new Anchor($name.'_chooser_clear','X');
+		$buttonclear->addClass('iconlink');
 		$buttonclear->addClass('chooseclear');
 		$buttonclear->addClass('chooserbutton');
 		$buttonclear->addAttribute('data-choosedialog-rel', $name);
