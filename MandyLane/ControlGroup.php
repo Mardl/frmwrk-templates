@@ -18,14 +18,11 @@ class ControlGroup extends \Templates\Html\Tag
 	 */
 	public function __construct($label,$value=array(), $required=false, $classOrAttributes = array())
 	{
-
 		$this->label = new \Templates\Html\Tag('label',$label);
 
 		parent::__construct('p','',$classOrAttributes);
 
-
 		$this->required = $required;
-		//$this->append($value);
 
 		$this->initLabel();
 		parent::append($value);
