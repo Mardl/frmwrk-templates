@@ -59,13 +59,13 @@ class Select extends \Templates\Html\Input
 				foreach($opt[ $key ] as $keyNeu => $valueNeu)
 				{
 
-					$this->addOptionGrouped($keyNeu, $valueNeu, $key, $selectedValue == $keyNeu);
+					$this->addOptionGrouped($keyNeu, $valueNeu, $key, ((string)$selectedValue === (string)$keyNeu));
 				}
 				$finish[ $key ] = $key;
 			}
 			else
 			{
-				$this->addOption($key,$value,$this->getValue() == $key);
+				$this->addOption($key,$value,((string)$this->getValue() === (string)$key));
 			}
 		}
 
@@ -127,7 +127,8 @@ class Select extends \Templates\Html\Input
 		$opts = '';
 		foreach ($this->options as $option){
 			$opts .= '<option value="'.$option[0].'"';
-			if ($option[2] || ($this->getValue() == $option[0])){
+
+			if ($option[2] || ((string)$this->getValue() === (string)$option[0])){
 				$opts .= 'selected="selected"';
 			}
 			$opts .= '>'.$option[1].'</option>';
@@ -138,7 +139,8 @@ class Select extends \Templates\Html\Input
 			foreach ($options as $option)
 			{
 				$opts .= '<option value="'.$option[0].'"';
-				if ($option[2] || ($this->getValue() == $option[0])){
+
+				if ($option[2] || ((string)$this->getValue() === (string)$option[0])){
 					$opts .= 'selected="selected"';
 				}
 				$opts .= '>'.$option[1].'</option>';

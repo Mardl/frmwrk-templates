@@ -7,7 +7,7 @@ use \Templates\Html\Tag;
 class Table extends \Templates\Html\Table
 {
 
-	private $headline = '';
+	protected $headline = '';
 
 	public function __construct($headline='', $classOrAttributes = array())
 	{
