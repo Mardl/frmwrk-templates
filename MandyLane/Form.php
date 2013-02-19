@@ -32,4 +32,15 @@ class Form extends \Templates\Html\Form
 	{
 		$this->content->prepend($value);
 	}
+
+	public function setPostWithAjax($value = true)
+	{
+		if(!$value)
+		{
+			$this->removeClass('post-ajax');
+			return;
+		}
+
+		$this->addClass('post-ajax');
+	}
 }

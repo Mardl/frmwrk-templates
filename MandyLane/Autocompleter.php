@@ -8,6 +8,7 @@ class Autocompleter extends \Templates\Html\Input
 {
 
 	protected $autocompleterSource;
+	protected $autcompleterFiles = false;
 
 	/**
 	 * @param string $name
@@ -19,13 +20,17 @@ class Autocompleter extends \Templates\Html\Input
 	 * @param bool $showDataField
 	 * @param string $dataValue
 	 */
-	public function __construct($name, $label, $valueSearchField, $valueDataValue, $required=false, $classOrAttributes = array(), $showDataField = true, $dataValue = 'id')
+	public function __construct($name, $label, $valueSearchField, $valueDataValue, $required=false, $classOrAttributes = array(), $showDataField = true, $dataValue = 'id', $autocompleterFiles = false)
 	{
 		parent::__construct($name, $valueSearchField, $label, $required, $classOrAttributes);
 
+		$this->autcompleterFiles = $autocompleterFiles;
+
+
 		$this->addClass('autofocus');
-		$this->addAttribute('data-autocomplete-rel', $name);
-		$this->addAttribute('data-autocomplete-data','value');
+
+		$this->addAttribute($this->getClassTag().'rel', $name);
+		$this->addAttribute($this->getClassTag().'data','value');
 		$this->addAttribute('autocomplete', 'off');
 		$this->addAttribute('role', 'textbox');
 		$this->addAttribute('aria-autocomplete', 'list');
@@ -40,8 +45,9 @@ class Autocompleter extends \Templates\Html\Input
 			$autocompleterDataField =  new \Templates\Html\Input\Hidden($name.'_'.$dataValue,  $valueDataValue, $label.' '.strtoupper($dataValue), $required,'text');
 		}
 
-		$autocompleterDataField->addAttribute('data-autocomplete-rel', $name);
-		$autocompleterDataField->addAttribute('data-autocomplete-data',$dataValue);
+		$autocompleterDataField->addAttribute($this->getClassTag().'data',$dataValue);
+		$autocompleterDataField->addAttribute($this->getClassTag().'rel', $name);
+
 
 		$this->append($autocompleterDataField);
 
@@ -55,8 +61,24 @@ class Autocompleter extends \Templates\Html\Input
 
 	public function toString()
 	{
-		$this->addAttribute('data-autocomplete-source', $this->autocompleterSource);
+		$this->addAttribute($this->getClassTag(false).'source', $this->autocompleterSource);
 		return parent::toString();
 	}
+
+
+	private function getClassTag($files = true)
+	{
+		if($this->autcompleterFiles)
+		{
+			if(!$files)
+			{
+				return 'data-autocomplete-file-';
+			}
+			return 'data-autocomplete-files-';
+		}
+
+		return 'data-autocomplete-';
+	}
+
 
 }

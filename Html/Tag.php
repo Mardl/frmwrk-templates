@@ -375,10 +375,16 @@ class Tag
 	 */
 	public function append($value)
 	{
-		if (empty($value))
+		if (is_string($value) && trim($value) == '')
 		{
 			return $this;
 		}
+
+		if (is_array($value) && empty($value))
+		{
+			return $this;
+		}
+
 		if(!is_array($this->tagInner))
 		{
 			$preset = array();
