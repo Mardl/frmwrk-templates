@@ -14,7 +14,7 @@ class Tag
 	/**
 	 * @param string $tag Default = div-Tag
 	 * @param string $inner
-	 * @param array $classOrAttributes
+	 * @param array $classOrAttributes array of attributes or string as class or string start with # as ID
 	 */
 	public function __construct($tag='div', $inner='', $classOrAttributes = array())
 	{
@@ -38,7 +38,16 @@ class Tag
 			}
 			else
 			{
-				$this->addClass($classOrAttributes);
+				$classOrAttributes = trim($classOrAttributes);
+				if (substr($classOrAttributes,0,1) == '#')
+				{
+					$this->setId(substr($classOrAttributes,1));
+				}
+				else
+				{
+					$this->addClass($classOrAttributes);
+				}
+
 			}
 		}
 	}
