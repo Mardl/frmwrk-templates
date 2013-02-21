@@ -109,7 +109,15 @@ class Form extends Tag
 		return $this->validateMessage;
 	}
 
-	public function findTagById($elementId, $container = null)
+	/**
+	 *
+	 * Sucht Formfeld anhand des Namens und liefert das erste vorkommen zurück.
+	 *
+	 * @param $elementName
+	 * @param null $container
+	 * @return Tag
+	 */
+	public function findByName($elementName, $container = null)
 	{
 		$target = null;
 
@@ -120,19 +128,43 @@ class Form extends Tag
 
 		foreach ($container->getInner() as $tag)
 		{
-			if ( $tag instanceof \Templates\Html\Tag )
+			if ( $tag instanceof \Templates\Html\Input )
 			{
 				/**
 				 * @var $tag \Templates\Html\Tag
 				 */
-				if ($tag->getId() == $elementId)
+				if ($tag->getName() == $elementName)
 				{
 					return $tag;
 				}
 
 				if ($tag->hasInner() ){
-					$target = $this->findTagById($elementId, $tag);
+					$target = $this->findByName($elementName, $tag);
+					if ($target)
+					{
+						return $target;
+					}
 				}
+			}
+			elseif ( $tag instanceof \Templates\Html\Tag )
+			{
+				$target = $this->findByName($elementName, $tag);
+				if ($target)
+				{
+					return $target;
+				}
+			}
+			elseif ( is_array($tag) )
+			{
+				foreach($tag as $moretag)
+				{
+					$target = $this->findByName($elementName, $moretag);
+					if ($target)
+					{
+						return $target;
+					}
+				}
+
 			}
 
 		}

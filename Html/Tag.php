@@ -442,4 +442,59 @@ class Tag
 		$obj->prepend($this);
 		return $this;
 	}
+
+	/**
+	 * Sucht Tag mit ID $elementId
+	 *
+	 * @param $elementId
+	 * @param null $container
+	 * @return null|Tag
+	 */
+	public function findTagById($elementId, $container = null)
+	{
+		$target = null;
+
+		if (is_null($container))
+		{
+			$container = $this;
+		}
+
+		foreach ($container->getInner() as $tag)
+		{
+			if ( $tag instanceof \Templates\Html\Tag )
+			{
+				/**
+				 * @var $tag \Templates\Html\Tag
+				 */
+				if ($tag->getId() == $elementId)
+				{
+					return $tag;
+				}
+
+				if ($tag->hasInner() ){
+					$target = $this->findTagById($elementId, $tag);
+					if ($target)
+					{
+						return $target;
+					}
+				}
+			}
+			elseif ( is_array($tag) )
+			{
+				foreach($tag as $moretag)
+				{
+					$target = $this->findTagById($elementId, $moretag);
+					if ($target)
+					{
+						return $target;
+					}
+				}
+
+			}
+
+		}
+
+		return $target;
+
+	}
 }
