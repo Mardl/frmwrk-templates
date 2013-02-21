@@ -19,7 +19,7 @@ class ToggleMenu extends \Templates\Html\Tag
 		$this->addClass('btn-group');
 
 		$this->button = new \Templates\Html\Tag('button','','btn dropdown-toggle');
-		$this->button->append('<i class="icon-cog"></i> '.$title.' <span class="caret">');
+		$this->setButton($title);
 		$this->button->addAttribute('data-toggle','dropdown');
 		parent::append($this->button);
 
@@ -33,6 +33,11 @@ class ToggleMenu extends \Templates\Html\Tag
 		}
 
 		parent::append($this->menu);
+	}
+
+	public function setButton($title,$iconclass="icon-cog")
+	{
+		$this->button->set('<i class="'.$iconclass.'"></i> '.$title.' <span class="caret"></span>');
 	}
 
 	public function right()
