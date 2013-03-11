@@ -19,12 +19,15 @@ class Autocompleter extends \Templates\Html\Input
 	 * @param array $classOrAttributes
 	 * @param bool $showDataField
 	 * @param string $dataValue
+	 *
+	 * @todo: refactoring $showDataFieldURL
 	 */
-	public function __construct($name, $label, $valueSearchField, $valueDataValue, $required=false, $classOrAttributes = array(), $showDataField = true, $dataValue = 'id', $autocompleterFiles = false)
+	public function __construct($name, $label, $valueSearchField, $valueDataValue, $required=false, $classOrAttributes = array(), $showDataFieldUrl = true, $dataValue = 'id', $autocompleterFiles = false)
 	{
 		parent::__construct($name, $valueSearchField, $label, $required, $classOrAttributes);
 
 		$this->autcompleterFiles = $autocompleterFiles;
+		$autocompleterDataField2 = '';
 
 
 		$this->addClass('autofocus');
@@ -36,9 +39,17 @@ class Autocompleter extends \Templates\Html\Input
 		$this->addAttribute('aria-autocomplete', 'list');
 		$this->addAttribute('aria-haspopup', 'true');
 
-		if($showDataField)
+		if($showDataFieldUrl)
 		{
-			$autocompleterDataField =  new \Templates\Html\Input($name.'_'.$dataValue,  $valueDataValue, $label.' '.strtoupper($dataValue), $required,'text');
+			if ($showDataFieldUrl === true)
+			{
+				$autocompleterDataField =  new \Templates\Html\Input($name.'_'.$dataValue,  $valueDataValue, $label.' '.strtoupper($dataValue), $required,'text');
+			}
+			else
+			{
+				$autocompleterDataField2 = new \Lifemeter\Templates\AnchorObjectQuickinfo($showDataFieldUrl,  $valueDataValue, false);
+				$autocompleterDataField =  new \Templates\Html\Input\Hidden($name.'_'.$dataValue,  $valueDataValue, $label.' '.strtoupper($dataValue), $required,'text');
+			}
 		}
 		else
 		{
@@ -49,7 +60,7 @@ class Autocompleter extends \Templates\Html\Input
 		$autocompleterDataField->addAttribute($this->getClassTag().'rel', $name);
 
 
-		$this->append($autocompleterDataField);
+		$this->append(array($autocompleterDataField,$autocompleterDataField2));
 
 	}
 
