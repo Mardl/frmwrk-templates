@@ -2,8 +2,7 @@
 
 namespace Templates\Srabon;
 
-use Templates\Html\Tag,
-	Templates\Exceptions\Layout as LayoutException;
+use Templates\Html\Tag;
 
 class Tabs extends \Templates\Srabon\Widget
 {
