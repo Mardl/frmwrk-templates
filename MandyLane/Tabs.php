@@ -105,7 +105,7 @@ class Tabs extends \Templates\MandyLane\Widget
 		}*/
 	}
 
-	public function addPage($headline,$value,$hideIfEmpty=false)
+	public function addPage($headline,$value,$hideIfEmpty=false, $fixedId=null)
 	{
 		if ($hideIfEmpty)
 		{
@@ -115,7 +115,12 @@ class Tabs extends \Templates\MandyLane\Widget
 				return $this;
 			}
 		}
-		$id = uniqid('tabs-');
+		if (is_null($fixedId)){
+			$id = uniqid('tabs-');
+		} else {
+			$id = $fixedId;
+		}
+
 
 		$href = $this->makeAnchor($headline,$id);
 

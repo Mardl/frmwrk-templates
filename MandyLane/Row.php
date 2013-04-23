@@ -21,9 +21,14 @@ class Row extends \Templates\Html\Row
 			$evenodd = false;
 			foreach ($values as $column)
 			{
-				$class =  ($evenodd == true) ? '1' : '0';
-				$this->addCell($column, array('class' => 'head'.$class));
-				$evenodd = !$evenodd;
+				if ($header){
+					$class =  ($evenodd == true) ? '1' : '0';
+					$this->addCell($column, array('class' => 'head'.$class));
+					$evenodd = !$evenodd;
+				} else {
+					$this->addCell($column);
+				}
+
 			}
 		}
 

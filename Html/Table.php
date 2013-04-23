@@ -63,7 +63,7 @@ class Table extends Tag
 	{
 		if (is_array($row))
 		{
-			$newRow = new $this->rowClass($row);
+			$newRow = new $this->rowClass($row, true);
 		}
 		else
 		{
