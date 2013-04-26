@@ -37,7 +37,7 @@ class Receipt extends \Templates\Myipt\Meallist
 
 			$desc = $meal->getDescription();
 			if (strlen($desc) > 200){
-				$desc = mb_substr($desc,0,200).' ...';
+				$desc = mb_substr($desc,0,200,'UTF-8').' ...';
 			}
 
 			$info->append(new \Templates\Html\Tag("h4", $meal->getName()));
