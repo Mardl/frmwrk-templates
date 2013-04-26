@@ -87,6 +87,11 @@ class Table extends Tag
 		$this->footerRow[] = $row;
 	}
 
+	/**
+	 * @param $value
+	 * @return Table|Tag
+	 * @throws \InvalidArgumentException
+	 */
 	public function addRow($value)
 	{
 		if (!is_array($value))
