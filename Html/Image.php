@@ -7,7 +7,7 @@ class Image extends Tag
 	public function __construct($src,$altText='',$titleText='', $classOrAttributes = array())
 	{
 		parent::__construct('img', '', $classOrAttributes);
-		$this->forceClose = true;
+		$this->forceClose = false;
 
 		$this->src($src);
 		$this->alt( empty($altText) ? $titleText : $altText );
