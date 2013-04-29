@@ -97,7 +97,7 @@ class Receipt extends \Templates\Html\Tag
 		foreach ($this->mengen as $id => $menge){
 			$name = $this->nutritions[$id]->getName();
 			if (strlen($name) > 30){
-				$name = mb_str($this->nutritions[$id]->getName(), 0, 30, 'UTF-8').' ...';
+				$name = mb_substr($this->nutritions[$id]->getName(), 0, 30, 'UTF-8').' ...';
 			}
 
 			$list->append(new \Templates\Html\Tag('span',"<span class='menge'>{$menge}</span> {$name}"));
