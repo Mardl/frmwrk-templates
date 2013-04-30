@@ -11,12 +11,13 @@ class Nutrition extends \Templates\Html\Tag
 	protected $substratBlock;
 	protected $isMeal = false;
 	protected $nutrition;
-
+	protected $view;
 
 	public function __construct($nutrition, $view)
 	{
 		$this->nutrition = $nutrition;
 		$this->menge = $nutrition->getPromenge();
+		$this->view = $view;
 
 		parent::__construct('div', '', 'colFull box meals');
 		$this->addAttribute("id", "bigBlock");
@@ -40,6 +41,9 @@ class Nutrition extends \Templates\Html\Tag
 		$favorite = new \Templates\Html\Anchor("#", $add);
 		$favorite->append("zu Favoriten hinzufügen");
 		$this->controls->append($favorite);
+
+
+
 	}
 
 	public function initSubstratBlock(){
@@ -77,6 +81,17 @@ class Nutrition extends \Templates\Html\Tag
 			$anchor = new \Templates\Html\Anchor("#", $remove);
 			$anchor->append("aus Mahlzeiten entfernen");
 			$this->controls->append($anchor);
+		}
+
+		if (!$this->isMeal){
+			$food = new \Templates\Html\Tag("span",'','icon little food');
+			$addfood = new \Templates\Html\Anchor(
+				$this->view->url(array("action"=>"add", "id"=>$this->nutrition->getId())),
+				$food,
+				"fancybox fancybox.ajax"
+			);
+			$addfood->append("zu Mahlzeiten hinzufügen");
+			$this->controls->append($addfood);
 		}
 
 		$kcal 			= $this->nutrition->getKcal();

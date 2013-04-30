@@ -28,7 +28,7 @@ class Radio extends \Templates\Html\Tag
 		$this->addAttribute('data-rel', $id);
 		$this->addAttribute('for', $id);
 
-		$table = new \Templates\Html\Tag("table", "<tr><td>{$text}</td></tr>");
+		$table = new \Templates\Html\Tag("table", "<tr><td>{$text} <span class='radio'></span></td></tr>");
 		$this->append($table);
 
 		$radio = new \Templates\Html\Tag('input');

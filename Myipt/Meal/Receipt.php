@@ -9,11 +9,12 @@ class Receipt extends \Templates\Html\Tag
 	protected $nutritions = array();
 	protected $isMeal = false;
 	protected $meals;
+	protected $view;
 
 	public function __construct($receipt, $view)
 	{
 		$this->receipt = $receipt;
-
+		$this->view = $view;
 		$vars = $receipt->getVariables();
 
 		foreach ($vars as $nuts){
@@ -44,6 +45,9 @@ class Receipt extends \Templates\Html\Tag
 		$favorite = new \Templates\Html\Anchor("#", $add);
 		$favorite->append("zu Favoriten hinzufügen");
 		$this->controls->append($favorite);
+
+
+
 	}
 
 	public function initSubstratBlock(){
@@ -89,6 +93,17 @@ class Receipt extends \Templates\Html\Tag
 			$anchor = new \Templates\Html\Anchor("#", $remove);
 			$anchor->append("aus Mahlzeiten entfernen");
 			$this->controls->append($anchor);
+		}
+
+		if (!$this->isMeal){
+			$food = new \Templates\Html\Tag("span",'','icon little food');
+			$addfood = new \Templates\Html\Anchor(
+				$this->view->url(array("action"=>"add", "id"=>$this->receipt->getId())),
+				$food,
+				"fancybox fancybox.ajax"
+			);
+			$addfood->append("zu Mahlzeiten hinzufügen");
+			$this->controls->append($addfood);
 		}
 
 		$list = new \Templates\Myipt\UnsortedList();

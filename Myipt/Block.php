@@ -65,6 +65,11 @@ class Block extends \Templates\Html\Tag
 			}
 
 			$select = new \Templates\Html\Input\Select($box['name'], $value, array(), $box['required'], '', $box['class']);
+
+			if (isset($box["id"])){
+				$select->addAttribute("id", $box["id"]);
+			}
+
 			foreach ($box['options'] as $opt) {
 				if (isset($opt['optgroup']) && ($opt['optgroup'] != null)) {
 					$select->addOptionGrouped($opt["value"], $opt["tag"], (isset($opt["selected"]))?$opt["selected"]:false, $opt["optgroup"]);
