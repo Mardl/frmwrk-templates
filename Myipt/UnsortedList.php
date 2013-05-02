@@ -22,9 +22,9 @@ class UnsortedList extends Tag
 		}
 	}
 
-	public function append($value)
+	public function append($value, $classOrAttributes = '')
 	{
-		$tag = new Tag('li', $value);
+		$tag = new Tag('li', $value, $classOrAttributes);
 		parent::append($tag);
 		return $tag;
 	}

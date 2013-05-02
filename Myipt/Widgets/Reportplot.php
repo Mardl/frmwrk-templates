@@ -28,8 +28,12 @@ class Reportplot extends \Templates\Myipt\Widget
 			$this->setMoreLink($moreUrl, "mehr >");
 		}
 
-
 		$container = new \Templates\Html\Tag('div', '', 'chart');
+		if (isset($analyseData['class'])){
+			$container = new \Templates\Html\Tag('div', '', 'chart '.$analyseData['class']);
+		}
+
+
 		$container->addAttribute('id', $analyseData['id'].'-plot');
 		$container->addAttribute('data-type', "plot");
 		$container->addAttribute('data-series-abs', '['.implode(',', $analyseData["abs"]).']');

@@ -45,8 +45,17 @@ class Nutrition extends \Templates\Myipt\Meallist
 			$infoButton = new \Templates\Html\Tag("span",'','icon little info');
 			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'details', 'id' => $meal->getId(), 'category' => $this->category, 'search' => $this->search)), $infoButton);
 			$anchor->append("Details");
-			$controls->append($anchor);
 			$anchor->addClass("get-ajax");
+			$controls->append($anchor);
+
+			$food = new \Templates\Html\Tag("span",'','icon little food');
+			$addfood = new \Templates\Html\Anchor(
+				$this->view->url(array("action"=>"add", "id"=>$meal->getId())),
+				$food,
+				"fancybox fancybox.ajax"
+			);
+			$addfood->append("zu Mahlzeiten hinzufügen");
+			$controls->append($addfood);
 		}
 	}
 

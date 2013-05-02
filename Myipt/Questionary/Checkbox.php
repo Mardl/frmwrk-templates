@@ -16,7 +16,7 @@ class Checkbox extends \Templates\Html\Tag
 	 * @param array $classOrAttributes
 	 * @param bool $showLabel
 	 */
-	public function __construct($id, $name, $value='', $text, $checked = false, $classOrAttributes = array())
+	public function __construct($id, $name, $value='', $text, $checked = false, $classOrAttributes = '')
 	{
 		if (is_array($classOrAttributes)){
 			$classOrAttributes[] = "questRadio";
