@@ -6,6 +6,7 @@ use Core\SystemMessages;
 
 class Timegroup extends \Templates\Coach\Block
 {
+
 	public function __construct($parentTag, $label, $datum, $classOrAttributes = array())
 	{
 		parent::__construct($parentTag, $classOrAttributes);

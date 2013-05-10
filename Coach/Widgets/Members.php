@@ -13,12 +13,12 @@ class Members extends \Templates\Coach\Widget
 	 * @param array $classOrAttributes
 	 * @param bool $showhidden
 	 */
-	public function __construct(array $members, $view, $moreUrl = null)
+	public function __construct(array $members, $view, $moreUrl = null, $moreTitle = "alle Termine >")
 	{
 		parent::__construct("Mitglieder", null, "colThreeQuarter membersWidget");
 
 		if (!is_null($moreUrl)){
-			$this->setMoreLink($moreUrl, "alle Termine >");
+			$this->setMoreLink($moreUrl, $moreTitle);
 		}
 
 		if (!empty($members)){

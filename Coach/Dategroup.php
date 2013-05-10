@@ -6,6 +6,7 @@ use Core\SystemMessages;
 
 class Dategroup extends \Templates\Coach\Block
 {
+
 	public function __construct($parentTag, $label, $datum, $enableYear = true, $enableMonth = true, $enableDay = true, $classOrAttributes = array())
 	{
 		parent::__construct($parentTag, $classOrAttributes);

@@ -70,23 +70,49 @@ class Member extends Tag
 		$controls = new \Templates\Html\Tag("div",'', 'controls');
 		$container->append($controls);
 
-		$state->append("offline");
+		$loginStates = $this->member->getLoginStates();
+		$states = array();
+
+		if (array_sum($loginStates) == 0){
+			$onoff = new \Templates\Html\Tag("span", "offline", 'inaktive');
+		} else {
+			foreach ($loginStates as $key => $s){
+				if ($s == 1){
+					switch($key){
+						case \App\Models\User\Login::TYPE_COACH:
+							$states[] = "Trainer";
+							break;
+						case \App\Models\User\Login::TYPE_MYIPT_APP:
+						case \App\Models\User\Login::TYPE_MYIPT_APP_RECONNECT:
+							$states[] = "mobil Online";
+							break;
+						case \App\Models\User\Login::TYPE_MYIPT_WEB:
+							$states[] = "online";
+							break;
+						case \App\Models\User\Login::TYPE_STUDIO:
+							$states[] = "im Training";
+							break;
+					}
+				}
+			}
+
+			$onoff = new \Templates\Html\Tag("span", implode(" / ", $states), 'aktive');
+		}
+
+		$state->append($onoff);
+
 
 		if (!$this->disableControls){
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
-			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'edit', 'id' => $this->member->getId())),'');
-			$icon = new \Templates\Html\Tag('span', '', 'icon edit');
-			$anchor->append($icon);
-			$anchor->append("Bearbeiten");
+
+			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'edit', 'id' => $this->member->getId())), 'icon edit', "Bearbeiten");
 			$wrapper->append($anchor);
 
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
-			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'status', 'id' => $this->member->getId())),'');
-			$icon = new \Templates\Html\Tag('span', '', 'icon speed');
-			$anchor->append($icon);
-			$anchor->append("Statusfoto");
+
+			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
 			$wrapper->append($anchor);
 		}
 
