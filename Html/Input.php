@@ -5,6 +5,7 @@ namespace Templates\Html;
 class Input extends Tag
 {
 
+	protected $forceClose = false;
 	protected $required = false;
 	protected $value = '';
 	protected $placeholder = '';
