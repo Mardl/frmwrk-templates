@@ -32,6 +32,7 @@ class Checkbox extends \Templates\Html\Tag
 		$this->append($table);
 
 		$checkbox = new \Templates\Html\Tag('input');
+		$checkbox->forceClose = false;
 		$checkbox->addAttribute('type', 'checkbox');
 		$checkbox->addAttribute('id', $id);
 		$checkbox->addAttribute('name', $name);

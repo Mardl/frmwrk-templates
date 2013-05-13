@@ -74,25 +74,19 @@ class Openfriendlist extends \Templates\Html\Tag
 				$invite = new \Templates\Html\Tag('div', '');
 				$controls->append($invite);
 
-				$remove = new \Templates\Html\Anchor($this->view->url(array('action'=>'friendships', 'method' => 'accept', 'id' => $f->getId())), '');
-				$icon = new \Templates\Html\Tag('span', '', 'icon big check green');
-				$remove->append($icon);
-				$invite->append($remove);
+				$accept = new \Templates\Myipt\Iconanchor($this->view->url(array('action'=>'friendships', 'method' => 'accept', 'id' => $f->getId())), "big check green");
+				$invite->append($accept);
 
-				$remove = new \Templates\Html\Anchor($this->view->url(array('action'=>'friendships', 'method' => 'remove', 'id' => $f->getId())), '');
-				$icon = new \Templates\Html\Tag('span', '', 'icon big remove red');
-				$remove->append($icon);
+
+				$remove = new \Templates\Myipt\Iconanchor($this->view->url(array('action'=>'friendships', 'method' => 'accept', 'id' => $f->getId())), "big remove red");
 				$invite->append($remove);
 
 			} else {
 				$invite = new \Templates\Html\Tag('div', '');
 				$controls->append($invite);
 
-				$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'friendships', 'method' => 'remove', 'id' => $f->getId())), '');
-				$icon = new \Templates\Html\Tag('span', '', 'icon big remove red');
-				$anchor->append($icon);
-
-				$invite->append($anchor);
+				$remove = new \Templates\Myipt\Iconanchor($this->view->url(array('action'=>'friendships', 'method' => 'remove', 'id' => $f->getId())), "big remove red");
+				$invite->append($remove);
 			}
 
 
