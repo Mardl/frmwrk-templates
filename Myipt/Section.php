@@ -28,7 +28,9 @@ class Section extends Tag
 			$span = new Tag('span', $headerText);
 			$h2->append($span);
 			parent::append($h2);
-			parent::append(new Tag('hr'));
+			$hr = new Tag('hr');
+			$hr->forceClose = false;
+			parent::append($hr);
 		}
 
 		$this->initContent();
