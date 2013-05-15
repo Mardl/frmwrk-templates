@@ -129,7 +129,7 @@ class Select extends \Templates\Html\Input
 			$opts .= '<option value="'.$option[0].'"';
 
 			if ($option[2] || ((string)$this->getValue() === (string)$option[0])){
-				$opts .= 'selected="selected"';
+				$opts .= ' selected="selected"';
 			}
 			$opts .= '>'.$option[1].'</option>';
 		}

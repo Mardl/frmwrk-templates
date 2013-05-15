@@ -4,7 +4,7 @@ namespace Templates\Html\Input;
 
 class Textarea extends \Templates\Html\Input
 {
-
+	protected $forceClose = true;
 	protected $required = false;
 	protected $value = '';
 	protected $placeholder = '';
