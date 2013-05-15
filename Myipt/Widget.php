@@ -94,9 +94,10 @@ class Widget extends Tag
 	 * Setter für den Footer-Text der Widget-Box
 	 * @param string|mixed $footer
 	 */
-	public function setFooter($footer)
+	public function setFooter($footer, $class = '')
 	{
 		$this->footer->append($footer);
+		$this->footer->addClass($class);
 		parent::append($this->footer);
 	}
 
