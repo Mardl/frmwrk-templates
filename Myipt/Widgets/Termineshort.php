@@ -13,18 +13,25 @@ class Termineshort extends \Templates\Myipt\Widget
 	 * @param array $classOrAttributes
 	 * @param bool $showhidden
 	 */
-	public function __construct(array $termine, $view, $moreUrl)
+	public function __construct(array $termine, $view, $moreUrl = null)
 	{
 		parent::__construct("Termine", null, "colHalf");
 		$this->setView($view);
+
 		if (!is_null($moreUrl)){
 			$this->setMoreLink($moreUrl, "alle Termine >");
 		}
 
 
-		$list = new \Templates\Myipt\UnsortedList('',array(),'termine');
 
+		if (!empty($termine)){
+			$week = null;
 			foreach ($termine as $termin){
+				if ($week != $termin->getDateFrom()->format("W")){
+					$list = new \Templates\Myipt\UnsortedList('', array(), 'termine '.$termin->getDateFrom()->format("W-d"));
+					$this->append($list);
+				}
+
 
 				$anchor = new \Templates\Html\Anchor(
 					$this->view->url(array("id"=>$termin->getId()), "termindetails"),
@@ -38,13 +45,18 @@ class Termineshort extends \Templates\Myipt\Widget
 				);
 
 				$list->append(
-					$anchor,
-					($termin->getStatus()>=3)?'rejected':null
+						$anchor,
+						($termin->getStatus()>=3)?'rejected':null
 				);
 			}
+		} else {
+			$list->append("Keine offenen Termine", "noBorder");
+		}
 
 
-		$this->append($list);
+
+
+
 
 	}
 
