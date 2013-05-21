@@ -26,6 +26,7 @@ class Widget extends Tag
 	 */
 	protected $content = null;
 
+	protected $view;
 
 	/**
 	 * @param string $headerText
@@ -113,6 +114,10 @@ class Widget extends Tag
 	public function prepend($value)
 	{
 		$this->content->prepend($value);
+	}
+
+	public function setView($view){
+		$this->view = $view;
 	}
 
 	public function toString()
