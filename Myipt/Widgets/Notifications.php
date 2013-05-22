@@ -13,7 +13,7 @@ class Notifications extends \Templates\Myipt\Widget
 	 * @param array $classOrAttributes
 	 * @param bool $showhidden
 	 */
-	public function __construct($view, $headline = null, $notifications = array(), $limit = false, $moreUrl = null, $size = 'col2Third')
+	public function __construct($view, $headline = null, $notifications = array(), $limit = false, $moreUrl = null, $size = 'colThreeQuarter')
 	{
 		parent::__construct($headline, '', "{$size} notifies flow");
 
