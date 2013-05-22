@@ -37,7 +37,7 @@ class Receipt extends \Templates\Html\Tag
 	public function initImageBlock(){
 		$imageBlock = new \Templates\Html\Tag('div', '', 'colQuarter fLeft');
 		$this->append($imageBlock);
-		$imageBlock->append( new \Templates\Html\Tag("span", $this->receipt->getFile()->getThumbnail(204,204,'',''), 'img') );
+		$imageBlock->append( new \Templates\Html\Tag("span", $this->receipt->getFile()->getThumbnail(204,204,'',''), 'img bigimage') );
 		$this->controls = new \Templates\Html\Tag('div', '', 'controls');
 
 		$imageBlock->append($this->controls);

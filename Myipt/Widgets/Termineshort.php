@@ -50,6 +50,8 @@ class Termineshort extends \Templates\Myipt\Widget
 				);
 			}
 		} else {
+			$list = new \Templates\Myipt\UnsortedList('', array(), 'termine ');
+			$this->append($list);
 			$list->append("Keine offenen Termine", "noBorder");
 		}
 

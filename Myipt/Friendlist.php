@@ -36,6 +36,9 @@ class Friendlist extends \Templates\Html\Tag
 			$div = new \Templates\Html\Tag("div",'', 'item');
 			$this->append($div);
 
+			$infos = new \Templates\Html\Anchor($this->view->url(array('action'=>'details', 'id' => $u->getId())), "", "get-ajax");
+			$div->append($infos);
+
 			//Avatar
 			$file = $u->getAvatarFile();
 			if (!$file){
@@ -44,20 +47,19 @@ class Friendlist extends \Templates\Html\Tag
 				$avatar =  $file->getThumbnail(96,96,'','');
 			}
 			$span = new \Templates\Html\Tag("span", $avatar, 'img');
-			$div->append($span);
+			$infos->append($span);
 
 			//Headline
 			$h = new \Templates\Html\Tag("h2", $u->getFullname());
-			$div->append($h);
+			$infos->append($h);
 
 			//State
 			$state = new \Templates\Html\Tag("div",'', 'state');
-			$div->append($state);
+			$infos->append($state);
 
 			//Controls
 			$controls = new \Templates\Html\Tag("div",'', 'controls');
-			$div->append($controls);
-
+			$infos->append($controls);
 
 			if ($this->friendships){
 				$state->append("offline");
@@ -65,7 +67,7 @@ class Friendlist extends \Templates\Html\Tag
 				$invite = new \Templates\Html\Tag('div', '');
 				$controls->append($invite);
 
-				$anchor = new \Templates\Html\Anchor('#','');//$this->view->url(array('action'=>'friendships', 'method' => 'remove', 'id' => $u->getId())), '');
+				$anchor = new \Templates\Html\Anchor($this->view->url(array("action"=>"discussion", "receiver" => $u->getId()), "nachrichten"), '', 'fancybox fancybox.ajax');
 				$icon = new \Templates\Html\Tag('span', '', 'icon little message');
 				$anchor->append($icon);
 				$anchor->append("Nachricht senden");
