@@ -30,22 +30,25 @@ class Reportfull extends \Templates\Myipt\Widget
 		parent::addAttribute("id", $analyseData["id"]);
 		$div = new \Templates\Html\Tag("div",'','fLeft');
 
-		if ($type != "both"){
-			$canvas = $this->getCanvas($analyseData, $type);
-			$div->append($canvas);
-		} else {
-			$canvas = $this->getCanvas($analyseData, "rel");
-			$div->append($canvas);
-			$canvas = $this->getCanvas($analyseData, "abs");
-			$div->append($canvas);
+		if (!$analyseData["noChart"]){
+			if ($type != "both"){
+				$canvas = $this->getCanvas($analyseData, $type);
+				$div->append($canvas);
+			} else {
+				$canvas = $this->getCanvas($analyseData, "rel");
+				$div->append($canvas);
+				$canvas = $this->getCanvas($analyseData, "abs");
+				$div->append($canvas);
+			}
 		}
+
 
 		$this->content->append($div);
 
 		foreach ($analyseData["outputtexts"] as $index => $text){
 			if ($index == 0){
 				$p = new \Templates\Html\Tag("p", $text[0]);
-				$this->initText($p);
+				$this->initText($p, $analyseData["noChart"]);
 			} else {
 				if (!empty($text[0])){
 					$class = "hide";
@@ -67,8 +70,8 @@ class Reportfull extends \Templates\Myipt\Widget
 
 	}
 
-	protected function initText($value = null){
-		$this->text = new \Templates\Html\Tag("div", $value, 'fLeft info');
+	protected function initText($value = null, $noChart){
+		$this->text = new \Templates\Html\Tag("div", $value, 'fLeft info '.($noChart?'noChart':null));
 		$this->content->append($this->text);
 	}
 
