@@ -47,11 +47,17 @@ class Discussions extends \Templates\Myipt\Widget
 
 				$participant = $m->getParticipant($this->view->login);
 				$file = $participant->getAvatarFile();
+
+				$name =  $participant->getFullname();
+				if ($participant->getTrainer() || $participant->getAdmin()){
+					$name = $participant->getFirstname();
+				}
+
 				if (!$file){
-					$avatar = new \Templates\Html\Image($participant->getAvatar(45,45), $participant->getFullname(), $participant->getFullname());
+					$avatar = new \Templates\Html\Image($participant->getAvatar(45,45), $name, $name);
 				} else {
 					$avatar = $file->getThumbnail(45,45,'','', null, true);
-					$avatar->addAttribute("title", $participant->getFullname());
+					$avatar->addAttribute("title", $name);
 				}
 				$image = new \Templates\Html\Tag("span", $avatar, 'img smallimage');
 

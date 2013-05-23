@@ -50,7 +50,12 @@ class Friendlist extends \Templates\Html\Tag
 			$infos->append($span);
 
 			//Headline
-			$h = new \Templates\Html\Tag("h2", $u->getFullname());
+			$name = $u->getFullname();
+			if ($u->getTrainer() || $u->getAdmin()){
+				$name = $u->getFirstname();
+			}
+
+			$h = new \Templates\Html\Tag("h2", $name);
 			$infos->append($h);
 
 			//State

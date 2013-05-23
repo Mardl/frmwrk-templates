@@ -57,7 +57,12 @@ class Openfriendlist extends \Templates\Html\Tag
 			$anchor->append($span);
 
 			//Headline
-			$h = new \Templates\Html\Tag("h2", $u->getFullname());
+			$name = $u->getFullname();
+			if ($u->getTrainer() || $u->getAdmin()){
+				$name = $u->getFirstname();
+			}
+
+			$h = new \Templates\Html\Tag("h2", $name);
 			$anchor->append($h);
 
 			//State
