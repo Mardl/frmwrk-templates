@@ -30,7 +30,7 @@ class Discussions extends \Templates\Myipt\Widget
 			foreach ($messages as $m){
 				$class = '';
 
-				if ($m->getLastread()->getTimestamp() < $m->getModified()->getTimestamp()){
+				if (!$m->isRead($this->view->login)){
 					$class = 'unread';
 				}
 
