@@ -30,14 +30,16 @@ class Reportfull extends \Templates\Coach\Widget
 		parent::addAttribute("id", $analyseData["id"]);
 		$div = new \Templates\Html\Tag("div",'','fLeft');
 
-		if ($type != "both"){
-			$canvas = $this->getCanvas($analyseData, $type);
-			$div->append($canvas);
-		} else {
-			$canvas = $this->getCanvas($analyseData, "rel");
-			$div->append($canvas);
-			$canvas = $this->getCanvas($analyseData, "abs");
-			$div->append($canvas);
+		if (!$analyseData["noChart"]){
+			if ($type != "both"){
+				$canvas = $this->getCanvas($analyseData, $type);
+				$div->append($canvas);
+			} else {
+				$canvas = $this->getCanvas($analyseData, "rel");
+				$div->append($canvas);
+				$canvas = $this->getCanvas($analyseData, "abs");
+				$div->append($canvas);
+			}
 		}
 
 		$this->content->append($div);
