@@ -2,7 +2,9 @@
 
 namespace Templates\Srabon;
 
-class ToggleMenu extends \Templates\Html\Tag
+use	Templates\Html\Tag;
+
+class ToggleMenu extends Tag
 {
 	private $right = true;
 	private $button;
@@ -18,12 +20,12 @@ class ToggleMenu extends \Templates\Html\Tag
 		parent::__construct('div','',$classOrAttributes);
 		$this->addClass('btn-group');
 
-		$this->button = new \Templates\Html\Tag('button','','btn dropdown-toggle');
+		$this->button = new Tag('button','','btn dropdown-toggle');
 		$this->setButton($title);
 		$this->button->addAttribute('data-toggle','dropdown');
 		parent::append($this->button);
 
-		$this->menu = new \Templates\Html\Tag('ul','','dropdown-menu');
+		$this->menu = new Tag('ul','','dropdown-menu');
 		if (!empty($menu) && is_array($menu))
 		{
 			foreach($menu as $values)
@@ -51,13 +53,13 @@ class ToggleMenu extends \Templates\Html\Tag
 
 	public function append($value)
 	{
-		$li = new \Templates\Html\Tag('li',$value);
+		$li = new Tag('li',$value);
 		$this->menu->append($li);
 	}
 
 	public function prepend($value)
 	{
-		$li = new \Templates\Html\Tag('li',$value);
+		$li = new Tag('li',$value);
 		$this->menu->append($li);
 	}
 
