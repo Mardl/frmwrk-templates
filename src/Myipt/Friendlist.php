@@ -32,6 +32,9 @@ class Friendlist extends \Templates\Html\Tag
 
 	public function toString(){
 
+		/**
+		 * @var $u \App\Models\User
+		 */
 		foreach ($this->friends as $u){
 			$div = new \Templates\Html\Tag("div",'', 'item');
 			$this->append($div);
