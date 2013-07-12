@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="CoreFramework" tests="9" assertions="14" failures="0" errors="0" time="0.102249">
+    <testsuite name="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" namespace="unittest\Templates\Html" fullPackage="Unittest" category="Templates" package="Unittest" tests="9" assertions="14" failures="0" errors="0" time="0.102249">
+      <testcase name="testSetId" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="20" assertions="3" time="0.040002"/>
+      <testcase name="testGetId" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="39" assertions="1" time="0.007146"/>
+      <testcase name="testGetIdEXPnull" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="53" assertions="1" time="0.006643"/>
+      <testcase name="testGetAttributeEXPdefault" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="65" assertions="2" time="0.007096"/>
+      <testcase name="testGetAttributeEXPvalue" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="79" assertions="2" time="0.006241"/>
+      <testcase name="testSetFormat" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="100" assertions="1" time="0.006791"/>
+      <testcase name="testSetTagname" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="113" assertions="1" time="0.006804"/>
+      <testcase name="testHasInner" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="125" assertions="2" time="0.006020"/>
+      <testcase name="testGetInner" class="unittest\Templates\Html\TagTest" file="/home/sebastian/Projects/Templates/tests/unittest/Html/TagTest.php" line="139" assertions="1" time="0.015506"/>
+    </testsuite>
+  </testsuite>
+</testsuites>
