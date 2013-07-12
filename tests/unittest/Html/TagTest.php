@@ -147,4 +147,28 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals($tag->getInner(), array('test', 'test2'));
 	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetInnerAsString()
+	{
+		$mock = $this->getMockBuilder('Templates\Html\Tag')
+			->setMethods(array('renderToString'))
+			->getMock();
+		$mock->expects($this->once())->method('renderToString');
+
+		$mock->getInnterAsString();
+	}
+
+	/**
+	 * @depends testGetInnerAsString
+	 * @void
+	 */
+	public function testRenderToString()
+	{
+		// $test = new TAg...
+		//$test->getInnterAsSTring();
+		$this->markTestSkipped();
+	}
 }
