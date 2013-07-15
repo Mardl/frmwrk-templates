@@ -4,6 +4,7 @@ namespace Templates\Html;
 
 class Tag
 {
+
 	protected $tagName = null;
 	protected $tagInner = array();
 	protected $tagAttributes = array();
@@ -12,11 +13,11 @@ class Tag
 	protected $formatOutput = '';
 
 	/**
-	 * @param string $tag Default = div-Tag
+	 * @param string $tag               Default = div-Tag
 	 * @param string $inner
-	 * @param array $classOrAttributes array of attributes or string as class or string start with # as ID
+	 * @param array  $classOrAttributes array of attributes or string as class or string start with # as ID
 	 */
-	public function __construct($tag='div', $inner='', $classOrAttributes = array())
+	public function __construct($tag = 'div', $inner = '', $classOrAttributes = array())
 	{
 		if (empty($tag))
 		{
@@ -31,17 +32,17 @@ class Tag
 		{
 			if (is_array($classOrAttributes))
 			{
-				foreach($classOrAttributes as $name => $attr)
+				foreach ($classOrAttributes as $name => $attr)
 				{
-					$this->addAttribute($name,$attr);
+					$this->addAttribute($name, $attr);
 				}
 			}
 			else
 			{
 				$classOrAttributes = trim($classOrAttributes);
-				if (substr($classOrAttributes,0,1) == '#')
+				if (substr($classOrAttributes, 0, 1) == '#')
 				{
-					$this->setId(substr($classOrAttributes,1));
+					$this->setId(substr($classOrAttributes, 1));
 				}
 				else
 				{
@@ -79,12 +80,14 @@ class Tag
 	{
 		$this->formatOutput = $format;
 	}
+
 	/**
 	 * TO-STRING
 	 *
 	 * @return string
 	 */
-	public function __toString() {
+	public function __toString()
+	{
 		return $this->toString();
 	}
 
@@ -92,7 +95,8 @@ class Tag
 	 * Tagname
 	 * @param string $tag
 	 */
-	public function setTagname($tag) {
+	public function setTagname($tag)
+	{
 		$this->tagName = $tag;
 	}
 
@@ -120,20 +124,24 @@ class Tag
 	 */
 	protected function renderToString($value)
 	{
-		if(is_string($value) || is_int($value))
+		if (is_string($value) || is_int($value))
 		{
 			if (!empty($this->formatOutput))
 			{
-				return sprintf($this->formatOutput,$value);
+				return sprintf($this->formatOutput, $value);
 			}
+
 			return $value;
 		}
 
-		if(is_object($value)) {
-			if(method_exists($value, 'toHtml')) {
+		if (is_object($value))
+		{
+			if (method_exists($value, 'toHtml'))
+			{
 				return $value->toHtml();
 			}
-			if(method_exists($value, '__toString')) {
+			if (method_exists($value, '__toString'))
+			{
 				return $value->__toString();
 			}
 
@@ -141,11 +149,14 @@ class Tag
 		}
 
 		$string = '';
-		if(is_array($value)) {
-			foreach($value as $vals) {
-				$string .= $this->renderToString($vals);// . "\r\n";
+		if (is_array($value))
+		{
+			foreach ($value as $vals)
+			{
+				$string .= $this->renderToString($vals); // . "\r\n";
 			}
 		}
+
 		return $string;
 	}
 
@@ -177,6 +188,7 @@ class Tag
 		{
 			return count($this->tagInner);
 		}
+
 		return empty($this->tagInner) ? 0 : 1;
 	}
 
@@ -190,6 +202,7 @@ class Tag
 	public function addAttribute($name, $value)
 	{
 		$this->tagAttributes[$name] = $value;
+
 		return $this;
 	}
 
@@ -203,20 +216,22 @@ class Tag
 		{
 			unset($this->tagAttributes[$name]);
 		}
+
 		return $this;
 	}
 
 	/**
-	 * @param $name
+	 * @param      $name
 	 * @param null $default
 	 * @return null|string
 	 */
-	public function getAttribute($name,$default=null)
+	public function getAttribute($name, $default = null)
 	{
 		if ($this->hasAttribute($name))
 		{
 			return $this->tagAttributes[$name];
 		}
+
 		return $default;
 	}
 
@@ -237,6 +252,7 @@ class Tag
 	public function addStyle($name, $value)
 	{
 		$this->tagStyle[$name] = $value;
+
 		return $this;
 	}
 
@@ -265,11 +281,13 @@ class Tag
 	 */
 	public function addClass($class)
 	{
-		if(!$this->hasAttribute('class')) {
+		if (!$this->hasAttribute('class'))
+		{
 			$this->tagAttributes['class'] = array();
 		}
 
 		$this->tagAttributes['class'][$class] = $class;
+
 		return $this;
 	}
 
@@ -279,6 +297,7 @@ class Tag
 		{
 			unset($this->tagAttributes['class'][$class]);
 		}
+
 		return $this;
 	}
 
@@ -291,12 +310,15 @@ class Tag
 		$this->renderStyles();
 
 		$attributes = array();
-		foreach($this->tagAttributes as $key => $value) {
-			if(is_array($value)) {
+		foreach ($this->tagAttributes as $key => $value)
+		{
+			if (is_array($value))
+			{
 				$value = implode(' ', $value);
 			}
 			$attributes[] = $key . '="' . $value . '"';
 		}
+
 		return implode(' ', $attributes);
 	}
 
@@ -305,14 +327,16 @@ class Tag
 	 */
 	private function renderStyles()
 	{
-		if(!$this->hasStyles())
+		if (!$this->hasStyles())
 		{
 			return;
 		}
 
 		$styles = array();
-		foreach($this->tagStyle as $key => $value) {
-			if(is_array($value)) {
+		foreach ($this->tagStyle as $key => $value)
+		{
+			if (is_array($value))
+			{
 				$value = implode(' ', $value);
 			}
 			$styles[] = $key . ':' . $value . ';';
@@ -331,11 +355,13 @@ class Tag
 		$str .= '<';
 		$str .= $this->tagName . ' ';
 		$str .= $this->renderAttributes();
-		if(!empty($this->tagInner) || $this->forceClose) {
+		if (!empty($this->tagInner) || $this->forceClose)
+		{
 			$str .= '>';
 		}
 		$str .= $this->getInnerAsString();
 		$str .= $this->getCloseTag();
+
 		return $str;
 	}
 
@@ -354,10 +380,11 @@ class Tag
 	 */
 	protected function getCloseTag()
 	{
-		if(!empty($this->tagInner) || $this->forceClose)
+		if (!empty($this->tagInner) || $this->forceClose)
 		{
 			return '</' . $this->tagName . '>';
 		}
+
 		return ' />';
 	}
 
@@ -369,8 +396,9 @@ class Tag
 	 */
 	public function set($value)
 	{
-		$this->tagInner='';
+		$this->tagInner = '';
 		$this->append($value);
+
 		return $this;
 	}
 
@@ -394,15 +422,17 @@ class Tag
 			return $this;
 		}
 
-		if(!is_array($this->tagInner))
+		if (!is_array($this->tagInner))
 		{
 			$preset = array();
-			if(!empty($this->tagInner)) {
+			if (!empty($this->tagInner))
+			{
 				$preset = array($this->tagInner);
 			}
 			$this->tagInner = $preset;
 		}
 		$this->tagInner[] = $value;
+
 		return $this;
 	}
 
@@ -415,11 +445,12 @@ class Tag
 	 */
 	public function prepend($value)
 	{
-		if(!is_array($this->tagInner))
+		if (!is_array($this->tagInner))
 		{
 			$this->tagInner = array($this->tagInner);
 		}
 		array_splice($this->tagInner, 0, 0, array($value));
+
 		return $this;
 	}
 
@@ -430,6 +461,7 @@ class Tag
 	public function appendTo(Tag $obj)
 	{
 		$obj->append($this);
+
 		return $this;
 	}
 
@@ -440,13 +472,14 @@ class Tag
 	public function prependTo(Tag $obj)
 	{
 		$obj->prepend($this);
+
 		return $this;
 	}
 
 	/**
 	 * Sucht Tag mit ID $elementId
 	 *
-	 * @param $elementId
+	 * @param      $elementId
 	 * @param null $container
 	 * @return null|Tag
 	 */
@@ -461,7 +494,7 @@ class Tag
 
 		foreach ($container->getInner() as $tag)
 		{
-			if ( $tag instanceof \Templates\Html\Tag )
+			if ($tag instanceof \Templates\Html\Tag)
 			{
 				/**
 				 * @var $tag \Templates\Html\Tag
@@ -471,7 +504,8 @@ class Tag
 					return $tag;
 				}
 
-				if ($tag->hasInner() ){
+				if ($tag->hasInner())
+				{
 					$target = $this->findTagById($elementId, $tag);
 					if ($target)
 					{
@@ -479,9 +513,9 @@ class Tag
 					}
 				}
 			}
-			elseif ( is_array($tag) )
+			elseif (is_array($tag))
 			{
-				foreach($tag as $moretag)
+				foreach ($tag as $moretag)
 				{
 					$target = $this->findTagById($elementId, $moretag);
 					if ($target)
