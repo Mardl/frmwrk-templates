@@ -13,12 +13,17 @@ class Form extends Tag
 	public function __construct($action='', $data=array(), $method='post', $classOrAttributes = array())
 	{
 		parent::__construct('form', '', $classOrAttributes);
-		$this->values = $data;
+		$this->setData($data);
 		$this->method($method);
 		if (!empty($action))
 		{
 			$this->action($action);
 		}
+	}
+
+	public function setData($data)
+	{
+		$this->values = $data;
 	}
 
 	public function getValue($key,$default=null)
