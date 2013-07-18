@@ -109,6 +109,14 @@ class Tag
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function removeInner()
+	{
+		$this->tagInner = array();
+	}
+
+	/**
 	 * Getter für Tag-Wert
 	 * @return array|mixed
 	 */
