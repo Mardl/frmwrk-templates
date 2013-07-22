@@ -214,6 +214,42 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @depends testGetInnerAsString
+	 * @return void
+	 */
+	public function testRenderToStringEXPObjectToHtml()
+	{
+		$value = $this->getMockBuilder('\Templates\Html\Tag')
+			->disableOriginalConstructor()
+			->setMethods(array('toHtml'))
+			->getMock();
+		$value->expects($this->once())
+			->method('toHtml');
+
+		$this->setValueToProperty($this->tag, 'tagInner', $value);
+
+		$this->tag->getInnerAsString();
+	}
+
+	/**
+	 * @depends testGetInnerAsString
+	 * return void
+	 */
+	public function testRenderToStringEXPObjectToString()
+	{
+		$value = $this->getMockBuilder('\Templates\Html\TagWithoutToHtmlMethod')
+			->disableOriginalConstructor()
+			->setMethods(array('__toString'))
+			->getMock();
+
+		$value->expects($this->once())
+			->method('__toString');
+
+		$this->setValueToProperty($this->tag, 'tagInner', $value);
+		$this->tag->getInnerAsString();
+	}
+
+	/**
 	 * @return void
 	 */
 	public function testAddInner()
@@ -461,5 +497,190 @@ class TagTest extends \PHPUnit_Framework_TestCase
 		$this->tag->removeClass('test1');
 		$tagAttributes = $this->readAttribute($this->tag, 'tagAttributes');
 		$this->assertEquals($expectedRemove, $tagAttributes);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderStylesEXPNoStyle()
+	{
+		$value = $this->tag;
+
+		$value->toString();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderStylesEXPHasStyles()
+	{
+		$value = $this->tag;
+
+		$this->tag->addStyle('test', 'test2');
+
+		$value->toString();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToHtml()
+	{
+		$value = $this->tag;
+
+		$value->toHtml();
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToString()
+	{
+		$this->setValueToProperty($this->tag, 'tagName', 'test');
+		$this->setValueToProperty($this->tag, 'tagInner', 'test1');
+
+		$this->assertEquals($this->tag->toString(), '<test >test1</test>');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetCloseTagEXPEmptyInner()
+	{
+		$this->setValueToProperty($this->tag, 'forceClose', '');
+
+		$this->assertEquals($this->tag->toString(), '<div  />');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetCloseTagEXPInner()
+	{
+		$this->setValueToProperty($this->tag, 'forceClose', '');
+		$this->setValueToProperty($this->tag, 'tagInner', 'test');
+
+		$this->assertEquals($this->tag->toString(), '<div >test</div>');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetCloseTagEXPForceClose()
+	{
+		$this->setValueToProperty($this->tag, 'forceClose', 'true');
+
+		$this->assertEquals($this->tag->toString(), '<div ></div>');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testPrependEXPIsArray()
+	{
+		$this->tag->prepend('test');
+
+		$this->assertEquals($this->readAttribute($this->tag, 'tagInner'), array('test'));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testPrependEXPNoArray()
+	{
+		$this->setValueToProperty($this->tag, 'tagInner', '');
+
+		$this->tag->prepend('test');
+
+		$this->assertEquals($this->readAttribute($this->tag, 'tagInner'), array('test', ''));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function test__ToString()
+	{
+		$this->setValueToProperty($this->tag, 'tagName', 'test');
+		$this->setValueToProperty($this->tag, 'tagInner', 'test1');
+
+		$this->assertEquals($this->tag->__toString(), '<test >test1</test>');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRemoveInner()
+	{
+		$this->setValueToProperty($this->tag, 'tagInner', 'test');
+
+		$this->assertEquals('test', $this->readAttribute($this->tag, 'tagInner'));
+
+		$this->tag->removeInner();
+
+		$this->assertEmpty($this->readAttribute($this->tag, 'tagInner'));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function test__ConstructEXPTagEmpty()
+	{
+		$value = new Tag('', '', '');
+
+		$this->assertEquals($this->readAttribute($value, 'tagName'), 'div');
+	}
+
+	/**
+ * @return void
+ */
+	public function test__ConstructEXPInner()
+	{
+		$value = new Tag('', 'test', '');
+
+		$this->assertEquals($this->readAttribute($value, 'tagInner'), array('test'));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function test__ConstructEXPClassOrAttribute()
+	{
+		$value = new Tag('', '', 'test');
+		$expected = array(
+			'class' => array(
+				'test' => 'test'
+			)
+		);
+
+		$this->assertEquals($this->readAttribute($value, 'tagAttributes'), $expected);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function test__ConstructEXPClassOrAttributeArray()
+	{
+		$value = new Tag('', '', array('class' => array('test' => 'test', 'test1'=>'test1')));
+		$expected = array(
+			'class' => array(
+				'test' => 'test',
+				'test1' => 'test1'
+			)
+		);
+
+		$this->assertEquals($this->readAttribute($value, 'tagAttributes'), $expected);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function test__ConstructEXPClassOrAttributeSubstr()
+	{
+		$value = new Tag('', '', '#test');
+
+		$expected = array(
+			'id' => 'test'
+		);
+		$this->assertEquals($this->readAttribute($value, 'tagAttributes'), $expected);
 	}
 }

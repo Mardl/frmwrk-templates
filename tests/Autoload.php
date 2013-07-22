@@ -2,12 +2,22 @@
 
 function unittestLoader($className)
 {
-	$fileName = str_replace('\\', '/', $className);
-	$fileName = str_replace('Templates', __DIR__ . '/../src', $fileName);
+	$originFileName = str_replace('\\', '/', $className);
+
+	$fileName = str_replace('Templates', __DIR__ . '/../tests/Mocks', $originFileName);
 	$fileName .= '.php';
 	if (file_exists($fileName))
 	{
 		require_once $fileName;
+		return;
+	}
+
+	$fileName = str_replace('Templates', __DIR__ . '/../src', $originFileName);
+	$fileName .= '.php';
+	if (file_exists($fileName))
+	{
+		require_once $fileName;
+		return;
 	}
 }
 
