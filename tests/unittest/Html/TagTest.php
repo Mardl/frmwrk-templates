@@ -1,6 +1,6 @@
 <?php
 
-namespace unittest\Templates\Html;
+namespace unittest\Html;
 
 use Templates\Html\Tag;
 
@@ -8,7 +8,7 @@ use Templates\Html\Tag;
  * Class TagTest
  *
  * @category Templates
- * @package  Unittest\Templates\Html
+ * @package  Unittest\Html
  * @author   Sebastian Rupp <sebastian@dreiwerken.de>
  */
 class TagTest extends \PHPUnit_Framework_TestCase
@@ -19,6 +19,12 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	 */
 	protected $tag = null;
 
+	/**
+	 * @param string $object
+	 * @param string $propertyName
+	 * @param string $value
+	 * @return \ReflectionProperty
+	 */
 	protected function setValueToProperty($object, $propertyName, $value)
 	{
 		$refl = new \ReflectionObject($object);
@@ -29,6 +35,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
 		return $prop;
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function setUp()
 	{
 		parent::setUp();
@@ -36,6 +45,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
 		$this->tag = new Tag();
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function tearDown()
 	{
 		parent::tearDown();
@@ -232,8 +244,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
+	 * @return void
 	 * @depends testGetInnerAsString
-	 * return void
 	 */
 	public function testRenderToStringEXPObjectToString()
 	{
@@ -244,6 +256,22 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
 		$value->expects($this->once())
 			->method('__toString');
+
+		$this->setValueToProperty($this->tag, 'tagInner', $value);
+		$this->tag->getInnerAsString();
+	}
+
+	/**
+	 * @return void
+	 * @depends testGetInnerAsString
+	 */
+	public function testRenderToStringEXPException()
+	{
+		$value = $this->getMockBuilder('\stdClass')
+			->disableOriginalConstructor()
+			->getMock();
+
+		$this->setExpectedException('\Templates\Exceptions\Convert', 'Der Wert des Tags ist ein Object ohne "toHtml" bzw. "__toString" Implementierung.');
 
 		$this->setValueToProperty($this->tag, 'tagInner', $value);
 		$this->tag->getInnerAsString();
@@ -446,6 +474,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($ret, $this->tag);
 	}
 
+	/**
+	 * @return void
+	 */
 	public function testAddClass()
 	{
 		$tagAttributes = $this->readAttribute($this->tag, 'tagAttributes');
@@ -506,7 +537,8 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	{
 		$value = $this->tag;
 
-		$value->toString();
+		$ret = $value->toString();
+		$this->assertSame('<div ></div>', $ret);
 	}
 
 	/**
@@ -518,7 +550,47 @@ class TagTest extends \PHPUnit_Framework_TestCase
 
 		$this->tag->addStyle('test', 'test2');
 
-		$value->toString();
+		$ret = $value->toString();
+		$this->assertSame('<div style="test:test2;"></div>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderStylesEXPHasStylesAsArray()
+	{
+		$value = $this->tag;
+
+		$this->tag->addStyle('uniottest', array('testunit', 'test2foobar'));
+
+		$ret = $value->toString();
+		$this->assertSame('<div style="uniottest:testunit test2foobar;"></div>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderAttributes()
+	{
+		$value = $this->tag;
+
+		$this->tag->addAttribute('foo', 'bar');
+
+		$ret = $value->toString();
+		$this->assertSame('<div foo="bar"></div>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderAttributesEXPasArray()
+	{
+		$value = $this->tag;
+
+		$this->tag->addAttribute('uniottest', array('testunit', 'test2foobar'));
+
+		$ret = $value->toString();
+		$this->assertSame('<div uniottest="testunit test2foobar"></div>', $ret);
 	}
 
 	/**
@@ -576,6 +648,36 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
+	public function testPrependTo()
+	{
+		$myTag = $this->getMockBuilder('\Templates\Html\Tag')
+			->disableOriginalConstructor()
+			->getMock();
+		$myTag->expects($this->once())
+			->method('prepend')->with($this->tag);
+
+		$this->tag->prependTo($myTag);
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testAppendTo()
+	{
+		$myTag = $this->getMockBuilder('\Templates\Html\Tag')
+			->disableOriginalConstructor()
+			->getMock();
+		$myTag->expects($this->once())
+			->method('append')->with($this->tag);
+
+		$this->tag->appendTo($myTag);
+
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testPrependEXPIsArray()
 	{
 		$this->tag->prepend('test');
@@ -598,7 +700,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function test__ToString()
+	public function testToString()
 	{
 		$this->setValueToProperty($this->tag, 'tagName', 'test');
 		$this->setValueToProperty($this->tag, 'tagInner', 'test1');
@@ -620,10 +722,89 @@ class TagTest extends \PHPUnit_Framework_TestCase
 		$this->assertEmpty($this->readAttribute($this->tag, 'tagInner'));
 	}
 
+
+	/**
+	 * @depends testAddInner
+	 * @return void
+	 */
+	public function testFindTagById()
+	{
+		$elementId = "12";
+
+		$this->assertEmpty($this->tag->findTagById($elementId));
+
+		$inner = new Tag();
+		$inner->setId($elementId);
+
+		$this->tag->addInner($inner);
+		$ret = $this->tag->findTagById($elementId);
+
+		$this->assertEquals($inner, $ret);
+	}
+
+	/**
+	 * @depends testAddInner
+	 * @return void
+	 */
+	public function testFindTagByIdEXPhasInner()
+	{
+		$elementId = "12";
+
+		$inner = new Tag();
+		$inner2 = new Tag();
+
+		$inner->addInner($inner2);
+		$this->tag->addInner($inner);
+		$ret = $this->tag->findTagById($elementId);
+
+		$this->assertEmpty($ret);
+
+
+		$inner2->setId($elementId);
+		$ret2 = $this->tag->findTagById($elementId);
+		$this->assertEquals($inner2, $ret2);
+	}
+
+
+	/**
+	 * @depends testAddInner
+	 * @return void
+	 */
+	public function testFindTagByIdEXPisArray()
+	{
+		$elementId = "12";
+
+		$inner = new Tag();
+		$inner2 = new Tag();
+		$inner3 = new Tag();
+
+		$inner->addInner($inner2);
+
+		$this->setValueToProperty(
+			$this->tag,
+			'tagInner',
+			array(
+				array(
+					$inner3,
+					$inner,
+				)
+			)
+		);
+		$ret = $this->tag->findTagById($elementId);
+
+		$this->assertEmpty($ret);
+
+
+		$inner2->setId($elementId);
+		$ret2 = $this->tag->findTagById($elementId);
+		$this->assertEquals($inner2, $ret2);
+	}
+
+
 	/**
 	 * @return void
 	 */
-	public function test__ConstructEXPTagEmpty()
+	public function testConstructEXPTagEmpty()
 	{
 		$value = new Tag('', '', '');
 
@@ -631,9 +812,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	}
 
 	/**
- * @return void
- */
-	public function test__ConstructEXPInner()
+	 * @return void
+	 */
+	public function testConstructEXPInner()
 	{
 		$value = new Tag('', 'test', '');
 
@@ -643,7 +824,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function test__ConstructEXPClassOrAttribute()
+	public function testConstructEXPClassOrAttribute()
 	{
 		$value = new Tag('', '', 'test');
 		$expected = array(
@@ -658,9 +839,9 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function test__ConstructEXPClassOrAttributeArray()
+	public function testConstructEXPClassOrAttributeArray()
 	{
-		$value = new Tag('', '', array('class' => array('test' => 'test', 'test1'=>'test1')));
+		$value = new Tag('', '', array('class' => array('test' => 'test', 'test1' => 'test1')));
 		$expected = array(
 			'class' => array(
 				'test' => 'test',
@@ -674,7 +855,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function test__ConstructEXPClassOrAttributeSubstr()
+	public function testConstructEXPClassOrAttributeSubstr()
 	{
 		$value = new Tag('', '', '#test');
 
