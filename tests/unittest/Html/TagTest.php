@@ -700,7 +700,7 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testToString()
+	public function testUnderscoreToString()
 	{
 		$this->setValueToProperty($this->tag, 'tagName', 'test');
 		$this->setValueToProperty($this->tag, 'tagInner', 'test1');
