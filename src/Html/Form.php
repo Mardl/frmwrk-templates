@@ -4,13 +4,32 @@ namespace Templates\Html;
 
 use Core\SystemMessages;
 
+/**
+ * Class Form
+ *
+ * @category Jamwork
+ * @package  Templates\Html
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Form extends Tag
 {
 
+	/**
+	 * @var array
+	 */
 	protected $values = array();
+	/**
+	 * @var array
+	 */
 	protected $validateMessage = array();
 
-	public function __construct($action='', $data=array(), $method='post', $classOrAttributes = array())
+	/**
+	 * @param string $action
+	 * @param array  $data
+	 * @param string $method
+	 * @param array  $classOrAttributes
+	 */
+	public function __construct($action = '', $data = array(), $method = 'post', $classOrAttributes = array())
 	{
 		parent::__construct('form', '', $classOrAttributes);
 		$this->setData($data);
@@ -21,35 +40,70 @@ class Form extends Tag
 		}
 	}
 
+	/**
+	 * @param array $data
+	 * @return void
+	 */
 	public function setData($data)
 	{
 		$this->values = $data;
 	}
 
-	public function getValue($key,$default=null)
+	/**
+	 * @param string $key
+	 * @param string $value
+	 * @return void
+	 */
+	public function setDataValue($key, $value)
+	{
+		$this->values[$key] = $value;
+	}
+
+	/**
+	 * @param string $key
+	 * @param mixed  $default
+	 * @return null
+	 */
+	public function getValue($key, $default = null)
 	{
 		if (array_key_exists($key, $this->values))
 		{
 			return $this->values[$key];
 		}
+
 		return $default;
 	}
 
+	/**
+	 * @param string $value
+	 * @return Tag
+	 */
 	public function method($value)
 	{
 		return $this->addAttribute('method', $value);
 	}
 
+	/**
+	 * @param string $value
+	 * @return Tag
+	 */
 	public function action($value)
 	{
 		return $this->addAttribute('action', $value);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function getAction()
 	{
-		return $this->getAttribute('action','');
+		return $this->getAttribute('action', '');
 	}
 
+	/**
+	 * @param Tag $container
+	 * @return bool
+	 */
 	public function validate(Tag $container = null)
 	{
 		$checkup = true;
@@ -60,9 +114,9 @@ class Form extends Tag
 
 		if ($container->hasInner())
 		{
-			foreach($container->getInner() as $tag)
+			foreach ($container->getInner() as $tag)
 			{
-				if ( $tag instanceof \Templates\Html\Input )
+				if ($tag instanceof \Templates\Html\Input)
 				{
 					/**
 					 * @var $tag \Templates\Html\Input
@@ -76,16 +130,16 @@ class Form extends Tag
 						$checkup = false;
 					}
 				}
-				elseif ( $tag instanceof \Templates\Html\Tag )
+				elseif ($tag instanceof \Templates\Html\Tag)
 				{
 					$check = self::validate($tag);
 					$checkup = $checkup && $check;
 				}
-				elseif ( is_array($tag) )
+				elseif (is_array($tag))
 				{
-					foreach($tag as $moretag)
+					foreach ($tag as $moretag)
 					{
-						if ( $moretag instanceof \Templates\Html\Tag )
+						if ($moretag instanceof \Templates\Html\Tag)
 						{
 							$check = self::validate($moretag);
 							$checkup = $checkup && $check;
@@ -95,7 +149,7 @@ class Form extends Tag
 				}
 			}
 		}
-		elseif ( $container instanceof \Templates\Html\Input )
+		elseif ($container instanceof \Templates\Html\Input)
 		{
 			$check = $container->validate();
 
@@ -106,20 +160,23 @@ class Form extends Tag
 				$checkup = false;
 			}
 		}
+
 		return $checkup;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getValidateErrors()
 	{
 		return $this->validateMessage;
 	}
 
 	/**
-	 *
 	 * Sucht Formfeld anhand des Namens und liefert das erste vorkommen zurück.
 	 *
-	 * @param $elementName
-	 * @param null $container
+	 * @param string $elementName
+	 * @param mixed  $container
 	 * @return Tag
 	 */
 	public function findByName($elementName, $container = null)
@@ -133,7 +190,7 @@ class Form extends Tag
 
 		foreach ($container->getInner() as $tag)
 		{
-			if ( $tag instanceof \Templates\Html\Input )
+			if ($tag instanceof \Templates\Html\Input)
 			{
 				/**
 				 * @var $tag \Templates\Html\Tag
@@ -143,7 +200,8 @@ class Form extends Tag
 					return $tag;
 				}
 
-				if ($tag->hasInner() ){
+				if ($tag->hasInner())
+				{
 					$target = $this->findByName($elementName, $tag);
 					if ($target)
 					{
@@ -151,7 +209,7 @@ class Form extends Tag
 					}
 				}
 			}
-			elseif ( $tag instanceof \Templates\Html\Tag )
+			elseif ($tag instanceof \Templates\Html\Tag)
 			{
 				$target = $this->findByName($elementName, $tag);
 				if ($target)
@@ -159,9 +217,9 @@ class Form extends Tag
 					return $target;
 				}
 			}
-			elseif ( is_array($tag) )
+			elseif (is_array($tag))
 			{
-				foreach($tag as $moretag)
+				foreach ($tag as $moretag)
 				{
 					$target = $this->findByName($elementName, $moretag);
 					if ($target)

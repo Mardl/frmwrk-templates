@@ -2,19 +2,44 @@
 
 namespace Templates\Html;
 
+/**
+ * Class Tag
+ *
+ * @category Templates
+ * @package  Templates\Html
+ * @author   Vadim Justus <vadim@dreiwerken.de>
+ */
 class Tag
 {
 
+	/**
+	 * @var null|string
+	 */
 	protected $tagName = null;
+	/**
+	 * @var array
+	 */
 	protected $tagInner = array();
+	/**
+	 * @var array
+	 */
 	protected $tagAttributes = array();
+	/**
+	 * @var array
+	 */
 	protected $tagStyle = array();
+	/**
+	 * @var bool
+	 */
 	protected $forceClose = true;
+	/**
+	 * @var string
+	 */
 	protected $formatOutput = '';
 
 	/**
 	 * @param string $tag               Default = div-Tag
-	 * @param string $inner
+	 * @param string $inner             default = ''
 	 * @param array  $classOrAttributes array of attributes or string as class or string start with # as ID
 	 */
 	public function __construct($tag = 'div', $inner = '', $classOrAttributes = array())
@@ -54,10 +79,9 @@ class Tag
 	}
 
 	/**
-	 *
 	 * Setzen von Attribut ID
 	 *
-	 * @param $id
+	 * @param int $id
 	 * @return Tag
 	 */
 	public function setId($id)
@@ -65,16 +89,19 @@ class Tag
 		return $this->addAttribute('id', $id);
 	}
 
+	/**
+	 * @return null|string
+	 */
 	public function getId()
 	{
 		return $this->getAttribute('id');
 	}
 
 	/**
-	 *
 	 * Format für Output-Formatierung im format sprintf
 	 *
-	 * @param $format
+	 * @param string $format
+	 * @return void
 	 */
 	public function setFormat($format)
 	{
@@ -93,7 +120,9 @@ class Tag
 
 	/**
 	 * Tagname
+	 *
 	 * @param string $tag
+	 * @return void
 	 */
 	public function setTagname($tag)
 	{
@@ -118,6 +147,7 @@ class Tag
 
 	/**
 	 * Getter für Tag-Wert
+	 *
 	 * @return array|mixed
 	 */
 	public function getInner()
@@ -126,7 +156,26 @@ class Tag
 	}
 
 	/**
-	 * @param $value
+	 * @param mixed $value
+	 * @return mixed
+	 * @throws \Templates\Exceptions\Convert
+	 */
+	private function renderObject($value)
+	{
+		if (method_exists($value, 'toHtml'))
+		{
+			return $value->toHtml();
+		}
+		if (method_exists($value, '__toString'))
+		{
+			return $value->__toString();
+		}
+
+		throw new \Templates\Exceptions\Convert('Der Wert des Tags ist ein Object ohne "toHtml" bzw. "__toString" Implementierung.');
+	}
+
+	/**
+	 * @param mixed $value
 	 * @return string
 	 * @throws \Templates\Exceptions\Convert
 	 */
@@ -144,16 +193,7 @@ class Tag
 
 		if (is_object($value))
 		{
-			if (method_exists($value, 'toHtml'))
-			{
-				return $value->toHtml();
-			}
-			if (method_exists($value, '__toString'))
-			{
-				return $value->__toString();
-			}
-
-			throw new \Templates\Exceptions\Convert('Der Wert des Tags ist ein Object ohne "toHtml" bzw. "__toString" implementierung.');
+			return $this->renderObject($value);
 		}
 
 		$string = '';
@@ -168,6 +208,9 @@ class Tag
 		return $string;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getInnerAsString()
 	{
 		return $this->renderToString($this->tagInner);
@@ -215,7 +258,7 @@ class Tag
 	}
 
 	/**
-	 * @param $name
+	 * @param string $name
 	 * @return Tag
 	 */
 	public function removeAttribute($name)
@@ -229,8 +272,8 @@ class Tag
 	}
 
 	/**
-	 * @param      $name
-	 * @param null $default
+	 * @param string      $name
+	 * @param string|null $default
 	 * @return null|string
 	 */
 	public function getAttribute($name, $default = null)
@@ -266,6 +309,7 @@ class Tag
 
 	/**
 	 * Überprüft, ob ein bestimmter Style-Wert gesetzt ist
+	 *
 	 * @param string $name
 	 * @return bool
 	 */
@@ -276,6 +320,7 @@ class Tag
 
 	/**
 	 * Überprüft, ob generell Style-Werte vorhanden sind
+	 *
 	 * @return bool
 	 */
 	public function hasStyles()
@@ -299,6 +344,10 @@ class Tag
 		return $this;
 	}
 
+	/**
+	 * @param string $class
+	 * @return $this
+	 */
 	public function removeClass($class)
 	{
 		if (isset($this->tagAttributes['class'][$class]))
@@ -311,6 +360,7 @@ class Tag
 
 	/**
 	 * Rendert alle Attribute zu einem HTML-String
+	 *
 	 * @return string
 	 */
 	protected function renderAttributes()
@@ -332,6 +382,8 @@ class Tag
 
 	/**
 	 * Rendert alle Style-Anweisungen zu einem style-Attribut
+	 *
+	 * @return void
 	 */
 	private function renderStyles()
 	{
@@ -355,6 +407,7 @@ class Tag
 
 	/**
 	 * Generiert den Tag als String
+	 *
 	 * @return string
 	 */
 	public function toString()
@@ -375,6 +428,7 @@ class Tag
 
 	/**
 	 * Alternativer Aufruf von toString()
+	 *
 	 * @return string
 	 */
 	public function toHtml()
@@ -384,6 +438,7 @@ class Tag
 
 	/**
 	 * Generiert den Close-Tag des Tags
+	 *
 	 * @return string
 	 */
 	protected function getCloseTag()
@@ -399,7 +454,7 @@ class Tag
 	/**
 	 * Initialisiert den InnerTag und setzt ihn komplett neu
 	 *
-	 * @param $value
+	 * @param string $value
 	 * @return Tag
 	 */
 	public function set($value)
@@ -412,10 +467,9 @@ class Tag
 
 
 	/**
-	 *
 	 * Hängt an den InnerTag einen neuen hinzu
 	 *
-	 * @param $value
+	 * @param mixed $value
 	 * @return Tag
 	 */
 	public function append($value)
@@ -445,10 +499,9 @@ class Tag
 	}
 
 	/**
-	 *
 	 * Hängt vor dem innerTag einen neuen hinzu
 	 *
-	 * @param $value
+	 * @param mixed $value
 	 * @return Tag
 	 */
 	public function prepend($value)
@@ -487,14 +540,12 @@ class Tag
 	/**
 	 * Sucht Tag mit ID $elementId
 	 *
-	 * @param      $elementId
-	 * @param null $container
+	 * @param string      $elementId
+	 * @param string|null $container
 	 * @return null|Tag
 	 */
 	public function findTagById($elementId, $container = null)
 	{
-		$target = null;
-
 		if (is_null($container))
 		{
 			$container = $this;
@@ -502,41 +553,54 @@ class Tag
 
 		foreach ($container->getInner() as $tag)
 		{
-			if ($tag instanceof \Templates\Html\Tag)
+
+			$target = $this->searchTag($tag, $elementId);
+			if ($target)
 			{
-				/**
-				 * @var $tag \Templates\Html\Tag
-				 */
-				if ($tag->getId() == $elementId)
-				{
-					return $tag;
-				}
-
-				if ($tag->hasInner())
-				{
-					$target = $this->findTagById($elementId, $tag);
-					if ($target)
-					{
-						return $target;
-					}
-				}
+				return $target;
 			}
-			elseif (is_array($tag))
-			{
-				foreach ($tag as $moretag)
-				{
-					$target = $this->findTagById($elementId, $moretag);
-					if ($target)
-					{
-						return $target;
-					}
-				}
-
-			}
-
 		}
 
-		return $target;
+		return null;
+	}
 
+	/**
+	 * @param string $haystack
+	 * @param string $needle
+	 * @return null|Tag
+	 */
+	private function searchTag($haystack, $needle)
+	{
+		if ($haystack instanceof \Templates\Html\Tag)
+		{
+			/**
+			 * @var $tag \Templates\Html\Tag
+			 */
+			if ($haystack->getId() == $needle)
+			{
+				return $haystack;
+			}
+			elseif ($haystack->hasInner())
+			{
+				$target = $this->findTagById($needle, $haystack);
+				if ($target)
+				{
+					return $target;
+				}
+			}
+		}
+		elseif (is_array($haystack))
+		{
+			foreach ($haystack as $moretag)
+			{
+				$target = $this->findTagById($needle, $moretag);
+				if ($target)
+				{
+					return $target;
+				}
+			}
+		}
+
+		return null;
 	}
 }
