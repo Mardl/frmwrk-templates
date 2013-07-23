@@ -3,6 +3,8 @@
 namespace unittest\Html;
 
 use Templates\Html\Form;
+use Templates\Html\Input;
+use Templates\Html\Tag;
 
 /**
  * Class FormTest
@@ -111,6 +113,108 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals('foobar', $ret);
 	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidate()
+	{
+		$ret = $this->form->validate();
+
+		$this->assertEquals(true, $ret);
+	}
+
+
+	/**
+	 * @return void
+	 */
+	public function testGetValidateErrors()
+	{
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testFindByName()
+	{
+		$name = 'foo';
+
+		$this->assertEmpty($this->form->findByName($name));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testFindByNameEXPInstanceOfInput()
+	{
+		$name = 'foo';
+		$inner = new Input($name);
+
+		$this->form->addInner($inner);
+		$ret = $this->form->findByName($name);
+
+		$this->assertEquals($inner, $ret);
+
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testFindByNameEXPArray()
+	{
+		$name = 'foo';
+
+		$inner = new Input('test');
+		$inner2 = new Input($name);
+		$inner3 = new Input('bar');
+
+		$inner->addInner($inner2);
+
+		$this->setValueToProperty(
+			$this->form,
+			'tagInner',
+			array(
+				array(
+					$inner,
+					$inner3
+				)
+			)
+		);
+
+		$ret = $this->form->findByName($name);
+
+		$this->assertEquals($inner2, $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testFindByNameEXPTag()
+	{
+		$name = 'foo';
+
+		$tag = new Tag();
+		$tag2 = new Tag();
+		$tag2->addAttribute('name', $name);
+		$tag3 = new Tag();
+
+		$tag->addInner($tag2);
+
+		$this->setValueToProperty(
+			$this->form,
+			'tagInner',
+			array(
+				$tag,
+				$tag3
+			)
+		);
+
+		$ret = $this->form->findByName($name);
+	}
+
+
 
 
 
