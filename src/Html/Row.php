@@ -77,7 +77,16 @@ class Row extends Tag
 		$allCells= $this->getInner();
 		if (is_array($allCells))
 		{
-			$allCells[$pos] = $cell;
+			$this->removeInner();
+			foreach($allCells as $key => $value)
+			{
+				if ($key == $pos)
+				{
+					$this->append($cell);
+					continue;
+				}
+				$this->append($value);
+			}
 		}
 
 		return $this;
