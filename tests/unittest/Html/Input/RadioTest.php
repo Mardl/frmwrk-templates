@@ -56,11 +56,56 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSetOptionEXPNotEmpty()
 	{
+		$radio = new Radio('test', '', array());
+
+		$obj = array(
+			'foo' => 'bar',
+			'test' => '123'
+		);
+
+		$radio->setOption($obj);
+
+		$expected = array(
+			0 => array(
+				0 => 'foo',
+				1 => 'bar',
+				2 => false
+			),
+			1 => array(
+				0 => 'test',
+				1 => '123',
+				2 => false
+			)
+		);
+
+		$this->assertEquals($expected, $this->readAttribute($radio, 'options'));
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testGetOptions()
+	{
 		$radio = new Radio('test');
 
-		$radio->addOption('foo', 'bar', false);
+		$radio->addOption('foo', 'bar', true);
 
-		$value = $radio->setOption(array('foo' => 'bar'));
-		var_dump($value);
+		$expected = array(
+			0 => array(
+				0 => 'foo',
+				1 => 'bar',
+				2 => true
+			)
+		);
+
+		$this->assertEquals($expected, $radio->getOptions());
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidate()
+	{
+		
 	}
 }
