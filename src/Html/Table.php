@@ -15,26 +15,26 @@ class Table extends Tag
 	private $rowClass;
 
 	/**
-	 * @param array $classOrAttributes
+	 * @param array  $classOrAttributes
 	 * @param string $rowNamespace
 	 */
-	public function __construct($classOrAttributes = array(),$rowNamespace='\Templates\Html\Row')
+	public function __construct($classOrAttributes = array(), $rowNamespace = '\Templates\Html\Row')
 	{
-		parent::__construct('table','',$classOrAttributes);
+		parent::__construct('table', '', $classOrAttributes);
 
 		$this->rowClass = $rowNamespace;
 
 		if (!$this->hasAttribute('cellpadding'))
 		{
-			$this->addAttribute('cellpadding','0');
+			$this->addAttribute('cellpadding', '0');
 		}
 		if (!$this->hasAttribute('cellspacing'))
 		{
-			$this->addAttribute('cellspacing','0');
+			$this->addAttribute('cellspacing', '0');
 		}
 		if (!$this->hasAttribute('border'))
 		{
-			$this->addAttribute('border','0');
+			$this->addAttribute('border', '0');
 		}
 	}
 
@@ -46,7 +46,7 @@ class Table extends Tag
 	private function setMaxCell(Row $row)
 	{
 		$max = 0;
-		foreach($row->getInner() as $cell)
+		foreach ($row->getInner() as $cell)
 		{
 			$max += $cell->getColspan();
 		}
@@ -54,9 +54,10 @@ class Table extends Tag
 		if ($this->maxCell == 0 || $this->maxCell == $max)
 		{
 			$this->maxCell = $max;
+
 			return;
 		}
-		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row '.($max+1).'. Erste Definition: '.$this->maxCell.' Columns.');
+		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row ' . ($max + 1) . '. Erste Definition: ' . $this->maxCell . ' Columns.');
 	}
 
 	public function addHeader($row)
@@ -99,13 +100,14 @@ class Table extends Tag
 			if ($value instanceof \Templates\Html\Row)
 			{
 				$this->setMaxCell($value);
+
 				return parent::append($value);
 			}
 			throw new \InvalidArgumentException('addRow von Table benötigt Instanze von Row');
 
 		}
 		$newRow = new $this->rowClass();
-		foreach($value as $rowOrCell)
+		foreach ($value as $rowOrCell)
 		{
 			if (is_object($rowOrCell))
 			{
@@ -124,6 +126,7 @@ class Table extends Tag
 		}
 
 		$this->setMaxCell($newRow);
+
 		return parent::append($newRow);
 	}
 
@@ -138,16 +141,16 @@ class Table extends Tag
 		$allRows = $this->getInner();
 		if (is_array($allRows))
 		{
-			if (false === $pos )
+			if (false === $pos)
 			{
-				return $allRows[ count($allRows)-1 ];
+				return $allRows[count($allRows) - 1];
 			}
 			if (isset($allRows[$pos]))
 			{
 				return $allRows[$pos];
 			}
 
-			throw new \InvalidArgumentException('Keine Zeile auf Position '.$pos.' vorhanden!');
+			throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
 		}
 
 		throw new \UnexpectedValueException('Keine Rows gesetzt!');
@@ -159,47 +162,58 @@ class Table extends Tag
 	 * @param Row $row
 	 * @return \Templates\Html\Table
 	 */
-	public function setRow($pos,Row $row)
+	public function setRow($pos, Row $row)
 	{
-		$allRows= $this->getInner();
+
+		$allRows = $this->getInner();
 		if (is_array($allRows))
 		{
-			$allRows[$pos] = $row;
-			//$this->append($allRows);
+			$this->removeInner();
+			foreach ($allRows as $key => $value)
+			{
+				if ($key == $pos)
+				{
+					$this->append($row);
+					continue;
+				}
+				$this->append($value);
+			}
 		}
 
 		return $this;
 	}
 
 	/**
-	 * @param int $column
+	 * @param int          $column
 	 * @param array|string $classOrAttributes
-	 * @param bool $headrows
+	 * @param bool         $headrows
 	 * @return \Templates\Html\Table
 	 */
 	public function addAttrColumn($column, $classOrAttributes = array(), $headrows = false)
 	{
 		$dataArray = $headrows ? $this->headerRow : $this->getInner();
 
-		foreach($dataArray as $row)
+		foreach ($dataArray as $row)
 		{
 			$this->setRowAttributes($column, $row, $classOrAttributes);
 		}
+
 		return $this;
 	}
 
 
 	public function formatColumn($column, $sprintfFormat)
 	{
-		foreach($this->getInner() as $row)
+		foreach ($this->getInner() as $row)
 		{
 			/**
-			 * @var $row \Templates\Html\Row
+			 * @var $row  \Templates\Html\Row
 			 * @var $cell \Templates\Html\Cell
 			 */
 			$cell = $row->getCell($column);
 			$cell->setFormat($sprintfFormat);
 		}
+
 		return $this;
 	}
 
@@ -208,7 +222,7 @@ class Table extends Tag
 		$headerRow = '';
 		if (!empty($this->headerRow))
 		{
-			foreach($this->headerRow as $row)
+			foreach ($this->headerRow as $row)
 			{
 				if ($row instanceof Row)
 				{
@@ -220,7 +234,7 @@ class Table extends Tag
 		$footerRow = '';
 		if (!empty($this->footerRow))
 		{
-			foreach($this->footerRow as $row)
+			foreach ($this->footerRow as $row)
 			{
 				$footerRow .= $row;
 			}
@@ -229,39 +243,39 @@ class Table extends Tag
 		$tHead = '';
 		if (!empty($headerRow))
 		{
-			$tHead = '<thead>'.$headerRow.'</thead>';
+			$tHead = '<thead>' . $headerRow . '</thead>';
 		}
 		$tFoot = '';
 		if (!empty($footerRow))
 		{
-			$tFoot = '<tfoot>'.$footerRow.'</tfoot>';
+			$tFoot = '<tfoot>' . $footerRow . '</tfoot>';
 		}
 
-		$strRow = '<tbody>'.parent::$this->getInnerAsString().'</tbody>';
+		$strRow = '<tbody>' . parent::$this->getInnerAsString() . '</tbody>';
 
-		$this->set($tHead.$strRow.$tFoot);
+		$this->set($tHead . $strRow . $tFoot);
 
 		return parent::toString();
 	}
 
 	/**
-	 * @param int $column
-	 * @param $row
+	 * @param int          $column
+	 * @param              $row
 	 * @param array|string $classOrAttributes
 	 * @return \Templates\Html\Table
 	 */
 	private function setRowAttributes($column, $row, $classOrAttributes = array())
 	{
 		/**
-		 * @var $row \Templates\Html\Row
+		 * @var $row  \Templates\Html\Row
 		 * @var $cell \Templates\Html\Cell
 		 */
 		$cell = $row->getCell($column);
 		if (is_array($classOrAttributes))
 		{
-			foreach($classOrAttributes as $name => $value)
+			foreach ($classOrAttributes as $name => $value)
 			{
-				$cell->addAttribute($name,$value);
+				$cell->addAttribute($name, $value);
 			}
 		}
 		else
