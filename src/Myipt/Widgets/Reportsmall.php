@@ -30,8 +30,8 @@ class Reportsmall extends \Templates\Myipt\Widget
 		if (!$analyseData['noChart']){
 			$canvas = new \Templates\Html\Tag('canvas', '', 'chart');
 
-			$canvas->addAttribute('id', $analyseData['id']);
-			$canvas->addAttribute('data-rel', $analyseData['id']);
+			$canvas->addAttribute('id', $analyseData['id'].$type);
+			$canvas->addAttribute('data-rel', $analyseData['id'].$type);
 			$canvas->addAttribute('data-value-rel', $analyseData['value']['rel']);
 			$canvas->addAttribute('data-value-rel-max', $analyseData['max']['rel']);
 			$canvas->addAttribute('data-value-abs', $analyseData['value']['abs']);
