@@ -104,8 +104,32 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return void
 	 */
-	public function testValidate()
+	public function testValidateEXPRequiredFalse()
 	{
-		
+		$radio = new Radio('test');
+
+		$this->assertTrue($radio->validate());
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPRequiredNotFound()
+	{
+		$radio = new Radio('test', '', array('foo' => 'bar','test' => '123'), true);
+
+		$this->assertEquals('Fehlende Eingabe für test', $radio->validate());
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPRequiredFound()
+	{
+		$radio = new Radio('test', '', array(), true);
+
+		$radio->addOption('foo', 'bar', true);
+
+		$this->assertTrue($radio->validate());
 	}
 }

@@ -43,7 +43,7 @@ class Radio extends \Templates\Html\Input
 			$found = false;
 			foreach($this->options as $option)
 			{
-				  $found = $found || $option[2];
+				$found = $found || $option[2];
 			}
 			if (!$found)
 			{
@@ -90,6 +90,4 @@ class Radio extends \Templates\Html\Input
 		}
 		return $strOut;
 	}
-
-
 }
