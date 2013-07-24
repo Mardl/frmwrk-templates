@@ -42,7 +42,7 @@ class Checkbox extends \Templates\Html\Input
 	{
 
 		$imageLabel = new \Templates\Html\Tag('label');
-		foreach($this->getAttribute('class') as $class)
+		foreach($this->getAttribute('class', array()) as $class)
 		{
 			$imageLabel->addClass($class);
 		}

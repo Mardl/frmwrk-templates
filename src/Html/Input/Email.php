@@ -12,8 +12,7 @@ class Email extends \Templates\Html\Input
 		{
 			return "Fehlende Eingabe für ".$this->getErrorLabel();
 		}
-		else if (!empty($val))
-		{
+		else if (!empty($val)) {
 			if (!filter_var($val, FILTER_VALIDATE_EMAIL)) {
 				return "Die Emailadresse wird als ungültig angesehen";
 			}

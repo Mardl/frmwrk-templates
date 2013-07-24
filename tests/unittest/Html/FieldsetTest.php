@@ -37,7 +37,7 @@ class FieldsetTest extends \PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * return void
+	 * @return void
 	 */
 	public function testLegend()
 	{
