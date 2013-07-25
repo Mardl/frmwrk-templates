@@ -1,11 +1,29 @@
 <?php
 namespace Templates\Html\Input;
 
+/**
+ * Class Radio
+ *
+ * @category Templates
+ * @package  Templates\Html\Input
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Radio extends \Templates\Html\Input
 {
 
+	/**
+	 * @var array
+	 */
 	private $options = array();
 
+	/**
+	 * @param string $name
+	 * @param string $selectedValue
+	 * @param array  $opt
+	 * @param bool   $required
+	 * @param string $placeholder
+	 * @param array  $classOrAttributes
+	 */
 	public function __construct($name, $selectedValue = '', $opt = array(), $required = false, $placeholder = '', $classOrAttributes = array())
 	{
 		parent::__construct($name, $selectedValue, $placeholder, $required, 'radio', $classOrAttributes);
@@ -13,13 +31,23 @@ class Radio extends \Templates\Html\Input
 		$this->setOption($opt);
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $title
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOption($value, $title, $selected = false)
 	{
 		$this->options[] = array($value, $title, $selected);
 
 	}
 
-	public function setOption($opt)
+	/**
+	 * @param array $opt
+	 * @return void
+	 */
+	public function setOption(array $opt)
 	{
 		if (!empty($opt))
 		{
@@ -30,11 +58,17 @@ class Radio extends \Templates\Html\Input
 		}
 	}
 
+	/**
+	 * @return array
+	 */
 	public function getOptions()
 	{
 		return $this->options;
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 
@@ -54,6 +88,9 @@ class Radio extends \Templates\Html\Input
 		return true;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 		parent::set('');

@@ -2,22 +2,30 @@
 
 namespace Templates\Html;
 
+/**
+ * Class Anchor
+ *
+ * @category Templates
+ * @package  Templates\Html
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Anchor extends Tag
 {
+
 	/**
-	 * @param $href
+	 * @param string       $href
 	 * @param array|string $linkText
-	 * @param array $classOrAttributes
+	 * @param array        $classOrAttributes
 	 */
-	public function __construct($href,$linkText, $classOrAttributes = array())
+	public function __construct($href, $linkText, $classOrAttributes = array())
 	{
-		parent::__construct('a',$linkText,$classOrAttributes);
+		parent::__construct('a', $linkText, $classOrAttributes);
 
 		$this->setHref($href);
 	}
 
 	/**
-	 * @param $value
+	 * @param string $value
 	 * @return Tag
 	 */
 	public function setHref($value)
@@ -30,7 +38,7 @@ class Anchor extends Tag
 	 */
 	public function getHref()
 	{
-		return $this->getAttribute('href','');
+		return $this->getAttribute('href', '');
 	}
 
 	/**

@@ -1,14 +1,41 @@
 <?php
 namespace Templates\Html\Input;
 
+/**
+ * Class Select
+ *
+ * @category Templates
+ * @package  Templates\Html\Input
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Select extends \Templates\Html\Input
 {
 
+	/**
+	 * @var array
+	 */
 	private $options = array();
+	/**
+	 * @var array
+	 */
 	private $optGroups = array();
+	/**
+	 * @var int
+	 */
 	private $size = 1;
+	/**
+	 * @var bool
+	 */
 	private $multiselect = false;
 
+	/**
+	 * @param string $name
+	 * @param string $selectedValue
+	 * @param array  $opt
+	 * @param bool   $required
+	 * @param string $placeholder
+	 * @param array  $classOrAttributes
+	 */
 	public function __construct($name, $selectedValue = '', $opt = array(), $required = false, $placeholder = '', $classOrAttributes = array())
 	{
 		parent::__construct($name, $selectedValue, $placeholder, $required, 'select', $classOrAttributes);
@@ -20,6 +47,9 @@ class Select extends \Templates\Html\Input
 		$this->removeAttribute('value');
 	}
 
+	/**
+	 * @return bool|string
+	 */
 	public function validate()
 	{
 		if ($this->isRequired())
@@ -44,7 +74,11 @@ class Select extends \Templates\Html\Input
 		return true;
 	}
 
-	public function setOption($opt)
+	/**
+	 * @param array $opt
+	 * @return $this
+	 */
+	public function setOption(array $opt)
 	{
 		$finish = array();
 
@@ -72,12 +106,25 @@ class Select extends \Templates\Html\Input
 		return $this;
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $tag
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOption($value, $tag, $selected = false)
 	{
 		$this->options[] = array($value, $tag, $selected);
 
 	}
 
+	/**
+	 * @param string $value
+	 * @param string $tag
+	 * @param string $optgroup
+	 * @param bool   $selected
+	 * @return void
+	 */
 	public function addOptionGrouped($value, $tag, $optgroup, $selected = false)
 	{
 		if (!isset($this->optGroups[$optgroup]))
@@ -89,18 +136,29 @@ class Select extends \Templates\Html\Input
 
 	}
 
+	/**
+	 * @param int $size
+	 * @return void
+	 */
 	public function setSize($size)
 	{
 		$this->size = $size;
 
 	}
 
+	/**
+	 * @param bool $boolean
+	 * @return void
+	 */
 	public function setMultiSelect($boolean)
 	{
 		$this->multiselect = $boolean;
 
 	}
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 
@@ -122,6 +180,9 @@ class Select extends \Templates\Html\Input
 		return parent::toString();
 	}
 
+	/**
+	 * @return string
+	 */
 	private function renderOptions()
 	{
 		$opts = '';
