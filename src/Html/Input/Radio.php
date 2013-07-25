@@ -91,6 +91,4 @@ class Radio extends \Templates\Html\Input
 
 		return $strOut;
 	}
-
-
 }

@@ -102,11 +102,14 @@ class RadioTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testValidate()
+	public function testValidateEXPRequiredFalse()
 	{
 		$ret = $this->radio->validate();
 
 		$this->assertEquals(true, $ret);
+		$radio = new Radio('test');
+
+		$this->assertTrue($radio->validate());
 	}
 
 	/**
