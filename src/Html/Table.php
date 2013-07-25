@@ -38,11 +38,6 @@ class Table extends Tag
 		}
 	}
 
-	private function countCell()
-	{
-
-	}
-
 	private function setMaxCell(Row $row)
 	{
 		$max = 0;
@@ -139,21 +134,16 @@ class Table extends Tag
 	public function getRow($pos = false)
 	{
 		$allRows = $this->getInner();
-		if (is_array($allRows))
+		if (false === $pos)
 		{
-			if (false === $pos)
-			{
-				return $allRows[count($allRows) - 1];
-			}
-			if (isset($allRows[$pos]))
-			{
-				return $allRows[$pos];
-			}
-
-			throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
+			return $allRows[count($allRows) - 1];
+		}
+		if (isset($allRows[$pos]))
+		{
+			return $allRows[$pos];
 		}
 
-		throw new \UnexpectedValueException('Keine Rows gesetzt!');
+		throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
 
 	}
 

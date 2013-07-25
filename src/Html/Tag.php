@@ -222,6 +222,8 @@ class Tag
 	 *
 	 * @param mixed $value
 	 * @return Tag
+	 *
+	 * @deprecated Bitte append direkt verwende!
 	 */
 	public function addInner($value)
 	{

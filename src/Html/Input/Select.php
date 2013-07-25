@@ -9,9 +9,9 @@ class Select extends \Templates\Html\Input
 	private $size = 1;
 	private $multiselect = false;
 
-	public function __construct($name, $selectedValue='', $opt = array(),$required=false,  $placeholder='', $classOrAttributes = array())
+	public function __construct($name, $selectedValue = '', $opt = array(), $required = false, $placeholder = '', $classOrAttributes = array())
 	{
-		parent::__construct($name, $selectedValue, $placeholder,$required, 'select', $classOrAttributes);
+		parent::__construct($name, $selectedValue, $placeholder, $required, 'select', $classOrAttributes);
 
 		$this->setOption($opt);
 
@@ -26,7 +26,7 @@ class Select extends \Templates\Html\Input
 		{
 			$found = false;
 			$count = 0;
-			foreach($this->options as $option)
+			foreach ($this->options as $option)
 			{
 				$count++;
 				if ($count == 1)
@@ -37,7 +37,7 @@ class Select extends \Templates\Html\Input
 			}
 			if (!$found)
 			{
-				return "Fehlende Eingabe für ".$this->getErrorLabel();
+				return "Fehlende Eingabe für " . $this->getErrorLabel();
 			}
 		}
 
@@ -48,24 +48,24 @@ class Select extends \Templates\Html\Input
 	{
 		$finish = array();
 
-		foreach($opt as $key => $value)
+		foreach ($opt as $key => $value)
 		{
-			if ( is_array($value) )
+			if (is_array($value))
 			{
-				if (isset($finish[ $key ]))
+				if (isset($finish[$key]))
 				{
 					continue;
 				}
-				foreach($opt[ $key ] as $keyNeu => $valueNeu)
+				foreach ($opt[$key] as $keyNeu => $valueNeu)
 				{
 
-					$this->addOptionGrouped($keyNeu, $valueNeu, $key, ((string)$selectedValue === (string)$keyNeu));
+					$this->addOptionGrouped($keyNeu, $valueNeu, $key, ((string)$this->getValue() === (string)$keyNeu));
 				}
-				$finish[ $key ] = $key;
+				$finish[$key] = $key;
 			}
 			else
 			{
-				$this->addOption($key,$value,((string)$this->getValue() === (string)$key));
+				$this->addOption($key, $value, ((string)$this->getValue() === (string)$key));
 			}
 		}
 
@@ -74,7 +74,7 @@ class Select extends \Templates\Html\Input
 
 	public function addOption($value, $tag, $selected = false)
 	{
-		$this->options[] = array($value,$tag,$selected);
+		$this->options[] = array($value, $tag, $selected);
 
 	}
 
@@ -85,7 +85,7 @@ class Select extends \Templates\Html\Input
 			$this->optGroups[$optgroup] = array();
 		}
 
-		$this->optGroups[$optgroup][] = array($value,$tag,$selected);
+		$this->optGroups[$optgroup][] = array($value, $tag, $selected);
 
 	}
 
@@ -106,11 +106,11 @@ class Select extends \Templates\Html\Input
 
 		if ($this->multiselect)
 		{
-			$this->addAttribute('multiple','multiple');
+			$this->addAttribute('multiple', 'multiple');
 		}
 		if ($this->size > 1)
 		{
-			$this->addAttribute('size',$this->size);
+			$this->addAttribute('size', $this->size);
 		}
 		if (empty($this->options) && empty($this->optGroups))
 		{
@@ -125,28 +125,33 @@ class Select extends \Templates\Html\Input
 	private function renderOptions()
 	{
 		$opts = '';
-		foreach ($this->options as $option){
-			$opts .= '<option value="'.$option[0].'"';
+		foreach ($this->options as $option)
+		{
+			$opts .= '<option value="' . $option[0] . '"';
 
-			if ($option[2] || ((string)$this->getValue() === (string)$option[0])){
+			if ($option[2] || ((string)$this->getValue() === (string)$option[0]))
+			{
 				$opts .= ' selected="selected"';
 			}
-			$opts .= '>'.$option[1].'</option>';
+			$opts .= '>' . $option[1] . '</option>';
 		}
 
-		foreach ($this->optGroups as $group => $options){
-			$opts .= "<optgroup label='".$group."'>";
+		foreach ($this->optGroups as $group => $options)
+		{
+			$opts .= "<optgroup label='" . $group . "'>";
 			foreach ($options as $option)
 			{
-				$opts .= '<option value="'.$option[0].'"';
+				$opts .= '<option value="' . $option[0] . '"';
 
-				if ($option[2] || ((string)$this->getValue() === (string)$option[0])){
+				if ($option[2] || ((string)$this->getValue() === (string)$option[0]))
+				{
 					$opts .= 'selected="selected"';
 				}
-				$opts .= '>'.$option[1].'</option>';
+				$opts .= '>' . $option[1] . '</option>';
 			}
 			$opts .= "</optgroup>";
 		}
+
 		return $opts;
 	}
 

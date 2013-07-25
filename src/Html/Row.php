@@ -54,17 +54,12 @@ class Row extends Tag
 	public function getCell($pos)
 	{
 		$allCells = $this->getInner();
-		if (is_array($allCells))
+		if (isset($allCells[$pos]))
 		{
-			if (isset($allCells[$pos]))
-			{
-				return $allCells[$pos];
-			}
-
-			throw new \InvalidArgumentException('Keine Zeile auf Position '.$pos.' vorhanden!');
+			return $allCells[$pos];
 		}
 
-		throw new \UnexpectedValueException('Keine Rows gesetzt!');
+		throw new \InvalidArgumentException('Keine Zeile auf Position '.$pos.' vorhanden!');
 	}
 
 	/**

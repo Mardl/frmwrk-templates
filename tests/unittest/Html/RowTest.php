@@ -98,7 +98,6 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		$cell = $this->row->getCell(3);
 	}
 
-
 	/**
 	 * @return void
 	 * @depends testGetCell

@@ -4,6 +4,7 @@ namespace unittest\Html;
 
 use Templates\Html\Row;
 use Templates\Html\Table;
+use Templates\Html\Tag;
 
 /**
  * Class FormTest
@@ -135,12 +136,62 @@ class TableTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testAddRowEXPinvalidArgException()
+	public function testAddRowEXPinvalidArgExc()
 	{
 		$this->setExpectedException('\InvalidArgumentException', 'addRow von Table benötigt Instanze von Row');
 
 		$this->table->addRow('test');
 	}
+
+	/**
+	 * @return void
+	 */
+	public function testAddRow()
+	{
+		$ret = $this->table->addRow(array('unittest'));
+
+		$inner = $ret->getInner();
+		$cells = $inner[0]->getInner();
+		$text = $cells[0]->getInner();
+
+		$this->assertInstanceOf('\Templates\Html\Cell', $cells[0]);
+
+		$this->assertSame('unittest', $text[0]);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testAddRowEXPtag()
+	{
+		$ret = $this->table->addRow(array(new Tag()));
+
+		$inner = $ret->getInner();
+		$cells = $inner[0]->getInner();
+		$text = $cells[0]->getInner();
+
+		$this->assertInstanceOf('\Templates\Html\Cell', $cells[0]);
+		$this->assertInstanceOf('\Templates\Html\Tag', $text[0]);
+
+	}
+
+
+/**
+	 * @return void
+	 */
+	public function testAddRowEXProw()
+	{
+		$ret = $this->table->addRow(array(new Row(array('unittest'))));
+		$inner = $ret->getInner();
+		$cells = $inner[0]->getInner();
+		$text = $cells[0]->getInner();
+
+		$this->assertInstanceOf('\Templates\Html\Cell', $cells[0]);
+		$this->assertSame('unittest', $text[0]);
+
+	}
+
+
 
 	/**
 	 * @return void
@@ -218,6 +269,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 
 	}
+
 
 
 	/**
