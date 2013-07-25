@@ -1,19 +1,18 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Sebastian.Rupp
- * Date: 24.07.13
- * Time: 13:41
- * To change this template use File | Settings | File Templates.
- */
 
 namespace unittest\Html\Input;
 
-
 use Templates\Html\Input\Hidden;
 
-class HiddenTest extends \PHPUnit_Framework_TestCase {
-
+/**
+ * Class HiddenTest
+ *
+ * @category Templates
+ * @package  Unittest\Html\Input
+ * @author   Sebastian Rupp <sebastian@dreiwerken.de>
+ */
+class HiddenTest extends \PHPUnit_Framework_TestCase
+{
 
 	/**
 	 * @return void

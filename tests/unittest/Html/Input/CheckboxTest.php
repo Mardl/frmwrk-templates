@@ -1,18 +1,18 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Sebastian.Rupp
- * Date: 24.07.13
- * Time: 11:27
- * To change this template use File | Settings | File Templates.
- */
 
 namespace unittest\Html\Input;
 
-
 use Templates\Html\Input\Checkbox;
 
-class CheckboxTest extends \PHPUnit_Framework_TestCase {
+/**
+ * Class CheckboxTest
+ *
+ * @category Templates
+ * @package  Unittest\Html\Input
+ * @author   Sebastian Rupp <sebastian@dreiwerken.de>
+ */
+class CheckboxTest extends \PHPUnit_Framework_TestCase
+{
 
 	/**
 	 * @return void
@@ -109,7 +109,7 @@ class CheckboxTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testToString()
 	{
-		$checkbox = new Checkbox('test', 'test1', 'place' , false, array('test'));
+		$checkbox = new Checkbox('test', 'test1', 'place', false, array('test'));
 
 		$checkbox->addAttribute('class', array('test4', 'test5'));
 

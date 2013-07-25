@@ -1,19 +1,20 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Sebastian.Rupp
- * Date: 24.07.13
- * Time: 13:08
- * To change this template use File | Settings | File Templates.
- */
 
 namespace unittest\Html\Input;
 
 
 use Templates\Html\Input\Email;
-use Templates\Html\Input;
 
-class EmailTest extends \PHPUnit_Framework_TestCase {
+
+/**
+ * Class EmailTest
+ *
+ * @category Templates
+ * @package  Unittest\Html\Input
+ * @author   Sebastian Rupp <sebastian@dreiwerken.de>
+ */
+class EmailTest extends \PHPUnit_Framework_TestCase
+{
 
 	/**
 	 * @param string $object
