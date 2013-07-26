@@ -2,6 +2,7 @@
 
 namespace unittest\Html;
 
+use Templates\Html\Cell;
 use Templates\Html\Row;
 use Templates\Html\Table;
 use Templates\Html\Tag;
@@ -98,7 +99,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 		$this->table->addRow($row);
 	}
 
-
 	/**
 	 * @return void
 	 */
@@ -175,8 +175,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 	}
 
-
-/**
+	/**
 	 * @return void
 	 */
 	public function testAddRowEXProw()
@@ -190,8 +189,6 @@ class TableTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame('unittest', $text[0]);
 
 	}
-
-
 
 	/**
 	 * @return void
@@ -264,13 +261,115 @@ class TableTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testFormatColumn()
+	public function testAddAttrColumn()
 	{
+		$row1 = new Row(array('foo'));
 
+		$this->table->append($row1);
 
+		$this->table->addAttrColumn(0);
+
+		$exp = $this->readAttribute($this->table->getRow(0)->getCell(0), 'tagInner');
+
+		$this->assertSame($exp, array('foo'));
 	}
 
+	/**
+	 * @return void
+	 */
+	public function testFormatColumn()
+	{
+		$row1 = new Row(array('foo'));
+		$format = 'test';
 
+		$this->table->append($row1);
+
+		$this->table->formatColumn(0, $format);
+
+		$exp = $this->readAttribute($this->table->getRow(0)->getCell(0), 'formatOutput');
+
+		$this->assertEquals('test', $exp);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testSetRowAttributesEXPString()
+	{
+		$row1 = new Row(array('foo'));
+
+		$this->table->append($row1);
+
+		$this->table->addAttrColumn(0, 'test');
+
+		$exp = $this->readAttribute($this->table->getRow(0)->getCell(0), 'tagAttributes');
+
+		$ret = array(
+			'class' => array(
+				'test' => 'test'
+			)
+		);
+
+		$this->assertSame($exp, $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testSetRowAttributesEXPArrayKeyValue()
+	{
+		$row1 = new Row(array('foo'));
+
+		$this->table->append($row1);
+
+		$array = array(
+			'foo' => 'bar'
+		);
+
+		$this->table->addAttrColumn(0, $array);
+
+		$exp = $this->readAttribute($this->table->getRow(0)->getCell(0), 'tagAttributes');
+
+		$ret = array(
+			'foo' => 'bar'
+		);
+
+		$this->assertSame($exp, $ret);
+	}
+
+	/**
+ * @return void
+ */
+	public function testToString()
+	{
+		$ret = $this->table->toString();
+
+		$this->assertEquals('<table cellpadding="0" cellspacing="0" border="0"><tbody></tbody></table>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToStringEXPHeaderRow()
+	{
+		$this->table->addHeader(new Row(array('header')));
+
+		$ret = $this->table->toString();
+
+		$this->assertEquals('<table cellpadding="0" cellspacing="0" border="0"><thead><tr ><th >header</th></tr></thead><tbody></tbody></table>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToStringEXPFooterRow()
+	{
+		$this->table->addFooter(new Row(array('footer')));
+
+		$ret = $this->table->toString();
+
+		$this->assertEquals('<table cellpadding="0" cellspacing="0" border="0"><tbody></tbody><tfoot><tr ><td >footer</td></tr></tfoot></table>', $ret);
+	}
 
 	/**
 	 * @return void

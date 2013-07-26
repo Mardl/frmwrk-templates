@@ -35,10 +35,24 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 	public function testValidateEXPnotFound()
 	{
 		$this->select->addOption('foo', 'bar');
+		$this->select->addOption('test', 'test1');
 		$this->select->setRequired();
 
 		$ret = $this->select->validate();
 		$this->assertEquals('Fehlende Eingabe für test', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPRequired()
+	{
+		$this->select->addOption('foo', 'bar');
+		$this->select->addOption('test', 'test1', true);
+		$this->select->setRequired();
+
+		$ret= $this->select->validate();
+		$this->assertTrue($ret);
 	}
 
 	/**
@@ -70,7 +84,7 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testSetOptionEXParray()
+	public function testSetOptionEXPArray()
 	{
 		$opt = array('foo' => array('test' => '123', 'test2' => '456'), 'test' => '123');
 		$this->select->setOption($opt);
@@ -103,6 +117,31 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals($expected, $ret);
 		$this->assertEquals($expectedGroup, $group);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testSetOptionEXPIssetFinish()
+	{
+		$opt = array(
+			'foo' => array(
+				'test' => '123',
+				'test2' => '456'
+			),
+			'foo2' => array(
+				'test' => '456',
+				'foo' => '456'
+			)
+		);
+
+		$this->select->setOption($opt);
+
+		$ret = $this->readAttribute($this->select, 'options');
+
+		$expected = array();
+
+		$this->assertSame($expected, $ret);
 	}
 
 
@@ -231,9 +270,25 @@ class SelectTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function testRenderOptions()
+	public function testRenderOptionsEXPOption()
 	{
+		$this->select->addOption('foo', 'bar', true);
 
+		$expected = '<select id="test" name="test"><option value="foo" selected="selected">bar</option></select>';
+
+		$this->assertEquals($expected, $this->select->toString());
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testRenderOptionsEXPOptiongroup()
+	{
+		$this->select->addOptionGrouped('foo', 'bar', 'group1', true);
+
+		$expected = '<select id="test" name="test"><optgroup label=\'group1\'><option value="foo"selected="selected">bar</option></optgroup></select>';
+
+		$this->assertEquals($expected, $this->select->toString());
 	}
 
 

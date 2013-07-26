@@ -86,16 +86,17 @@ class Select extends \Templates\Html\Input
 		{
 			if (is_array($value))
 			{
-				if (isset($finish[$key]))
-				{
-					continue;
-				}
 				foreach ($opt[$key] as $keyNeu => $valueNeu)
 				{
+					if (isset($finish[$keyNeu]))
+					{
+						continue;
+					}
 
 					$this->addOptionGrouped($keyNeu, $valueNeu, $key, ((string)$this->getValue() === (string)$keyNeu));
+
+					$finish[$keyNeu] = $keyNeu;
 				}
-				$finish[$key] = $key;
 			}
 			else
 			{
