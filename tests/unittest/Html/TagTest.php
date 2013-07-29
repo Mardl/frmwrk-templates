@@ -561,10 +561,10 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	{
 		$value = $this->tag;
 
-		$this->tag->addStyle('uniottest', array('testunit', 'test2foobar'));
+		$this->tag->addStyle('unittest', array('testunit', 'test2foobar'));
 
 		$ret = $value->toString();
-		$this->assertSame('<div style="uniottest:testunit test2foobar;"></div>', $ret);
+		$this->assertSame('<div style="unittest:testunit test2foobar;"></div>', $ret);
 	}
 
 	/**
@@ -587,10 +587,10 @@ class TagTest extends \PHPUnit_Framework_TestCase
 	{
 		$value = $this->tag;
 
-		$this->tag->addAttribute('uniottest', array('testunit', 'test2foobar'));
+		$this->tag->addAttribute('unittest', array('testunit', 'test2foobar'));
 
 		$ret = $value->toString();
-		$this->assertSame('<div uniottest="testunit test2foobar"></div>', $ret);
+		$this->assertSame('<div unittest="testunit test2foobar"></div>', $ret);
 	}
 
 	/**

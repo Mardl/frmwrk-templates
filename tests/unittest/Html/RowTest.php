@@ -71,18 +71,49 @@ class RowTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
-	public function getCell()
+	public function testGetCell()
 	{
+		$this->row->addCell('bla');
+		$this->row->addCell('bar');
+		$this->row->addCell('test');
 
+
+		$cell = $this->row->getCell(1);
+		$inner = $cell->getInner();
+
+		$this->assertEquals(array('bar'), $inner);
 	}
-
 
 	/**
 	 * @return void
 	 */
+	public function testGetCellEXPInvalidArgExc()
+	{
+		$this->row->addCell('bla');
+		$this->row->addCell('bar');
+		$this->row->addCell('test');
+
+		$this->setExpectedException('\InvalidArgumentException', 'Keine Zeile auf Position 3 vorhanden!');
+
+		$cell = $this->row->getCell(3);
+	}
+
+	/**
+	 * @return void
+	 * @depends testGetCell
+	 */
 	public function testSetCell()
 	{
+		$this->row->addCell('bla');
+		$this->row->addCell('bar');
+		$this->row->addCell('test');
 
+		$this->row->setCell(1, new Cell('blubb'));
+
+		$cell = $this->row->getCell(1);
+		$inner = $cell->getInner();
+
+		$this->assertEquals(array('blubb'), $inner);
 	}
 
 
@@ -111,6 +142,16 @@ class RowTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(true, $ret);
 	}
 
+	/**
+	 * @return void
+	 */
+	public function testConstructEXPHeader()
+	{
+		$row = new Row(array('test'), true);
+		$header = $this->readAttribute($row, 'header');
+
+		$this->assertEquals(true, $header);
+	}
 
 
 	/**

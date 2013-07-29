@@ -2,18 +2,29 @@
 
 namespace Templates\Html;
 
+/**
+ * Class Row
+ *
+ * @category Templates
+ * @package  Templates\Html
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Row extends Tag
 {
+
+	/**
+	 * @var bool
+	 */
 	private $header = false;
 
 	/**
 	 * @param array $values
-	 * @param bool $header
+	 * @param bool  $header
 	 * @param array $classOrAttributes
 	 */
-	public function __construct(array $values=array(), $header=false,$classOrAttributes = array())
+	public function __construct(array $values = array(), $header = false, $classOrAttributes = array())
 	{
-		parent::__construct('tr','',$classOrAttributes);
+		parent::__construct('tr', '', $classOrAttributes);
 
 		if (!empty($values))
 		{
@@ -23,17 +34,25 @@ class Row extends Tag
 			}
 		}
 
-		if($header)
+		if ($header)
 		{
 			$this->header();
 		}
 	}
 
+	/**
+	 * @return void
+	 */
 	public function header()
 	{
 		$this->header = true;
 	}
 
+	/**
+	 * @param Cell|string $cell
+	 * @param array       $classOrAttributes
+	 * @return Tag
+	 */
 	public function addCell($cell, $classOrAttributes = array())
 	{
 		if ($cell instanceof \Templates\Html\Cell)
@@ -41,12 +60,13 @@ class Row extends Tag
 			return parent::append($cell);
 		}
 
-		$cellNew = new  \Templates\Html\Cell($cell,$this->header, $classOrAttributes);
+		$cellNew = new  \Templates\Html\Cell($cell, $this->header, $classOrAttributes);
+
 		return parent::append($cellNew);
 	}
 
 	/**
-	 * @param $pos
+	 * @param int $pos
 	 * @return mixed
 	 * @throws \UnexpectedValueException
 	 * @throws \InvalidArgumentException
@@ -54,40 +74,47 @@ class Row extends Tag
 	public function getCell($pos)
 	{
 		$allCells = $this->getInner();
-		if (is_array($allCells))
+		if (isset($allCells[$pos]))
 		{
-			if (isset($allCells[$pos]))
-			{
-				return $allCells[$pos];
-			}
-
-			throw new \InvalidArgumentException('Keine Zeile auf Position '.$pos.' vorhanden!');
+			return $allCells[$pos];
 		}
 
-		throw new \UnexpectedValueException('Keine Rows gesetzt!');
+		throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
 	}
 
 	/**
-	 * @param $pos
+	 * @param int  $pos
 	 * @param Cell $cell
 	 * @return Row
 	 */
-	public function setCell($pos,Cell $cell)
+	public function setCell($pos, Cell $cell)
 	{
-		$allCells= $this->getInner();
+		$allCells = $this->getInner();
 		if (is_array($allCells))
 		{
-			$allCells[$pos] = $cell;
+			$this->removeInner();
+			foreach ($allCells as $key => $value)
+			{
+				if ($key == $pos)
+				{
+					$this->append($cell);
+					continue;
+				}
+				$this->append($value);
+			}
 		}
 
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 		if ($this->header)
 		{
-			foreach($this->tagInner as $cell)
+			foreach ($this->tagInner as $cell)
 			{
 				if ($cell instanceof \Templates\Html\Cell)
 				{
