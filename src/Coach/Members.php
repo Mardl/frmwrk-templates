@@ -27,7 +27,8 @@ class Members extends \Templates\Html\Tag
 		$this->disableControls = $disableControls;
 	}
 
-	public function setView($view){
+	public function setView($view)
+	{
 		$this->view = $view;
 	}
 
