@@ -2,11 +2,27 @@
 
 namespace Templates\Html;
 
+/**
+ * Class Table
+ *
+ * @category Templates
+ * @package  Templates\Html
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Table extends Tag
 {
 
+	/**
+	 * @var array
+	 */
 	protected $headerRow = array();
+	/**
+	 * @var array
+	 */
 	protected $footerRow = array();
+	/**
+	 * @var int
+	 */
 	protected $maxCell = 0;
 
 	/**
@@ -38,11 +54,11 @@ class Table extends Tag
 		}
 	}
 
-	private function countCell()
-	{
-
-	}
-
+	/**
+	 * @param Row $row
+	 * @return void
+	 * @throws \Templates\Exceptions\Layout
+	 */
 	private function setMaxCell(Row $row)
 	{
 		$max = 0;
@@ -60,6 +76,10 @@ class Table extends Tag
 		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row ' . ($max + 1) . '. Erste Definition: ' . $this->maxCell . ' Columns.');
 	}
 
+	/**
+	 * @param array|Row $row
+	 * @return void
+	 */
 	public function addHeader($row)
 	{
 		if (is_array($row))
@@ -75,6 +95,10 @@ class Table extends Tag
 		$this->headerRow[] = $newRow;
 	}
 
+	/**
+	 * @param array|Row $row
+	 * @return void
+	 */
 	public function addFooter($row)
 	{
 		if (is_array($row))
@@ -89,7 +113,7 @@ class Table extends Tag
 	}
 
 	/**
-	 * @param $value
+	 * @param mixed $value
 	 * @return Table|Tag
 	 * @throws \InvalidArgumentException
 	 */
@@ -132,28 +156,23 @@ class Table extends Tag
 
 	/**
 	 * @param bool $pos
-	 * @return mixed
+	 * @return Row
 	 * @throws \UnexpectedValueException
 	 * @throws \InvalidArgumentException
 	 */
 	public function getRow($pos = false)
 	{
 		$allRows = $this->getInner();
-		if (is_array($allRows))
+		if (false === $pos)
 		{
-			if (false === $pos)
-			{
-				return $allRows[count($allRows) - 1];
-			}
-			if (isset($allRows[$pos]))
-			{
-				return $allRows[$pos];
-			}
-
-			throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
+			return $allRows[count($allRows) - 1];
+		}
+		if (isset($allRows[$pos]))
+		{
+			return $allRows[$pos];
 		}
 
-		throw new \UnexpectedValueException('Keine Rows gesetzt!');
+		throw new \InvalidArgumentException('Keine Zeile auf Position ' . $pos . ' vorhanden!');
 
 	}
 
@@ -202,6 +221,11 @@ class Table extends Tag
 	}
 
 
+	/**
+	 * @param int    $column
+	 * @param string $sprintfFormat
+	 * @return $this
+	 */
 	public function formatColumn($column, $sprintfFormat)
 	{
 		foreach ($this->getInner() as $row)
@@ -217,6 +241,9 @@ class Table extends Tag
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 		$headerRow = '';
@@ -260,11 +287,11 @@ class Table extends Tag
 
 	/**
 	 * @param int          $column
-	 * @param              $row
+	 * @param Row          $row
 	 * @param array|string $classOrAttributes
 	 * @return \Templates\Html\Table
 	 */
-	private function setRowAttributes($column, $row, $classOrAttributes = array())
+	private function setRowAttributes($column, Row $row, $classOrAttributes = array())
 	{
 		/**
 		 * @var $row  \Templates\Html\Row

@@ -37,6 +37,19 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		return $prop;
 	}
 
+
+	/**
+	 * @return void
+	 */
+	public function testConstruktor()
+	{
+		$form = new Form('halloDuDa');
+
+		$link = $form->getAction();
+		$this->assertSame('halloDuDa', $link);
+
+	}
+
 	/**
 	 * @return void
 	 */
@@ -48,6 +61,7 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('test', $ret);
 	}
 
+
 	/**
 	 * @return void
 	 */
@@ -58,7 +72,6 @@ class FormTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertEquals(array('foo' => 'bar'), $ret);
 	}
-
 
 	/**
 	 * @return void
@@ -128,10 +141,122 @@ class FormTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
+	public function testValidateEXPInput()
+	{
+		$input = new \Templates\Html\Input('name1');
+		$ret = $this->form->validate($input);
+		$this->assertTrue($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPinputFailed()
+	{
+		$input = new \Templates\Html\Input('name1','','',true);
+		$ret = $this->form->validate($input);
+		$this->assertFalse($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerInput()
+	{
+		$tag = new Tag();
+		$input = new \Templates\Html\Input('name1');
+		$tag->append($input);
+		$ret = $this->form->validate($tag);
+		$this->assertTrue($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerInputFailed()
+	{
+		$tag = new Tag();
+		$input = new \Templates\Html\Input('name1','','',true);
+		$tag->append($input);
+		$ret = $this->form->validate($tag);
+		$this->assertFalse($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerTagInput()
+	{
+		$tag = new Tag();
+		$spanTag = new Tag('span');
+		$input = new \Templates\Html\Input('name1');
+		$spanTag->append($input);
+		$tag->append($spanTag);
+
+		$ret = $this->form->validate($tag);
+		$this->assertTrue($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerTagInputFailed()
+	{
+		$tag = new Tag();
+		$spanTag = new Tag('span');
+		$input = new \Templates\Html\Input('name1','','',true);
+		$spanTag->append($input);
+		$tag->append($spanTag);
+
+		$ret = $this->form->validate($tag);
+		$this->assertFalse($ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerArrayInput()
+	{
+		$tag = new Tag();
+		$input = new \Templates\Html\Input('name1');
+		$tag->append(array($input));
+
+		$ret = $this->form->validate($tag);
+		$this->assertTrue($ret);
+	}
+
+
+	/**
+	 * @return void
+	 */
 	public function testGetValidateErrors()
 	{
+		$ret = $this->form->getValidateErrors();
+		$current = $this->readAttribute($this->form, 'validateMessage');
 
+		$this->assertSame(array(), $current);
+
+		$this->setValueToProperty($this->form, 'validateMessage', 'foobar');
+
+		$ret = $this->form->getValidateErrors();
+		$current = $this->readAttribute($this->form, 'validateMessage');
+
+		$this->assertSame('foobar', $current);
 	}
+
+	/**
+	 * @return void
+	 */
+	public function testValidateEXPInnerArrayInputFailed()
+	{
+		$tag = new Tag();
+		$input = new \Templates\Html\Input('name1','','',true);
+		$tag->append(array($input));
+
+		$ret = $this->form->validate($tag);
+		$this->assertFalse($ret);
+	}
+
 
 	/**
 	 * @return void
@@ -191,16 +316,38 @@ class FormTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @return void
 	 */
+	public function testFindByNameEXPInstanceInput()
+	{
+
+		$name = 'foo';
+
+		$inner = new Input('test');
+		$inner2 = new Input($name);
+
+		$inner->append($inner2);
+
+
+		$this->form->append($inner);
+
+		$ret = $this->form->findByName($name);
+
+		$this->assertEquals($inner2, $ret);
+
+	}
+
+	/**
+	 * @return void
+	 */
 	public function testFindByNameEXPTag()
 	{
 		$name = 'foo';
 
 		$tag = new Tag();
-		$tag2 = new Tag();
-		$tag2->addAttribute('name', $name);
+		$input = new Input($name);
+		//$tag2->addAttribute('name', $name);
 		$tag3 = new Tag();
 
-		$tag->addInner($tag2);
+		$tag->addInner($input);
 
 		$this->setValueToProperty(
 			$this->form,
@@ -212,6 +359,8 @@ class FormTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$ret = $this->form->findByName($name);
+
+		$this->assertEquals($input, $ret);
 	}
 
 

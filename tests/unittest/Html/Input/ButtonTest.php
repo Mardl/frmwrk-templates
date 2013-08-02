@@ -1,18 +1,19 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Sebastian.Rupp
- * Date: 24.07.13
- * Time: 11:09
- * To change this template use File | Settings | File Templates.
- */
 
 namespace unittest\Html\Input;
 
 
 use Templates\Html\Input\Button;
 
-class ButtonTest extends \PHPUnit_Framework_TestCase {
+/**
+ * Class ButtonTest
+ *
+ * @category Templates
+ * @package  Unittest\Html\Input
+ * @author   Sebastian Rupp <sebastian@dreiwerken.de>
+ */
+class ButtonTest extends \PHPUnit_Framework_TestCase
+{
 
 	/**
 	 * @return void

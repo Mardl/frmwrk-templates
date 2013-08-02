@@ -1,26 +1,30 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: Sebastian.Rupp
- * Date: 24.07.13
- * Time: 13:46
- * To change this template use File | Settings | File Templates.
- */
 
 namespace unittest\Html\Input;
 
 
 use Templates\Html\Input\Radio;
 
-class RadioTest extends \PHPUnit_Framework_TestCase {
+/**
+ * Class RadioTest
+ *
+ * @category Templates
+ * @package  Unittest\Html\Input
+ * @author   Sebastian Rupp <sebastian@dreiwerken.de>
+ */
+class RadioTest extends \PHPUnit_Framework_TestCase
+{
+
+	/**
+	 * @var radio
+	 */
+	protected $radio = null;
 
 	/**
 	 * @return void
 	 */
 	public function testConstruct()
 	{
-		$radio = new Radio('test');
-
 		$expected = array(
 			'type' => 'radio',
 			'id' => 'test',
@@ -28,7 +32,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 			'value' => ''
 		);
 
-		$this->assertEquals($expected, $this->readAttribute($radio, 'tagAttributes'));
+		$this->assertEquals($expected, $this->readAttribute($this->radio, 'tagAttributes'));
 	}
 
 	/**
@@ -36,9 +40,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testAddOption()
 	{
-		$radio = new Radio('test');
-
-		$radio->addOption('foo', 'bar', false);
+		$this->radio->addOption('foo', 'bar', false);
 
 		$expected = array(
 			array(
@@ -48,7 +50,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertEquals($expected, $this->readAttribute($radio, 'options'));
+		$this->assertEquals($expected, $this->readAttribute($this->radio, 'options'));
 	}
 
 	/**
@@ -56,14 +58,12 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testSetOptionEXPNotEmpty()
 	{
-		$radio = new Radio('test', '', array());
-
 		$obj = array(
 			'foo' => 'bar',
 			'test' => '123'
 		);
 
-		$radio->setOption($obj);
+		$this->radio->setOption($obj);
 
 		$expected = array(
 			0 => array(
@@ -78,7 +78,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertEquals($expected, $this->readAttribute($radio, 'options'));
+		$this->assertEquals($expected, $this->readAttribute($this->radio, 'options'));
 	}
 
 	/**
@@ -86,9 +86,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGetOptions()
 	{
-		$radio = new Radio('test');
-
-		$radio->addOption('foo', 'bar', true);
+		$this->radio->addOption('foo', 'bar', true);
 
 		$expected = array(
 			0 => array(
@@ -98,7 +96,7 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 			)
 		);
 
-		$this->assertEquals($expected, $radio->getOptions());
+		$this->assertEquals($expected, $this->radio->getOptions());
 	}
 
 	/**
@@ -106,6 +104,9 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testValidateEXPRequiredFalse()
 	{
+		$ret = $this->radio->validate();
+
+		$this->assertEquals(true, $ret);
 		$radio = new Radio('test');
 
 		$this->assertTrue($radio->validate());
@@ -114,22 +115,102 @@ class RadioTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @return void
 	 */
-	public function testValidateEXPRequiredNotFound()
+	public function testValidateEXPIsRequired()
 	{
-		$radio = new Radio('test', '', array('foo' => 'bar','test' => '123'), true);
 
-		$this->assertEquals('Fehlende Eingabe für test', $radio->validate());
+		$this->radio->addOption('foo', 'bar', true);
+		$this->radio->setRequired();
+
+		$ret = $this->radio->validate();
+
+		$this->assertEquals(true, $ret);
 	}
 
 	/**
 	 * @return void
 	 */
-	public function testValidateEXPRequiredFound()
+	public function testValidateEXPIsRequiredNotFound()
 	{
-		$radio = new Radio('test', '', array(), true);
 
-		$radio->addOption('foo', 'bar', true);
+		$this->radio->addOption('foo', 'bar');
+		$this->radio->setRequired();
 
-		$this->assertTrue($radio->validate());
+		$ret = $this->radio->validate();
+
+		$this->assertEquals('Fehlende Eingabe für test', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToString()
+	{
+		$ret = $this->radio->toString();
+
+		$this->assertEquals('', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToStringEXPOptions()
+	{
+		$obj = array(
+			'foo' => 'bar',
+			'test' => '123'
+		);
+
+		$this->radio->setOption($obj);
+		$ret = $this->radio->toString();
+
+		$this->assertEquals('<label ><input type="radio" id="test-1" name="test" value="foo" />bar</label><label ><input type="radio" id="test-2" name="test" value="test" />123</label>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToStringEXPOptionsChecked()
+	{
+		$obj = array(
+			'foo' => 'bar'
+		);
+
+		$this->radio->setOption($obj);
+		$this->radio->addOption('check', 'this', true);
+		$ret = $this->radio->toString();
+
+		$this->assertEquals('<label ><input type="radio" id="test-1" name="test" value="foo" />bar</label><label ><input type="radio" id="test-2" name="test" value="check" checked="checked" />this</label>', $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testToStringEXPOptionsClass()
+	{
+		$radio = new Radio('test', '', array('foo' => 'foo', 'bar' => 'bar'), false, 'place', 'testclass');
+		$ret = $radio->toString();
+
+		$this->assertEquals('<label class="testclass"><input type="radio" id="test-1" name="test" value="foo" />foo</label><label class="testclass"><input type="radio" id="test-2" name="test" value="bar" />bar</label>', $ret);
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function setUp()
+	{
+		parent::setUp();
+
+		$this->radio = new Radio('test');
+	}
+
+	/**
+	 * @return void
+	 */
+	protected function tearDown()
+	{
+		parent::tearDown();
+
+		unset($this->radio);
 	}
 }

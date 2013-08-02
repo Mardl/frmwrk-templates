@@ -116,37 +116,7 @@ class Form extends Tag
 		{
 			foreach ($container->getInner() as $tag)
 			{
-				if ($tag instanceof \Templates\Html\Input)
-				{
-					/**
-					 * @var $tag \Templates\Html\Input
-					 */
-					$check = $tag->validate();
-
-					if ($check !== true)
-					{
-						$this->validateMessage[] = $check;
-						$tag->addClass('error required');
-						$checkup = false;
-					}
-				}
-				elseif ($tag instanceof \Templates\Html\Tag)
-				{
-					$check = self::validate($tag);
-					$checkup = $checkup && $check;
-				}
-				elseif (is_array($tag))
-				{
-					foreach ($tag as $moretag)
-					{
-						if ($moretag instanceof \Templates\Html\Tag)
-						{
-							$check = self::validate($moretag);
-							$checkup = $checkup && $check;
-						}
-					}
-
-				}
+				$checkup = $checkup && $this->validateInner($tag);
 			}
 		}
 		elseif ($container instanceof \Templates\Html\Input)
@@ -158,6 +128,47 @@ class Form extends Tag
 				$this->validateMessage[] = $check;
 				$container->addClass('error required');
 				$checkup = false;
+			}
+		}
+
+		return $checkup;
+	}
+
+	/**
+	 * @param mixed $tag
+	 * @return bool
+	 */
+	private function validateInner($tag)
+	{
+		$checkup = true;
+		if ($tag instanceof \Templates\Html\Input)
+		{
+			/**
+			 * @var $tag \Templates\Html\Input
+			 */
+			$check = $tag->validate();
+
+			if ($check !== true)
+			{
+				$this->validateMessage[] = $check;
+				$tag->addClass('error required');
+				$checkup = false;
+			}
+		}
+		elseif ($tag instanceof \Templates\Html\Tag)
+		{
+			$check = self::validate($tag);
+			$checkup = $checkup && $check;
+		}
+		elseif (is_array($tag))
+		{
+			foreach ($tag as $moretag)
+			{
+				if ($moretag instanceof \Templates\Html\Tag)
+				{
+					$check = self::validate($moretag);
+					$checkup = $checkup && $check;
+				}
 			}
 		}
 
