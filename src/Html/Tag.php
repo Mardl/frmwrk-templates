@@ -23,6 +23,10 @@ class Tag
 	/**
 	 * @var array
 	 */
+	protected $javascript = array();
+	/**
+	 * @var array
+	 */
 	protected $tagAttributes = array();
 	/**
 	 * @var array
@@ -408,6 +412,50 @@ class Tag
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function getJsFile()
+	{
+		return $this->javascript;
+	}
+
+	/**
+	 * @param string $value
+	 * @return void
+	 */
+	public function addJsFile($value)
+	{
+		$this->javascript[] = $value;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function createScripts()
+	{
+		$script = '';
+		$src = $this->getJsFile();
+		if (!empty($src))
+		{
+			foreach ($src as $source)
+			{
+				$tag = new Tag(
+					'script',
+					'',
+					array(
+						'src' => $source,
+						'type' => 'text/javascript'
+					)
+				);
+
+				$script .= $tag;
+			}
+		}
+
+		return $script;
+	}
+
+	/**
 	 * Generiert den Tag als String
 	 *
 	 * @return string
@@ -424,6 +472,7 @@ class Tag
 		}
 		$str .= $this->getInnerAsString();
 		$str .= $this->getCloseTag();
+		$str .= $this->createScripts();
 
 		return $str;
 	}
