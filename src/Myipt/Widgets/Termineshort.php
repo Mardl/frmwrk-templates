@@ -36,8 +36,9 @@ class Termineshort extends \Templates\Myipt\Widget
 				$anchor = new \Templates\Html\Anchor(
 					$this->view->url(array("id"=>$termin->getId()), "termindetails"),
 					sprintf(
-						"%s %s %s",
+						"%s %s %s %s",
 						$termin->getSubject(),
+						new \Templates\Html\Tag('span', ' - ' . $termin->getDateTil()->format('H:i'), 'time'),
 						new \Templates\Html\Tag('span', $termin->getDateFrom()->format('H:i'), 'time'),
 						new \Templates\Html\Tag('span', $termin->getDateFrom()->format('d.m'), 'date')
 					),

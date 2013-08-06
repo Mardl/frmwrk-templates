@@ -43,7 +43,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 		$this->image->src('foo');
 		$ret = $this->readAttribute($this->image, 'tagAttributes');
 
-		$this->assertEquals(array('src' => 'foo', 'alt' => '', 'title' => '' ), $ret);
+		$this->assertSame(array('src' => 'foo', 'alt' => '' ), $ret);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 		$this->image->alt('foo');
 		$ret = $this->readAttribute($this->image, 'tagAttributes');
 
-		$this->assertEquals(array('src' => 'Test', 'alt' => 'foo', 'title' => '' ), $ret);
+		$this->assertSame(array('src' => 'Test', 'alt' => 'foo', ), $ret);
 	}
 
 	/**
@@ -65,7 +65,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 		$this->image->title('foo');
 		$ret = $this->readAttribute($this->image, 'tagAttributes');
 
-		$this->assertEquals(array('src' => 'Test', 'alt' => '', 'title' => 'foo' ), $ret);
+		$this->assertSame(array('src' => 'Test', 'alt' => '', 'title' => 'foo' ), $ret);
 	}
 
 	/**
@@ -76,7 +76,7 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 		$this->image->width('123');
 		$ret = $this->readAttribute($this->image, 'tagAttributes');
 
-		$this->assertEquals(array('src' => 'Test', 'alt' => '', 'title' => '', 'width' => '123' ), $ret);
+		$this->assertSame(array('src' => 'Test', 'alt' => '', 'width' => '123' ), $ret);
 	}
 
 	/**
@@ -87,7 +87,29 @@ class ImageTest extends \PHPUnit_Framework_TestCase
 		$this->image->heigth('123');
 		$ret = $this->readAttribute($this->image, 'tagAttributes');
 
-		$this->assertEquals(array('src' => 'Test', 'alt' => '', 'title' => '', 'height' => '123' ), $ret);
+		$this->assertSame(array('src' => 'Test', 'alt' => '', 'height' => '123' ), $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testConstructorEXPalt()
+	{
+		$image = new Image('Test', 'altText');
+		$ret = $this->readAttribute($image, 'tagAttributes');
+
+		$this->assertSame(array('src' => 'Test', 'alt' => 'altText', 'title' => 'altText' ), $ret);
+	}
+
+	/**
+	 * @return void
+	 */
+	public function testConstructorEXPtitle()
+	{
+		$image = new Image('Test', '', 'titleText');
+		$ret = $this->readAttribute($image, 'tagAttributes');
+
+		$this->assertSame(array('src' => 'Test', 'alt' => 'titleText', 'title' => 'titleText' ), $ret);
 	}
 
 
