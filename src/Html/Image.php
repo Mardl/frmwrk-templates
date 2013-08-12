@@ -24,8 +24,14 @@ class Image extends Tag
 		$this->forceClose = false;
 
 		$this->src($src);
-		$this->alt(empty($altText) ? $titleText : $altText);
-		$this->title(empty($titleText) ? $altText : $titleText);
+		$alt = empty($altText) ? $titleText : $altText;
+		$this->alt($alt);
+
+		$title = empty($titleText) ? $altText : $titleText;
+		if (!empty($title))
+		{
+			$this->title($title);
+		}
 	}
 
 	/**
