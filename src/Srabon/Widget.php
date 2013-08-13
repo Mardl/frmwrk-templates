@@ -32,7 +32,7 @@ class Widget extends Tag
 	 * @param bool $flat
 	 * @param array $classOrAttributes
 	 */
-	public function __construct($headerText='', $value='', $flat=true, $classOrAttributes = array())
+	public function __construct($headerText = '', $value = '', $flat = true, $classOrAttributes = array())
 	{
 		parent::__construct('div', '', $classOrAttributes);
 		$this->flat = $flat;
@@ -41,12 +41,10 @@ class Widget extends Tag
 		$this->initContent();
 		$this->initFoot();
 
-		if(!empty($headerText))
-		{
+		if (!empty($headerText)) {
 			$this->setHeader($headerText);
 		}
-		if (!empty($value))
-		{
+		if (!empty($value)) {
 			$this->append($value);
 		}
 	}
@@ -58,14 +56,14 @@ class Widget extends Tag
 	protected function initHead()
 	{
 		$this->header = new Tag('h5');
-		$div = new Tag('div',$this->header,'widget-head');
+		$div = new Tag('div', $this->header, 'widget-head');
 
 		parent::append($div);
 	}
 
 	protected function initFoot()
 	{
-		$this->footer = new Tag('div','','well');
+		$this->footer = new Tag('div', '', 'well');
 	}
 
 	/**
@@ -74,13 +72,12 @@ class Widget extends Tag
 	 */
 	protected function initContent()
 	{
-		$this->content = new Tag('div','','well');
-		if(!$this->flat)
-		{
+		$this->content = new Tag('div', '', 'well');
+		if (!$this->flat) {
 			$this->content->addClass('white-box');
 		}
-		$wrap1 = new Tag('div',$this->content,'widget-box');
-		$wrap2 = new Tag('div',$wrap1,'widget-content');
+		$wrap1 = new Tag('div', $this->content, 'widget-box');
+		$wrap2 = new Tag('div', $wrap1, 'widget-content');
 
 		parent::append($wrap2);
 	}
@@ -118,9 +115,8 @@ class Widget extends Tag
 		$type = !$this->flat ? 'widget-block' : 'nonboxy-widget';
 		$this->addClass($type);
 
-		if ($this->footer->countInners() > 0)
-		{
-			$div = new Tag('div',$this->footer,'widget-bottom');
+		if ($this->footer->countInners() > 0) {
+			$div = new Tag('div', $this->footer, 'widget-bottom');
 			parent::append($div);
 		}
 		return parent::toString();
