@@ -2,14 +2,35 @@
 
 namespace Templates\Myipt;
 
-
+/**
+ * Class Block
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Block extends \Templates\Html\Tag
 {
 
-	public function __construct($typ, $classOrAttributes = array()){
+	/**
+	 * @param string $typ
+	 * @param array  $classOrAttributes
+	 */
+	public function __construct($typ, $classOrAttributes = array())
+	{
 		parent::__construct($typ, '', $classOrAttributes);
 	}
 
+	/**
+	 * @param string $name
+	 * @param string $value
+	 * @param string $label
+	 * @param array  $classOrAttributes
+	 * @param string $placeholder
+	 * @param bool   $required
+	 * @param string $type
+	 * @return void
+	 */
 	public function addLabeldInput($name, $value, $label, $classOrAttributes = array(), $placeholder = '', $required = false, $type = 'text')
 	{
 		$label = new \Templates\Html\Tag('label', $label);
@@ -50,30 +71,40 @@ class Block extends \Templates\Html\Tag
 	 * @param String $label
 	 * @param array $selects
 	 */
-	public function addSelects($label, array $selects){
-		if (!empty($label)){
+	public function addSelects($label, array $selects)
+	{
+		if (!empty($label))
+		{
 			$label = new \Templates\Html\Tag('label', $label);
 			$this->append($label);
 		}
 
-		foreach ($selects as $box){
+		foreach ($selects as $box)
+		{
 			$value = '';
-			foreach ($box['options'] as $opt) {
-				if(isset($opt["selected"]) && $opt["selected"]==true){
+			foreach ($box['options'] as $opt)
+			{
+				if(isset($opt["selected"]) && $opt["selected"]==true)
+				{
 					$value = $opt["value"];
 				}
 			}
 
 			$select = new \Templates\Html\Input\Select($box['name'], $value, array(), $box['required'], '', $box['class']);
 
-			if (isset($box["id"])){
+			if (isset($box["id"]))
+			{
 				$select->addAttribute("id", $box["id"]);
 			}
 
-			foreach ($box['options'] as $opt) {
-				if (isset($opt['optgroup']) && ($opt['optgroup'] != null)) {
+			foreach ($box['options'] as $opt)
+			{
+				if(isset($opt['optgroup']) && ($opt['optgroup'] != null))
+				{
 					$select->addOptionGrouped($opt["value"], $opt["tag"], (isset($opt["selected"]))?$opt["selected"]:false, $opt["optgroup"]);
-				} else {
+				}
+				else
+				{
 					$select->addOption($opt["value"], $opt["tag"], (isset($opt["selected"]))?$opt["selected"]:false);
 				}
 			}
@@ -81,5 +112,3 @@ class Block extends \Templates\Html\Tag
 		}
 	}
 }
-
-?>

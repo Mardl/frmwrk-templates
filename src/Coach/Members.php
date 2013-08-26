@@ -26,12 +26,17 @@ class Members extends \Templates\Html\Tag
 	protected $disableControls = false;
 
 	/**
+	 * @var bool
+	 */
+	protected $itemlink = true;
+
+	/**
 	 * @param array       $members
 	 * @param array       $classOrAttributes
 	 * @param bool|array  $selectLink
 	 * @param bool        $disableControls
 	 */
-	public function __construct(array $members, $classOrAttributes = array(), $selectLink = false, $disableControls = false)
+	public function __construct(array $members, $classOrAttributes = array(), $selectLink = false, $disableControls = false, $itemlink = true)
 	{
 		if (is_array($classOrAttributes))
 		{
@@ -47,6 +52,7 @@ class Members extends \Templates\Html\Tag
 		$this->members = $members;
 		$this->selectLink = $selectLink;
 		$this->disableControls = $disableControls;
+		$this->itemlink = $itemlink;
 	}
 
 	/**
@@ -63,13 +69,12 @@ class Members extends \Templates\Html\Tag
 	 */
 	public function toString()
 	{
-
 		foreach ($this->members as $u)
 		{
 			if ($this->selectLink)
 			{
 				$this->selectLink["userid"] = $u->getId();
-				$m = new \Templates\Coach\Member($u, $this->view->url($this->selectLink));
+				$m = new \Templates\Coach\Member($u, $this->view->url($this->selectLink), $this->itemlink);
 			}
 			else
 			{

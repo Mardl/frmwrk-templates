@@ -2,7 +2,13 @@
 
 namespace Templates\Myipt\Widgets;
 
-
+/**
+ * Class Mahlzeiten
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt\Widgets
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Mahlzeiten extends \Templates\Myipt\Widget
 {
 
@@ -15,6 +21,8 @@ class Mahlzeiten extends \Templates\Myipt\Widget
 	 */
 	public function __construct()
 	{
+
+		//TODO keine direkte HTML Ausgabe!!!!!
 		$headline = "Mahlzeiten <span class='column'>fett</span><span class='column'>kh</span><span class='column'>kcal</span><span class='column'>Menge</span>";
 
 		parent::__construct($headline, null, "colThreeQuarter mahlzeiten");

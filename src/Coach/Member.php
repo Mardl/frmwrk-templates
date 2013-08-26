@@ -4,45 +4,89 @@ namespace Templates\Coach;
 
 use	Templates\Html\Tag;
 
+/**
+ * Class Member
+ *
+ * @category Lifemeter
+ * @package  Templates\Coach
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Member extends Tag
 {
+
+	/**
+	 * @var \App\Models\User|null
+	 */
 	protected $member = null;
+
+	/**
+	 * @var null
+	 */
 	protected $view = null;
 
+	/**
+	 * @var bool
+	 */
 	protected $disableControls = false;
+
+	/**
+	 * @var null|string
+	 */
 	protected $url;
 
 	/**
-	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * @var bool
 	 */
-	public function __construct($member, $url = null)
+	protected $itemlink;
+
+	/**
+	 * @param \App\Models\User $member   User
+	 * @param string           $url      url
+	 * @param bool             $itemlink true => ganzes Item ist verlinkt, false => nur der Title ist verlinkt
+	 */
+	public function __construct($member, $url = null, $itemlink = true)
 	{
 		parent::__construct('div', '', 'item');
 		$this->member = $member;
 		$this->url = $url;
+		$this->itemlink = $itemlink;
 	}
 
-	public function setView($view){
+	/**
+	 * @param $view
+	 * @return void
+	 */
+	public function setView($view)
+	{
 		$this->view = $view;
 	}
 
-	public function disableControls(){
+	/**
+	 * @return void
+	 */
+	public function disableControls()
+	{
 		$this->disableControls = true;
 	}
 
-	public function enableControls(){
+	/**
+	 * @return void
+	 */
+	public function enableControls()
+	{
 		$this->disableControls = false;
 	}
 
-	public function toString(){
-
+	/**
+	 * @return string
+	 */
+	public function toString()
+	{
 		$container = $this;
 
-		if ($this->url){
+		//komplettes Item verlinken?
+		if ($this->url && $this->itemlink)
+		{
 			$anchor = new \Templates\Html\Anchor($this->url, '');
 			$container = $anchor;
 			$this->append($anchor);
@@ -50,35 +94,57 @@ class Member extends Tag
 
 		//Avatar
 		$file = $this->member->getAvatarFile();
-		if (!$file){
+		if (!$file)
+		{
 			$avatar = new \Templates\Html\Image($this->member->getAvatar());
-		} else {
-			$avatar =  $file->getThumbnail(96,96,'','');
 		}
+		else
+		{
+			$avatar =  $file->getThumbnail(96, 96, '', '');
+		}
+
 		$span = new \Templates\Html\Tag("span", $avatar, 'img');
 		$container->append($span);
 
-		//Headline
 		$h = new \Templates\Html\Tag("h2", $this->member->getFullname());
-		$container->append($h);
+
+		//Headline verlinken?
+		if ($this->url && !$this->itemlink)
+		{
+			$anchor = new \Templates\Html\Anchor($this->url, '');
+			$anchor->addClass('get-ajax');
+			$anchor->append($h);
+			$container->append($anchor);
+		}
+		else
+		{
+			//headline
+			$container->append($h);
+		}
 
 		//State
-		$state = new \Templates\Html\Tag("div",'', 'state');
+		$state = new \Templates\Html\Tag("div", '', 'state');
 		$container->append($state);
 
 		//Controls
-		$controls = new \Templates\Html\Tag("div",'', 'controls');
+		$controls = new \Templates\Html\Tag("div", '', 'controls');
 		$container->append($controls);
 
 		$loginStates = $this->member->getLoginStates();
 		$states = array();
 
-		if (array_sum($loginStates) == 0){
+		if (array_sum($loginStates) == 0)
+		{
 			$onoff = new \Templates\Html\Tag("span", "offline", 'inaktive');
-		} else {
-			foreach ($loginStates as $key => $s){
-				if ($s == 1){
-					switch($key){
+		}
+		else
+		{
+			foreach ($loginStates as $key => $s)
+			{
+				if ($s == 1)
+				{
+					switch($key)
+					{
 						case \App\Models\User\Login::TYPE_COACH:
 							$states[] = "Trainer";
 							break;
@@ -102,7 +168,8 @@ class Member extends Tag
 		$state->append($onoff);
 
 
-		if (!$this->disableControls){
+		if (!$this->disableControls)
+		{
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
 
@@ -114,8 +181,13 @@ class Member extends Tag
 
 			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
 			$wrapper->append($anchor);
-		}
 
+			/*$wrapper = new \Templates\Html\Tag('div', '');
+			$controls->append($wrapper);
+
+			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'trainingsplan', 'id' => $this->member->getId())), 'icon power', "Trainingsplan");
+			$wrapper->append($anchor);*/
+		}
 
 		return parent::toString();
 	}

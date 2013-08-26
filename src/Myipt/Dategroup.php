@@ -4,13 +4,31 @@ namespace Templates\Myipt;
 
 use Core\SystemMessages;
 
+/**
+ * Class Dategroup
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Dategroup extends \Templates\Myipt\Block
 {
+
+	/**
+	 * @param string    $parentTag
+	 * @param array     $label
+	 * @param \DateTime $datum
+	 * @param bool      $enableYear
+	 * @param bool      $enableMonth
+	 * @param bool      $enableDay
+	 * @param array     $classOrAttributes
+	 */
 	public function __construct($parentTag, $label, $datum, $enableYear = true, $enableMonth = true, $enableDay = true, $classOrAttributes = array())
 	{
 		parent::__construct($parentTag, $classOrAttributes);
 
-		if (!($datum instanceof \DateTime)){
+		if (!($datum instanceof \DateTime))
+		{
 			$datum = new \DateTime($datum);
 		}
 
@@ -20,7 +38,8 @@ class Dategroup extends \Templates\Myipt\Block
 
 		$selectGroup = array();
 
-		if ($enableDay){
+		if ($enableDay)
+		{
 			$selectGroup[] = array(
 				"name"		=> "day",
 				"class" 	=> $classOrAttributes,
@@ -29,7 +48,8 @@ class Dategroup extends \Templates\Myipt\Block
 			);
 		}
 
-		if ($enableMonth){
+		if ($enableMonth)
+		{
 			$selectGroup[] = array(
 				"name"		=> "month",
 				"class" 	=> $classOrAttributes,
@@ -38,7 +58,8 @@ class Dategroup extends \Templates\Myipt\Block
 			);
 		}
 
-		if ($enableYear){
+		if ($enableYear)
+		{
 			$selectGroup[] = array(
 				"name"		=> "year",
 				"class" 	=> $classOrAttributes,
@@ -51,14 +72,22 @@ class Dategroup extends \Templates\Myipt\Block
 
 	}
 
-	public function getDaysArray($day = false, $default = array()){
+	/**
+	 * @param bool  $day
+	 * @param array $default
+	 * @return array
+	 */
+	public function getDaysArray($day = false, $default = array())
+	{
 		$days = array();
 
-		if (!empty($default)){
+		if (!empty($default))
+		{
 			$days[] = $default;
 		}
 
-		for ($i = 1; $i <= 31; $i++){
+		for ($i = 1; $i <= 31; $i++)
+		{
 			$days[] = array(
 				"value" => $i,
 				"tag" => sprintf("%02d", $i),
@@ -68,10 +97,17 @@ class Dategroup extends \Templates\Myipt\Block
 		return $days;
 	}
 
-	public function getMonthsArray($month = false, $default = array()){
+	/**
+	 * @param bool  $month
+	 * @param array $default
+	 * @return array
+	 */
+	public function getMonthsArray($month = false, $default = array())
+	{
 		$months = array();
 
-		if (!empty($default)){
+		if (!empty($default))
+		{
 			$months[] = $default;
 		}
 
@@ -90,17 +126,26 @@ class Dategroup extends \Templates\Myipt\Block
 		return $months;
 	}
 
-	public function getYearsArray($year = false, $default = array(), $limit = 100){
+	/**
+	 * @param bool  $year
+	 * @param array $default
+	 * @param int   $limit
+	 * @return array
+	 */
+	public function getYearsArray($year = false, $default = array(), $limit = 100)
+	{
 		$today = new \DateTime();
 		$thisYear = intval($today->format("Y"));
 
 		$years = array();
 
-		if (!empty($default)){
+		if (!empty($default))
+		{
 			$years[] = $default;
 		}
 
-		for ($i = $thisYear; $i >= ($thisYear - $limit); $i--){
+		for ($i = $thisYear; $i >= ($thisYear - $limit); $i--)
+		{
 			$years[] = array(
 				"value" => $i,
 				"tag" => sprintf("%02d", $i),
