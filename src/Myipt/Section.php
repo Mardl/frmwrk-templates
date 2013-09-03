@@ -39,9 +39,6 @@ class Section extends Tag
 		{
 			$this->append($value);
 		}
-
-
-
 	}
 
 
@@ -64,6 +61,17 @@ class Section extends Tag
 	public function prepend($value)
 	{
 		$this->content->prepend($value);
+	}
+
+	public function setContentSortable($sortable = true)
+	{
+		if($sortable)
+		{
+			$this->content->addClass('sortable');
+			return;
+		}
+
+		$this->content->removeClass('sortable');
 	}
 
 
