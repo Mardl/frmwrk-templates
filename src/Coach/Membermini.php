@@ -19,6 +19,7 @@ class Membermini extends Tag
 	{
 		parent::__construct('div', '', 'userInfo');
 		$this->member = $member;
+		$this->url = $url;
 		#$this->append("Gewählter Benutzer: ".$this->user->getFullname());
 	}
 
@@ -34,7 +35,9 @@ class Membermini extends Tag
 		$this->append($span);
 
 		//Headline
-		$h = new \Templates\Html\Tag("h4", $this->member->getFullname());
+		$anchor = new \Templates\Html\Anchor($this->url, $this->member->getFullname());
+
+		$h = new \Templates\Html\Tag("h4", $anchor);
 		$this->append($h);
 
 		return parent::toString();
