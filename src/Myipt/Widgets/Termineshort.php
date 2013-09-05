@@ -15,7 +15,7 @@ class Termineshort extends \Templates\Myipt\Widget
 	 */
 	public function __construct(array $termine, $view, $moreUrl = null)
 	{
-		parent::__construct("Termine", null, "colHalf");
+		parent::__construct("Termine", null, "colHalf flow");
 		$this->setView($view);
 
 		if (!is_null($moreUrl)){
