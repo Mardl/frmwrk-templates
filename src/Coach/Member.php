@@ -53,7 +53,7 @@ class Member extends Tag
 	}
 
 	/**
-	 * @param $view
+	 * @param \Core\View $view
 	 * @return void
 	 */
 	public function setView($view)
@@ -182,11 +182,11 @@ class Member extends Tag
 			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
 			$wrapper->append($anchor);
 
-			/*$wrapper = new \Templates\Html\Tag('div', '');
+			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
 
 			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'trainingsplan', 'id' => $this->member->getId())), 'icon power', "Trainingsplan");
-			$wrapper->append($anchor);*/
+			$wrapper->append($anchor);
 		}
 
 		return parent::toString();
