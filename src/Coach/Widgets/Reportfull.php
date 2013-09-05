@@ -50,7 +50,7 @@ class Reportfull extends \Templates\Coach\Widget
 				$this->initText($p);
 			} else {
 				if (!empty($text[0])){
-					$class = "hide";
+					#$class = "hide";
 					if ($this->fancy){
 						$class = null;
 					}
