@@ -63,7 +63,7 @@ class ControlGroup extends \Templates\Html\Tag
 	 */
 	public function append($value)
 	{
-		$this->content->append($value);
+		parent::append($value);
 	}
 
 	/**
