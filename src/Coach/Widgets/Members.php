@@ -21,7 +21,7 @@ class Members extends \Templates\Coach\Widget
 	 */
 	public function __construct(array $members, $view, $moreUrl = null, $moreTitle = "alle Termine >")
 	{
-		parent::__construct("Mitglieder", null, "colThreeQuarter membersWidget");
+		parent::__construct("Mitglieder", null, "colFull membersWidget");
 
 		if (!is_null($moreUrl))
 		{

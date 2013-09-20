@@ -184,9 +184,10 @@ class Member extends Tag
 
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
-
+			/*
 			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'trainingsplan', 'id' => $this->member->getId())), 'icon power', "Trainingsplan");
 			$wrapper->append($anchor);
+			*/
 		}
 
 		return parent::toString();
