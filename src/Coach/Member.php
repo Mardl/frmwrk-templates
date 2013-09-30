@@ -173,13 +173,13 @@ class Member extends Tag
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
 
-			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'edit', 'id' => $this->member->getId())), 'icon edit', "Bearbeiten");
+			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('module' => 'users', 'action'=>'edit', 'id' => $this->member->getId())), 'icon edit', "Bearbeiten");
 			$wrapper->append($anchor);
 
 			$wrapper = new \Templates\Html\Tag('div', '');
 			$controls->append($wrapper);
 
-			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
+			$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('module' => 'users', 'action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
 			$wrapper->append($anchor);
 
 			$wrapper = new \Templates\Html\Tag('div', '');

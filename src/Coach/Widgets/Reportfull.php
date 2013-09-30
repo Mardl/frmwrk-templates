@@ -63,7 +63,7 @@ class Reportfull extends \Templates\Coach\Widget
 
 
 		if (!$this->fancy) {
-			$this->setFooter("<a href='".$detaillink."' class='fancybox fancybox.ajax'>mehr Informationen</a>");
+			$this->setFooter("<a href='".$detaillink."' class='fancybox fancybox.ajax'>zum Verlauf</a>");
 		}
 
 
