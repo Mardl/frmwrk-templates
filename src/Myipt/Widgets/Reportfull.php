@@ -2,57 +2,83 @@
 
 namespace Templates\Myipt\Widgets;
 
-
+/**
+ * Class Reportfull
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt\Widgets
+ * @author   Stefan Orthofer <stefan@dreiwerken.de>
+ */
 class Reportfull extends \Templates\Myipt\Widget
 {
 
+	/**
+	 * @var
+	 */
 	protected $text;
+	/**
+	 * @var bool
+	 */
 	protected $fancy = false;
 
 	/**
-	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * @param string $analyseData
+	 * @param array  $type
+	 * @param array  $detaillink
+	 * @param bool   $fancy
+	 * @param array  $classOrAttributes
 	 */
 	public function __construct($analyseData, $type, $detaillink, $fancy = false, $classOrAttributes = array())
 	{
 		$this->fancy = $fancy;
 
-		if (is_array($classOrAttributes)){
+		if (is_array($classOrAttributes))
+		{
 			$classOrAttributes[] = "colFull";
-		} else {
+		}
+		else
+		{
 			$classOrAttributes .= " colFull report";
 		}
 
 		parent::__construct($analyseData['title'], null, $classOrAttributes);
 		parent::addAttribute("id", $analyseData["id"]);
-		$div = new \Templates\Html\Tag("div",'','fLeft');
+		$div = new \Templates\Html\Tag("div", '', 'fLeft');
 
-		if (!$analyseData["noChart"]){
-			if ($type != "both"){
-				$canvas = $this->getCanvas($analyseData, $type);
-				$div->append($canvas);
-			} else {
-				$canvas = $this->getCanvas($analyseData, "rel");
-				$div->append($canvas);
-				$canvas = $this->getCanvas($analyseData, "abs");
-				$div->append($canvas);
+		if (!$analyseData["noChart"])
+		{
+			if ($type != "both")
+			{
+				$chart = new \Templates\Myipt\Chart($analyseData, $type);
+				$div->append($chart);
+			}
+			else
+			{
+				$chartRel = new \Templates\Myipt\Chart($analyseData, 'rel');
+				$div->append($chartRel);
+
+				$chartAbs = new \Templates\Myipt\Chart($analyseData, 'abs');
+				$div->append($chartAbs);
+
 			}
 		}
 
-
 		$this->content->append($div);
 
-		foreach ($analyseData["outputtexts"] as $index => $text){
-			if ($index == 0){
+		foreach ($analyseData["outputtexts"] as $index => $text)
+		{
+			if ($index == 0)
+			{
 				$p = new \Templates\Html\Tag("p", $text[0]);
 				$this->initText($p, $analyseData["noChart"]);
-			} else {
-				if (!empty($text[0])){
-					$class = "";#hide";
-					if ($this->fancy){
+			}
+			else
+			{
+				if (!empty($text[0]))
+				{
+					$class = ""; //hide";
+					if ($this->fancy)
+					{
 						$class = null;
 					}
 					$p = new \Templates\Html\Tag("p", $text[0], $class);
@@ -62,53 +88,38 @@ class Reportfull extends \Templates\Myipt\Widget
 			}
 		}
 
-
-		if (!$this->fancy) {
+		if (!$this->fancy)
+		{
 			$this->setFooter("<a href='".$detaillink."' class='fancybox fancybox.ajax'>mehr Informationen</a>");
 		}
-
-
 	}
 
-	protected function initText($value = null, $noChart){
+	/**
+	 * @param null $value
+	 * @param bool $noChart
+	 * @return void
+	 */
+	protected function initText($value = null, $noChart)
+	{
 		$this->text = new \Templates\Html\Tag("div", $value, 'fLeft info '.($noChart?'noChart':null));
 		$this->content->append($this->text);
 	}
 
-	public function append($value){
+	/**
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function append($value)
+	{
 		$this->text->append($value);
 	}
 
-	public function prepend($value){
+	/**
+	 * @param mixed $value
+	 * @return void
+	 */
+	public function prepend($value)
+	{
 		$this->text->prepend($value);
 	}
-
-	private function getCanvas($analyseData, $type){
-		$canvas = new \Templates\Html\Tag('canvas', '', 'chart');
-		$canvas->addAttribute('id', $analyseData['id'].$type.(($this->fancy)?'-fancy':null));
-		$canvas->addAttribute('data-rel', $analyseData['id'].$type.(($this->fancy)?'-fancy':null));
-		$canvas->addAttribute('data-value-rel', $analyseData['value']['rel']);
-		$canvas->addAttribute('data-value-rel-max', $analyseData['max']['rel']);
-		$canvas->addAttribute('data-value-abs', $analyseData['value']['abs']);
-		$canvas->addAttribute('data-value-abs-max', $analyseData['max']['abs']);
-		$canvas->addAttribute('data-zvalue', $analyseData['value']['zindex']);
-		$canvas->addAttribute('data-title', $analyseData['title']);
-		$canvas->addAttribute('data-c-red-rel', $analyseData['percent']['rel']['orange']);
-		$canvas->addAttribute('data-c-orange-rel', $analyseData['percent']['rel']['green']);
-		$canvas->addAttribute('data-c-red-abs', $analyseData['percent']['abs']['orange']);
-		$canvas->addAttribute('data-c-orange-abs', $analyseData['percent']['abs']['green']);
-		$canvas->addAttribute('data-type', $type);
-		$canvas->addAttribute('data-stops-red', $analyseData['stops']['red']);
-		$canvas->addAttribute('data-stops-green', $analyseData['stops']['green']);
-		$canvas->addAttribute('data-stops-orange', $analyseData['stops']['orange']);
-		$canvas->addAttribute('data-legend-red', $analyseData['legend']['red']);
-		$canvas->addAttribute('data-legend-orange', $analyseData['legend']['orange']);
-		$canvas->addAttribute('data-legend-green', $analyseData['legend']['green']);
-		$canvas->addAttribute('data-unit-rel', '%');
-		$canvas->addAttribute('data-unit-abs', $analyseData['unit']);
-		$canvas->addAttribute('width',228);
-		$canvas->addAttribute('height',168);
-		return $canvas;
-	}
-
 }
