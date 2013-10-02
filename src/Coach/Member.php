@@ -105,8 +105,6 @@ class Member extends Tag
 		$this->disableControls = false;
 	}
 
-
-
 	/**
 	 * @return string
 	 */

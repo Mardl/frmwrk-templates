@@ -7,7 +7,7 @@ namespace Templates\Myipt\Widgets;
  *
  * @category Lifemeter
  * @package  Templates\Myipt\Widgets
- * @author   Stefan Orthofer <stefan@dreiwerken.de>
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
  */
 class Reportsmall extends \Templates\Myipt\Widget
 {
@@ -22,7 +22,8 @@ class Reportsmall extends \Templates\Myipt\Widget
 		if (is_array($classOrAttributes))
 		{
 			$classOrAttributes[] = "colQuarter";
-		} else
+		}
+		else
 		{
 			$classOrAttributes .= " colQuarter";
 		}
