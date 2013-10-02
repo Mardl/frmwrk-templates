@@ -2,22 +2,57 @@
 
 namespace Templates\Myipt\Meal;
 
-
+/**
+ * Class Nutrition
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt\Meal
+ * @author   Alex Jonser <alex@dreiwerken.de>
+ */
 class Nutrition extends \Templates\Html\Tag
 {
 
+	/**
+	 * @var
+	 */
 	protected $controls;
+	/**
+	 * @var int
+	 */
 	protected $menge = 0;
+	/**
+	 * @var
+	 */
 	protected $substratBlock;
+	/**
+	 * @var bool
+	 */
 	protected $isMeal = false;
+	/**
+	 * @var string
+	 */
 	protected $nutrition;
+	/**
+	 * @var string
+	 */
 	protected $view;
 
-	public function __construct($nutrition, $view)
+	/**
+	 * @var int
+	 */
+	protected $mealId = 0;
+
+	/**
+	 * @param string $nutrition
+	 * @param string $view
+	 * @param array  $mealId
+	 */
+	public function __construct($nutrition, $view, $mealId)
 	{
 		$this->nutrition = $nutrition;
 		$this->menge = $nutrition->getPromenge();
 		$this->view = $view;
+		$this->mealId = $mealId;
 
 		parent::__construct('div', '', 'colFull box meals');
 		$this->addAttribute("id", "bigBlock");
@@ -27,64 +62,83 @@ class Nutrition extends \Templates\Html\Tag
 		$this->initImageBlock();
 		$this->initSubstratBlock();
 		$this->initDescriptionBlock();
-
 	}
 
-	public function initImageBlock(){
+	/**
+	 * @return void
+	 */
+	public function initImageBlock()
+	{
 		$imageBlock = new \Templates\Html\Tag('div', '', 'colQuarter fLeft');
 		$this->append($imageBlock);
-		$imageBlock->append( new \Templates\Html\Tag("span", $this->nutrition->getFile()->getThumbnail(204,204,'',''), 'img bigimage') );
+		$imageBlock->append(new \Templates\Html\Tag("span", $this->nutrition->getFile()->getThumbnail(204, 204, '', ''), 'img bigimage'));
 		$this->controls = new \Templates\Html\Tag('div', '', 'controls');
 
 		$imageBlock->append($this->controls);
-		$add = new \Templates\Html\Tag("span",'','icon little add');
+		$add = new \Templates\Html\Tag("span", '', 'icon little add');
 		$favorite = new \Templates\Html\Anchor("#", $add);
 		$favorite->append("zu Favoriten hinzufügen");
 		$this->controls->append($favorite);
-
-
-
 	}
 
-	public function initSubstratBlock(){
+	/**
+	 * @return void
+	 */
+	public function initSubstratBlock()
+	{
 		$this->substratBlock = new \Templates\Html\Tag('div', '', 'colQuarter fLeft');
 		$this->append($this->substratBlock);
 
-		$this->substratBlock->append(new \Templates\Html\Tag("h3",'Nährwertangaben'));
-
+		$this->substratBlock->append(new \Templates\Html\Tag("h3", 'Nährwertangaben'));
 	}
 
-	public function initDescriptionBlock(){
+	/**
+	 * @return void
+	 */
+	public function initDescriptionBlock()
+	{
 		$description = new \Templates\Html\Tag('div', '', 'colHalf fLeft');
 		$this->append($description);
 
 		$description->append(new \Templates\Html\Tag("h3", 'Beschreibung'));
-
 		$description->append(new \Templates\Html\Tag("p", $this->nutrition->getDescription()));
-
 	}
 
-
-
-	public function setMenge($menge){
+	/**
+	 * @param string $menge
+	 * @return void
+	 */
+	public function setMenge($menge)
+	{
 		$this->menge = $menge;
 	}
 
-	public function setIsMeal($is){
+	/**
+	 * @param bool $is
+	 * @return void
+	 */
+	public function setIsMeal($is)
+	{
 		$this->isMeal = $is;
 	}
 
-	public function toString(){
-
-		if ($this->isMeal){
-			$remove = new \Templates\Html\Tag("span",'','icon little remove');
-			$anchor = new \Templates\Html\Anchor("#", $remove);
+	/**
+	 * @return string
+	 */
+	public function toString()
+	{
+		if ($this->isMeal)
+		{
+			$remove = new \Templates\Html\Tag("span", '', 'icon little remove');
+			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove', 'id' => 'nut_'.$this->mealId, 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
+			$anchor->addClass('get-ajax');
 			$anchor->append("aus Mahlzeiten entfernen");
 			$this->controls->append($anchor);
 		}
 
-		if (!$this->isMeal){
-			$food = new \Templates\Html\Tag("span",'','icon little food');
+		if (!$this->isMeal)
+		{
+			$food = new \Templates\Html\Tag("span", '', 'icon little food');
 			$addfood = new \Templates\Html\Anchor(
 				$this->view->url(array("action"=>"add", "id"=>$this->nutrition->getId())),
 				$food,
@@ -119,7 +173,8 @@ class Nutrition extends \Templates\Html\Tag
 		$vitaminC 		= $this->nutrition->getVitaminC();
 		$orgsaeure 		= $this->nutrition->getOrgsaeure();
 
-		if ($this->menge != $this->nutrition->getPromenge()){
+		if ($this->menge != $this->nutrition->getPromenge())
+		{
 			$kcal 			= $kcal * $this->menge / $this->nutrition->getPromenge();
 			$kj 			= $kj * $this->menge / $this->nutrition->getPromenge();
 			$kohlenhydrate 	= $kohlenhydrate * $this->menge / $this->nutrition->getPromenge();
@@ -149,103 +204,126 @@ class Nutrition extends \Templates\Html\Tag
 		$list = new \Templates\Myipt\UnsortedList();
 		$this->substratBlock->append($list);
 
-		$list->append(new \Templates\Html\Tag('span',"Menge <span>".$this->menge.' '. $this->nutrition->getEinheit()."</span>"));
+		$list->append(new \Templates\Html\Tag('span', "Menge <span>".$this->menge.' '. $this->nutrition->getEinheit()."</span>"));
 
-		if ($kcal > 0){
-			$list->append(new \Templates\Html\Tag('span',"Kcal <span>".$kcal."</span>"));
+		if ($kcal > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Kcal <span>".$kcal."</span>"));
 		}
 
-		if ($kj > 0){
-			$list->append(new \Templates\Html\Tag('span',"KJoule <span>".$kj."</span>"));
+		if ($kj > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "KJoule <span>".$kj."</span>"));
 		}
 
-		if ($kohlenhydrate > 0){
-			$list->append(new \Templates\Html\Tag('span',"Kohlenhydrate <span>".$kohlenhydrate."</span>"));
+		if ($kohlenhydrate > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Kohlenhydrate <span>".$kohlenhydrate."</span>"));
 		}
 
-		if ($gfette > 0){
-			$list->append(new \Templates\Html\Tag('span',"Fett <span>".$gfette."</span>"));
-		}
-
-
-		if ($ufette > 0){
-			$list->append(new \Templates\Html\Tag('span',"ungesättigte Fette <span>".$ufette."</span>"));
-		}
-
-		if ($eiweiss > 0){
-			$list->append(new \Templates\Html\Tag('span',"Protein <span>".$eiweiss."</span>"));
-		}
-
-		if ($ballaststoffe > 0){
-			$list->append(new \Templates\Html\Tag('span',"Ballaststoffe <span>".$ballaststoffe."</span>"));
-		}
-
-		if ($alkohol > 0){
-			$list->append(new \Templates\Html\Tag('span',"Alkohol <span>".$alkohol."</span>"));
-		}
-
-		if ($wasser > 0){
-			$list->append(new \Templates\Html\Tag('span',"Wasser <span>".$wasser."</span>"));
-		}
-
-		if ($cholesterin > 0){
-			$list->append(new \Templates\Html\Tag('span',"Cholesterin <span>".$cholesterin."</span>"));
-		}
-
-		if ($natrium > 0){
-			$list->append(new \Templates\Html\Tag('span',"Natrium <span>".$kohlenhydrate."</span>"));
-		}
-
-		if ($kalium > 0){
-			$list->append(new \Templates\Html\Tag('span',"Kalium <span>".$kalium."</span>"));
-		}
-
-		if ($calcium > 0){
-			$list->append(new \Templates\Html\Tag('span',"Calcium <span>".$calcium."</span>"));
-		}
-
-		if ($phosphor > 0){
-			$list->append(new \Templates\Html\Tag('span',"Phosphor <span>".$phosphor."</span>"));
-		}
-
-		if ($magnesium > 0){
-			$list->append(new \Templates\Html\Tag('span',"Magnesium <span>".$magnesium."</span>"));
-		}
-
-		if ($eisen > 0){
-			$list->append(new \Templates\Html\Tag('span',"Eisen <span>".$eisen."</span>"));
-		}
-
-		if ($niacin > 0){
-			$list->append(new \Templates\Html\Tag('span',"Niacin <span>".$niacin."</span>"));
-		}
-
-		if ($vitaminA > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin A <span>".$vitaminA."</span>"));
-		}
-
-		if ($vitaminB1 > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin B1 <span>".$vitaminB1."</span>"));
-		}
-
-		if ($vitaminB2 > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin B2 <span>".$vitaminB2."</span>"));
-		}
-
-		if ($vitaminB6 > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin B6 <span>".$vitaminB6."</span>"));
-		}
-
-		if ($vitaminC > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin C <span>".$vitaminC."</span>"));
-		}
-
-		if ($vitaminE > 0){
-			$list->append(new \Templates\Html\Tag('span',"Vitamin E <span>".$vitaminE."</span>"));
+		if ($gfette > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Fett <span>".$gfette."</span>"));
 		}
 
 
-		$br = new \Templates\Html\Tag("br",'','clear');
+		if ($ufette > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "ungesättigte Fette <span>".$ufette."</span>"));
+		}
+
+		if ($eiweiss > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Protein <span>".$eiweiss."</span>"));
+		}
+
+		if ($ballaststoffe > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Ballaststoffe <span>".$ballaststoffe."</span>"));
+		}
+
+		if ($alkohol > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Alkohol <span>".$alkohol."</span>"));
+		}
+
+		if ($wasser > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Wasser <span>".$wasser."</span>"));
+		}
+
+		if ($cholesterin > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Cholesterin <span>".$cholesterin."</span>"));
+		}
+
+		if ($natrium > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Natrium <span>".$kohlenhydrate."</span>"));
+		}
+
+		if ($kalium > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Kalium <span>".$kalium."</span>"));
+		}
+
+		if ($calcium > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Calcium <span>".$calcium."</span>"));
+		}
+
+		if ($phosphor > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Phosphor <span>".$phosphor."</span>"));
+		}
+
+		if ($magnesium > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Magnesium <span>".$magnesium."</span>"));
+		}
+
+		if ($eisen > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Eisen <span>".$eisen."</span>"));
+		}
+
+		if ($niacin > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Niacin <span>".$niacin."</span>"));
+		}
+
+		if ($vitaminA > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin A <span>".$vitaminA."</span>"));
+		}
+
+		if ($vitaminB1 > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B1 <span>".$vitaminB1."</span>"));
+		}
+
+		if ($vitaminB2 > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B2 <span>".$vitaminB2."</span>"));
+		}
+
+		if ($vitaminB6 > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B6 <span>".$vitaminB6."</span>"));
+		}
+
+		if ($vitaminC > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin C <span>".$vitaminC."</span>"));
+		}
+
+		if ($vitaminE > 0)
+		{
+			$list->append(new \Templates\Html\Tag('span', "Vitamin E <span>".$vitaminE."</span>"));
+		}
+
+
+		$br = new \Templates\Html\Tag("br", '', 'clear');
 		$this->append($br);
 		return parent::toString();
 	}
