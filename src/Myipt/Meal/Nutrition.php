@@ -123,6 +123,17 @@ class Nutrition extends \Templates\Html\Tag
 	}
 
 	/**
+	 * @param float   $wert
+	 * @param int     $anz
+	 * @return float
+	 */
+	private function roundNaerwerte($wert, $anz=2)
+	{
+		$roundedWert = round($wert, $anz);
+		return $roundedWert;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function toString()
@@ -208,118 +219,118 @@ class Nutrition extends \Templates\Html\Tag
 
 		if ($kcal > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Kcal <span>".$kcal."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Kcal <span>".$this->roundNaerwerte($kcal, 0)."</span>"));
 		}
 
 		if ($kj > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "KJoule <span>".$kj."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "KJoule <span>".$this->roundNaerwerte($kj)."</span>"));
 		}
 
 		if ($kohlenhydrate > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Kohlenhydrate <span>".$kohlenhydrate."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Kohlenhydrate <span>".$this->roundNaerwerte($kohlenhydrate)."</span>"));
 		}
 
 		if ($gfette > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Fett <span>".$gfette."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Fett <span>".$this->roundNaerwerte($gfette)."</span>"));
 		}
 
 
 		if ($ufette > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "ungesättigte Fette <span>".$ufette."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "ungesättigte Fette <span>".$this->roundNaerwerte($ufette)."</span>"));
 		}
 
 		if ($eiweiss > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Protein <span>".$eiweiss."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Protein <span>".$this->roundNaerwerte($eiweiss)."</span>"));
 		}
 
 		if ($ballaststoffe > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Ballaststoffe <span>".$ballaststoffe."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Ballaststoffe <span>".$this->roundNaerwerte($ballaststoffe)."</span>"));
 		}
 
 		if ($alkohol > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Alkohol <span>".$alkohol."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Alkohol <span>".$this->roundNaerwerte($alkohol)."</span>"));
 		}
 
 		if ($wasser > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Wasser <span>".$wasser."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Wasser <span>".$this->roundNaerwerte($wasser)."</span>"));
 		}
 
 		if ($cholesterin > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Cholesterin <span>".$cholesterin."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Cholesterin <span>".$this->roundNaerwerte($cholesterin)."</span>"));
 		}
 
 		if ($natrium > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Natrium <span>".$kohlenhydrate."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Natrium <span>".$this->roundNaerwerte($kohlenhydrate)."</span>"));
 		}
 
 		if ($kalium > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Kalium <span>".$kalium."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Kalium <span>".$this->roundNaerwerte($kalium)."</span>"));
 		}
 
 		if ($calcium > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Calcium <span>".$calcium."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Calcium <span>".$this->roundNaerwerte($calcium)."</span>"));
 		}
 
 		if ($phosphor > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Phosphor <span>".$phosphor."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Phosphor <span>".$this->roundNaerwerte($phosphor)."</span>"));
 		}
 
 		if ($magnesium > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Magnesium <span>".$magnesium."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Magnesium <span>".$this->roundNaerwerte($magnesium)."</span>"));
 		}
 
 		if ($eisen > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Eisen <span>".$eisen."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Eisen <span>".$this->roundNaerwerte($eisen)."</span>"));
 		}
 
 		if ($niacin > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Niacin <span>".$niacin."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Niacin <span>".$this->roundNaerwerte($niacin)."</span>"));
 		}
 
 		if ($vitaminA > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin A <span>".$vitaminA."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin A <span>".$this->roundNaerwerte($vitaminA)."</span>"));
 		}
 
 		if ($vitaminB1 > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin B1 <span>".$vitaminB1."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B1 <span>".$this->roundNaerwerte($vitaminB1)."</span>"));
 		}
 
 		if ($vitaminB2 > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin B2 <span>".$vitaminB2."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B2 <span>".$this->roundNaerwerte($vitaminB2)."</span>"));
 		}
 
 		if ($vitaminB6 > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin B6 <span>".$vitaminB6."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin B6 <span>".$this->roundNaerwerte($vitaminB6)."</span>"));
 		}
 
 		if ($vitaminC > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin C <span>".$vitaminC."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin C <span>".$this->roundNaerwerte($vitaminC)."</span>"));
 		}
 
 		if ($vitaminE > 0)
 		{
-			$list->append(new \Templates\Html\Tag('span', "Vitamin E <span>".$vitaminE."</span>"));
+			$list->append(new \Templates\Html\Tag('span', "Vitamin E <span>".$this->roundNaerwerte($vitaminE)."</span>"));
 		}
 
 
