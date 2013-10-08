@@ -4,6 +4,13 @@ namespace Templates\Srabon;
 
 use	Templates\Html\Tag;
 
+/**
+ * Class Dialog
+ *
+ * @category Thomann
+ * @package  Templates\Srabon
+ * @author   Martin Eisenführer <martin@dreiwerken.de>
+ */
 class Dialog extends Tag
 {
 	/**
