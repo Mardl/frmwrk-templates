@@ -6,6 +6,9 @@ namespace Templates\Coach\Widgets;
 class Reportplot extends \Templates\Coach\Widget
 {
 
+	protected $data;
+	protected $title;
+
 	/**
 	 * @param string $headerText
 	 * @param array $value
@@ -24,21 +27,29 @@ class Reportplot extends \Templates\Coach\Widget
 		parent::__construct($title, null, $classOrAttributes);
 		$this->content->addStyle('text-align', 'center');
 
+		$this->data = $analyseData;
+		$this->title = $title;
+
 		if (!empty($moreUrl)){
 			$this->setMoreLink($moreUrl, "mehr >");
 		}
 
+
+	}
+
+	public function toString()
+	{
+
 		$container = new \Templates\Html\Tag('div', '', 'chart');
-		if (isset($analyseData['class'])){
-			$container = new \Templates\Html\Tag('div', '', 'chart '.$analyseData['class']);
+		if (isset($this->data['class'])){
+			$container = new \Templates\Html\Tag('div', '', 'chart '.$this->data['class']);
 		}
 
-
-		$container->addAttribute('id', $analyseData['id'].'-plot');
+		$container->addAttribute('id', $this->data['id'].'-plot');
 		$container->addAttribute('data-type', "plot");
-		$container->addAttribute('data-series-abs', '['.implode(',', $analyseData["abs"]).']');
-		$container->addAttribute('data-series-rel', '['.implode(',', $analyseData["rel"]).']');
-		$container->addAttribute('data-abs-title', $title);
+		$container->addAttribute('data-series-abs', '['.implode(',', $this->data["abs"]).']');
+		$container->addAttribute('data-series-rel', '['.implode(',', $this->data["rel"]).']');
+		$container->addAttribute('data-abs-title', $this->title);
 
 		$container->addAttribute('width', 468);
 		$container->addAttribute('height', 384);
@@ -46,6 +57,6 @@ class Reportplot extends \Templates\Coach\Widget
 
 		$this->append($container);
 
+		return parent::toString();
 	}
-
 }
