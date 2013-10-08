@@ -28,16 +28,17 @@ class Reportsmall extends \Templates\Myipt\Widget
 			$classOrAttributes .= " colQuarter";
 		}
 
-
 		parent::__construct($analyseData['title'], null, $classOrAttributes);
 		$this->content->addStyle('text-align', 'center');
 
 		$this->setMoreLink($moreUrl, "mehr >");
 
-
 		if (!$analyseData['noChart'])
 		{
-			$canvas = new \Templates\Html\Tag('canvas', '', 'chart');
+			$canvas = new \Templates\Myipt\Chart($analyseData, $type);
+			$this->append($canvas);
+
+			/*$canvas = new \Templates\Html\Tag('canvas', '', 'chart');
 
 			$canvas->addAttribute('id', $analyseData['id'].$type);
 			$canvas->addAttribute('data-rel', $analyseData['id'].$type);
@@ -60,13 +61,8 @@ class Reportsmall extends \Templates\Myipt\Widget
 			$canvas->addAttribute('data-legend-green', $analyseData['legend']['green']);
 			$canvas->addAttribute('data-unit-rel', '%');
 			$canvas->addAttribute('data-unit-abs', $analyseData['unit']);
-			$canvas->addAttribute('width', 228);
-			$canvas->addAttribute('height', 168);
-
-
-			$this->append($canvas);
+			$canvas->addAttribute('width',228);
+			$canvas->addAttribute('height',168);*/
 		}
-
 	}
-
 }

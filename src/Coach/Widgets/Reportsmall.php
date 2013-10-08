@@ -2,32 +2,40 @@
 
 namespace Templates\Coach\Widgets;
 
-
+/**
+ * Class Reportsmall
+ *
+ * @category Lifemeter
+ * @package  Templates\Coach\Widgets
+ * @author   Stefan Orthofer <stefan@dreiwerken.de>
+ */
 class Reportsmall extends \Templates\Coach\Widget
 {
-
 	/**
-	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * @param string  $analyseData
+	 * @param array   $type
+	 * @param array   $moreUrl
+	 * @param array   $classOrAttributes
 	 */
 	public function __construct($analyseData, $type, $moreUrl, $classOrAttributes = array())
 	{
-		if (is_array($classOrAttributes)){
+		if (is_array($classOrAttributes))
+		{
 			$classOrAttributes[] = "colQuarter";
-		} else {
+		}
+		else
+		{
 			$classOrAttributes .= " colQuarter";
 		}
 
-
 		parent::__construct($analyseData['title'], null, $classOrAttributes);
+
 		$this->content->addStyle('text-align', 'center');
 
 		$this->setMoreLink($moreUrl, "mehr >");
 
-		if (!$analyseData['noChart']){
+		if (!$analyseData['noChart'])
+		{
 			$canvas = new \Templates\Html\Tag('canvas', '', 'chart');
 
 			$canvas->addAttribute('id', $analyseData['id']);
@@ -51,13 +59,10 @@ class Reportsmall extends \Templates\Coach\Widget
 			$canvas->addAttribute('data-legend-green', $analyseData['legend']['green']);
 			$canvas->addAttribute('data-unit-rel', '%');
 			$canvas->addAttribute('data-unit-abs', $analyseData['unit']);
-			$canvas->addAttribute('width',228);
-			$canvas->addAttribute('height',168);
-
+			$canvas->addAttribute('width', 228);
+			$canvas->addAttribute('height', 168);
 
 			$this->append($canvas);
 		}
-
 	}
-
 }

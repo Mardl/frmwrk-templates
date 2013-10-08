@@ -2,7 +2,13 @@
 
 namespace Templates\Coach;
 
-
+/**
+ * Class Members
+ *
+ * @category Lifemeter
+ * @package  Templates\Coach
+ * @author   Stefan Orthofer <stefan@dreiwerken.de>
+ */
 class Members extends \Templates\Html\Tag
 {
 	/**
@@ -31,10 +37,17 @@ class Members extends \Templates\Html\Tag
 	protected $itemlink = true;
 
 	/**
+	 * @var boolean
+	 */
+	protected $showZielChart = false;
+
+	/**
 	 * @param array       $members
 	 * @param array       $classOrAttributes
-	 * @param bool|array  $selectLink
+	 * @param bool|string $selectLink
 	 * @param bool        $disableControls
+	 * @param bool        $itemlink
+	 * @internal param bool $chartArr
 	 */
 	public function __construct(array $members, $classOrAttributes = array(), $selectLink = false, $disableControls = false, $itemlink = true)
 	{
@@ -65,29 +78,39 @@ class Members extends \Templates\Html\Tag
 	}
 
 	/**
+	 * @param bool $showZielChart
+	 * @return void
+	 */
+	public function setShowZielChart($showZielChart)
+	{
+		$this->showZielChart = $showZielChart;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function toString()
 	{
-		foreach ($this->members as $u)
+		foreach ($this->members as $member)
 		{
 			if ($this->selectLink)
 			{
-				$this->selectLink["userid"] = $u->getId();
-				$m = new \Templates\Coach\Member($u, $this->view->url($this->selectLink), $this->itemlink);
+				$this->selectLink["userid"] = $member->getId();
+				$memberItem = new \Templates\Coach\Member($member, $this->view->url($this->selectLink), $this->itemlink);
 			}
 			else
 			{
-				$m = new \Templates\Coach\Member($u);
+				$memberItem = new \Templates\Coach\Member($member);
 			}
 
 			if ($this->disableControls)
 			{
-				$m->disableControls();
+				$memberItem->disableControls();
 			}
 
-			$m->setView($this->view);
-			$this->append($m);
+			$memberItem->setShowZielChart($this->showZielChart);
+			$memberItem->setView($this->view);
+			$this->append($memberItem);
 		}
 
 		return parent::toString();
