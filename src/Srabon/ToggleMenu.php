@@ -2,6 +2,7 @@
 
 namespace Templates\Srabon;
 
+use Core\SystemMessages;
 use    Templates\Html\Tag;
 
 /**
@@ -43,6 +44,7 @@ class ToggleMenu extends Tag
 		parent::append($this->button);
 
 		$this->menu = new Tag('ul', '', 'dropdown-menu');
+
 		if (!empty($menu) && is_array($menu))
 		{
 			foreach ($menu as $values)
@@ -50,8 +52,6 @@ class ToggleMenu extends Tag
 				$this->append($values);
 			}
 		}
-
-		parent::append($this->menu);
 	}
 
 	/**
@@ -86,7 +86,9 @@ class ToggleMenu extends Tag
 	 */
 	public function append($value)
 	{
-		if ($value != '')
+		$checkEmpty = $this->renderToString($value);
+
+		if (!empty($checkEmpty))
 		{
 			$li = new Tag('li', $value);
 			$this->menu->append($li);
@@ -99,7 +101,8 @@ class ToggleMenu extends Tag
 	 */
 	public function prepend($value)
 	{
-		if ($value != '')
+		$checkEmpty = $this->renderToString($value);
+		if (!empty($checkEmpty))
 		{
 			$li = new Tag('li', $value);
 			$this->menu->append($li);
@@ -124,11 +127,12 @@ class ToggleMenu extends Tag
 		';
 		*/
 
-		if (empty($this->menu->tagInner))
+		$checkEmpty = $this->menu->getInnerAsString();
+		if (empty($checkEmpty))
 		{
 			return '';
 		}
-
+		parent::append($this->menu);
 		return parent::toString();
 	}
 }
