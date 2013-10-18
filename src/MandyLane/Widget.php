@@ -4,6 +4,13 @@ namespace Templates\MandyLane;
 
 use	Templates\Html\Tag;
 
+/**
+ * Class Widget
+ *
+ * @category Lifemeter
+ * @package  Templates\MandyLane
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Widget extends Tag
 {
 	/**
@@ -36,10 +43,11 @@ class Widget extends Tag
 
 	/**
 	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * @param array  $value
+	 * @param bool   $style2
+	 * @param array  $classOrAttributes
+	 * @param bool   $showhidden
+	 * @return void
 	 */
 	public function __construct($headerText='', $value=array(), $style2=false, $classOrAttributes = array(), $showhidden = false)
 	{
@@ -72,13 +80,16 @@ class Widget extends Tag
 	protected function initHead()
 	{
 		$this->header = new Tag('span');
-		$h3 = new Tag('h3',$this->header);
+		$h3 = new Tag('h3', $this->header);
 		parent::append($h3);
 	}
 
+	/**
+	 * @return void
+	 */
 	protected function initFoot()
 	{
-		$this->footer = new Tag('div','','well');
+		$this->footer = new Tag('div', '', 'well');
 	}
 
 	/**
@@ -87,40 +98,69 @@ class Widget extends Tag
 	 */
 	protected function initContent()
 	{
-		$this->content = new Tag('div','','content');
+		$this->content = new Tag('div', '', 'content');
 		parent::append($this->content);
 	}
 
 	/**
 	 * Setter für den Header-Text der Widget-Box
 	 * @param string|mixed $header
+	 * @return void
 	 */
 	public function setHeader($header)
 	{
 		$this->header->append($header);
 	}
 
+
+	/**
+	 * @param string $className
+	 * @return void
+	 */
+	public function addContentClass($className)
+	{
+		$this->content->addClass($className);
+	}
+
+	/**
+	 * @param bool $showhidden
+	 * @return void
+	 */
 	public function setShowhidden($showhidden = false)
 	{
 		$this->showhidden = $showhidden;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function getShowhidden()
 	{
 		return $this->showhidden;
 	}
 
 
+	/**
+	 * @param mixed $value
+	 * @return void
+	 */
 	public function append($value)
 	{
 		$this->content->append($value);
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return void
+	 */
 	public function prepend($value)
 	{
 		$this->content->prepend($value);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 		$type = $this->style2 ? 'widgetbox2' : 'widgetbox';

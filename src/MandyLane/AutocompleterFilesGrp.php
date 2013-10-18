@@ -24,9 +24,15 @@ class AutocompleterFilesGrp extends \Templates\MandyLane\ControlGroup
 
 		$image = '';
 		$imageGrp = '';
-		if($valueDataValue > 0)
+		if($valueDataValue > 0 && !empty($file_path))
 		{
 			$image = new \Templates\Html\Image($file_path, $valueSearchField);
+			$imageGrp = new \Templates\MandyLane\ControlGroup(' ', $image);
+		}
+
+		if($valueDataValue > 0 && empty($file_path))
+		{
+			$image = new \Templates\Html\Tag('span', 'keine Vorschau vorhanden!');
 			$imageGrp = new \Templates\MandyLane\ControlGroup(' ', $image);
 		}
 
