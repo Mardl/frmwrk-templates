@@ -21,7 +21,7 @@ class Reportplot extends \Templates\Coach\Widget
 		if (is_array($classOrAttributes)){
 			$classOrAttributes[] = "colHalf";
 		} else {
-			$classOrAttributes .= " colHalf";
+			$classOrAttributes .= " colHalf reportPlot";
 		}
 
 		parent::__construct($title, null, $classOrAttributes);
