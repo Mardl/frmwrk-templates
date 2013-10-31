@@ -30,7 +30,7 @@ class Autocompleter extends \Templates\Html\Input
 		$autocompleterDataField2 = '';
 
 
-		$this->addClass('autofocus');
+		//$this->addClass('autofocus');
 
 		$this->addAttribute($this->getClassTag().'rel', $name);
 		$this->addAttribute($this->getClassTag().'data','value');
