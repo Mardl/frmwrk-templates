@@ -23,7 +23,7 @@ class Mahlzeiten extends \Templates\Myipt\Widget
 	{
 
 		//TODO keine direkte HTML Ausgabe!!!!!
-		$headline = "Mahlzeiten <span class='column'>Fett</span><span class='column'>Eiweiß</span><span class='column'>kh</span><span class='column'>kcal</span><span class='column'>Menge</span>";
+		$headline = "Mahlzeiten <span class='column'>Fett</span><span class='column'>Protein</span><span class='column'>kh</span><span class='column'>kcal</span><span class='column'>Menge</span>";
 
 		parent::__construct($headline, null, "colThreeQuarter mahlzeiten");
 
