@@ -44,7 +44,7 @@ class Form extends Tag
 	 * @param array $data
 	 * @return void
 	 */
-	public function setData($data)
+	public function setData(array $data)
 	{
 		$this->values = $data;
 	}
