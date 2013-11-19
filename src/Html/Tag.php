@@ -385,7 +385,10 @@ class Tag
 			{
 				$value = implode(' ', $value);
 			}
-			$attributes[] = $key . '="' . $value . '"';
+			if(!empty($value))
+			{
+				$attributes[] = $key . '="' . $value . '"';
+			}
 		}
 
 		return implode(' ', $attributes);
