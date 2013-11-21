@@ -278,7 +278,7 @@ class Table extends Tag
 			$tFoot = '<tfoot>' . $footerRow . '</tfoot>';
 		}
 
-		$strRow = '<tbody>' . parent::$this->getInnerAsString() . '</tbody>';
+		$strRow = '<tbody>' . parent::getInnerAsString() . '</tbody>';
 
 		$this->set($tHead . $strRow . $tFoot);
 
