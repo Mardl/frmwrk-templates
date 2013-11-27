@@ -24,6 +24,11 @@ class Tag
 	 * @var array
 	 */
 	protected $javascript = array();
+
+	/**
+	 * @var array
+	 */
+	protected $stylesheets = array();
 	/**
 	 * @var array
 	 */
@@ -432,6 +437,47 @@ class Tag
 	}
 
 	/**
+	 * @return array
+	 */
+	protected function getCssFile()
+	{
+		return $this->stylesheets;
+	}
+
+	public function addCssFile($value)
+	{
+		$this->stylesheets[] = $value;
+	}
+
+	/**
+	 * @return string
+	 */
+	private function createStylesheets()
+	{
+		$script = '';
+		$src = $this->getCssFile();
+		if (!empty($src))
+		{
+			foreach ($src as $source)
+			{
+				$tag = new Tag(
+					'link',
+					'',
+					array(
+						'href' => $source,
+						'type' => 'text/css',
+						'rel' => 'stylesheet',
+					)
+				);
+
+				$script .= $tag;
+			}
+		}
+
+		return $script;
+	}
+
+	/**
 	 * @return string
 	 */
 	private function createScripts()
@@ -476,6 +522,7 @@ class Tag
 		$str .= $this->getInnerAsString();
 		$str .= $this->getCloseTag();
 		$str .= $this->createScripts();
+		$str .= $this->createStylesheets();
 
 		return $str;
 	}

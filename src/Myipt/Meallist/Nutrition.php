@@ -2,11 +2,22 @@
 
 namespace Templates\Myipt\Meallist;
 
-
+/**
+ * Class Nutrition
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt\Meallist
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Nutrition extends \Templates\Myipt\Meallist
 {
 
-
+	/**
+	 * @param string $nutritions
+	 * @param array  $view
+	 * @param array  $cat
+	 * @param        $searchphrase
+	 */
 	public function __construct($nutritions, $view, $cat, $searchphrase)
 	{
 		parent::__construct("Nahrungsmittel", array('fett','kh','kcal'), $nutritions, $view, $cat, $searchphrase);
@@ -14,15 +25,18 @@ class Nutrition extends \Templates\Myipt\Meallist
 		$this->initContent();
 	}
 
-
-	public function initContent(){
+	/**
+	 * @return void
+	 */
+	public function initContent()
+	{
 
 		foreach ($this->data as $meal){
 			$div = new \Templates\Html\Tag("div", '', 'meal');
 			$this->content->append($div);
 
 			$info =  new \Templates\Html\Tag("div", '0', 'info');
-			$info->append(new \Templates\Html\Tag("span", $meal->getFile()->getThumbnail(96,96,'',''), 'img'));
+			$info->append(new \Templates\Html\Tag("span", $meal->getFile()->getThumbnail(96, 96, '', ''), 'img'));
 
 			$div->append($info);
 			$controls = new \Templates\Html\Tag("div", '', 'controls');
@@ -42,13 +56,13 @@ class Nutrition extends \Templates\Myipt\Meallist
 
 
 			$info->append($controls);
-			$infoButton = new \Templates\Html\Tag("span",'','icon little info');
-			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'details', 'id' => $meal->getId(), 'category' => $this->category, 'search' => $this->search)), $infoButton);
+			$infoButton = new \Templates\Html\Tag("span", '', 'icon little info');
+			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'details', 'format' => 'json', 'id' => $meal->getId(), 'category' => $this->category, 'search' => $this->search)), $infoButton);
 			$anchor->append("Details");
 			$anchor->addClass("get-ajax");
 			$controls->append($anchor);
 
-			$food = new \Templates\Html\Tag("span",'','icon little food');
+			$food = new \Templates\Html\Tag("span", '', 'icon little food');
 			$addfood = new \Templates\Html\Anchor(
 				$this->view->url(array("action"=>"add", "id"=>$meal->getId())),
 				$food,
