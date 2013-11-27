@@ -380,10 +380,10 @@ class Tag
 			{
 				$value = implode(' ', $value);
 			}
-			if(!empty($value))
-			{
+			//if(!empty($value))
+			//{
 				$attributes[] = $key . '="' . $value . '"';
-			}
+			//}
 		}
 
 		return implode(' ', $attributes);
