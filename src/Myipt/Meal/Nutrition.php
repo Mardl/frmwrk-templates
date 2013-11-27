@@ -141,7 +141,7 @@ class Nutrition extends \Templates\Html\Tag
 		if ($this->isMeal)
 		{
 			$remove = new \Templates\Html\Tag("span", '', 'icon little remove');
-			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove', 'id' => 'nut_'.$this->mealId, 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
+			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove',  'format' => 'json', 'id' => 'nut_'.$this->mealId, 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
 			$anchor->addClass('get-ajax');
 			$anchor->append("aus Mahlzeiten entfernen");
 			$this->controls->append($anchor);

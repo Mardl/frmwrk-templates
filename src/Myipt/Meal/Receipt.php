@@ -156,7 +156,7 @@ class Receipt extends \Templates\Html\Tag
 		{
 			$remove = new \Templates\Html\Tag("span", '', 'icon little remove');
 
-			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove', 'id' => 'rec_'.$this->receipt->getId(), 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
+			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove', 'format' => 'json', 'id' => 'rec_'.$this->receipt->getId(), 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
 			$anchor->addClass('get-ajax');
 			$anchor->append("aus Mahlzeiten entfernen");
 			$this->controls->append($anchor);
