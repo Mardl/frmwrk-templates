@@ -520,9 +520,9 @@ class Tag
 			$str .= '>';
 		}
 		$str .= $this->getInnerAsString();
-		$str .= $this->getCloseTag();
 		$str .= $this->createScripts();
 		$str .= $this->createStylesheets();
+		$str .= $this->getCloseTag();
 
 		return $str;
 	}
