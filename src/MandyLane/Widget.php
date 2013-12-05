@@ -159,6 +159,21 @@ class Widget extends Tag
 	}
 
 	/**
+	 * @param bool $sortable
+	 * @return void
+	 */
+	public function setContentSortable($sortable = true)
+	{
+		if($sortable)
+		{
+			$this->content->addClass('sortable');
+			return;
+		}
+
+		$this->content->removeClass('sortable');
+	}
+
+	/**
 	 * @return string
 	 */
 	public function toString()

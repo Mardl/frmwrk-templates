@@ -2,13 +2,24 @@
 
 namespace Templates\MandyLane;
 
-use \Templates\Html\Tag;
-
+/**
+ * Class Table
+ *
+ * @category Lifemeter
+ * @package  Templates\MandyLane
+ * @author   Reinhard Hampl <reini@dreiwerken.de>
+ */
 class Table extends \Templates\Html\Table
 {
 
 	protected $headline = '';
 
+	/**
+	 * @param string $headline
+	 * @param array  $classOrAttributes
+	 *
+	 * @return \Templates\MandyLane\Table
+	 */
 	public function __construct($headline='', $classOrAttributes = array())
 	{
 		parent::__construct($classOrAttributes,'\Templates\MandyLane\Row');
@@ -43,10 +54,10 @@ class Table extends \Templates\Html\Table
 		$strOutTable = parent::toString();
 
 		// Widget Bauen
-		$divWidget = new Tag('div','',$typeWidget);
+		$divWidget = new \Templates\Html\Tag('div', '', $typeWidget);
 		if (!empty($this->headline))
 		{
-			$div = new Tag('div',new Tag('h5',$this->headline),'widget-head');
+			$div = new \Templates\Html\Tag('div', new Tag('h5', $this->headline), 'widget-head');
 			$divWidget->append($div);
 		}
 
