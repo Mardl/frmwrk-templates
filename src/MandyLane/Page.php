@@ -100,7 +100,7 @@ class Page extends \Templates\Html\Tag
 
 		$this->addClass('maincontent');
 
-		$header = new \Templates\Html\Tag('h1', array($this->getHeadertext()), array('class' => 'pageTitle'));
+		$header = new \Templates\Html\Tag('h1', array($this->getHeadertext()));
 		$header->addClass('pageTitle');
 
 		$contentContainer = new \Templates\Html\Tag('div');
