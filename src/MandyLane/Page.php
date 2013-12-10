@@ -23,6 +23,11 @@ class Page extends \Templates\Html\Tag
 	protected $headertext = '';
 
 	/**
+	 * @var string
+	 */
+	protected $errorMessage = '';
+
+	/**
 	 * @var array
 	 */
 	protected $dataContent = array();
@@ -38,6 +43,7 @@ class Page extends \Templates\Html\Tag
 		parent::__construct('div', '', $classOrAttributes);
 
 		$this->setHeadertext($headerText);
+		$this->setErrorMessages($view->html->getSystemMessages());
 		$this->setDataContent($dataContent);
 		$this->setView($view);
 	}
@@ -64,6 +70,15 @@ class Page extends \Templates\Html\Tag
 	public function setHeadertext($headertext)
 	{
 		$this->headertext = $headertext;
+	}
+
+	/**
+	 * @param string $errorMessage
+	 * @return void
+	 */
+	public function setErrorMessages($errorMessage)
+	{
+		$this->errorMessage = $errorMessage;
 	}
 
 	/**
@@ -105,7 +120,7 @@ class Page extends \Templates\Html\Tag
 
 		$contentContainer = new \Templates\Html\Tag('div');
 		$contentContainer->addClass('left');
-		$contentContainer->append(array($header, $this->getDataContent()));
+		$contentContainer->append(array($header, $this->errorMessage, $this->getDataContent()));
 
 		$this->append(array($view->html->viewBreadcrumbs(), $contentContainer));
 
