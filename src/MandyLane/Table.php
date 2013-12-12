@@ -57,7 +57,7 @@ class Table extends \Templates\Html\Table
 		$divWidget = new \Templates\Html\Tag('div', '', $typeWidget);
 		if (!empty($this->headline))
 		{
-			$div = new \Templates\Html\Tag('div', new Tag('h5', $this->headline), 'widget-head');
+			$div = new \Templates\Html\Tag('div', new \Templates\Html\Tag('h5', $this->headline), 'widget-head');
 			$divWidget->append($div);
 		}
 
