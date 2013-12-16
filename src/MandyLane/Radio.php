@@ -23,6 +23,16 @@ class Radio extends \Templates\Html\Input\Radio
 
 	}
 
+	/**
+	 * @param $url
+	 * @return void
+	 */
+	public function onChange($url)
+	{
+		$this->onChange = $url;
+	}
+
+
 	public function toString()
 	{
 		parent::set('');
@@ -41,6 +51,13 @@ class Radio extends \Templates\Html\Input\Radio
 			{
 				$radio->addAttribute('checked','checked');
 			}
+
+			if(!empty($this->onChange))
+			{
+				$radio->addJsFile('/static/js/custom/mandy/selectOnChange.js');
+				$radio->addAttribute('data-on-change-url', $this->onChange);
+			}
+
 
 			$label = '';
 			if($this->getShowLabel())
