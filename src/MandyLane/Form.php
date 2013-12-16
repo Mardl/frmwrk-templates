@@ -23,6 +23,15 @@ class Form extends \Templates\Html\Form
 		parent::append($this->content);
 	}
 
+	/**
+	 * @param string $url
+	 * @return void
+	 */
+	public function setAction($url)
+	{
+		$this->action($url);
+	}
+
 	public function append($value)
 	{
 		$this->content->append($value);
