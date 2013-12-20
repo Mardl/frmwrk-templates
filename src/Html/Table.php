@@ -73,7 +73,7 @@ class Table extends Tag
 
 			return;
 		}
-		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row ' . ($max + 1) . '. Erste Definition: ' . $this->maxCell . ' Columns.');
+		throw new \Templates\Exceptions\Layout('Spaltenanzahl ungültig in (tbody) Row (' . ($max + 1) . ' Columns). Erste Definition: ' . $this->maxCell . ' Columns.');
 	}
 
 	/**
