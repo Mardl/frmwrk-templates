@@ -29,6 +29,19 @@ class ToggleMenu extends Tag
 	private $menu;
 
 	/**
+	 * @var string
+	 */
+	private $buttonTitle = '';
+	/**
+	 * @var string
+	 */
+	private $buttonIconClass = '';
+	/**
+	 * @var bool
+	 */
+	private $withoutCaret = false;
+
+	/**
 	 * @param string $title
 	 * @param array  $menu
 	 * @param array  $classOrAttributes
@@ -40,7 +53,6 @@ class ToggleMenu extends Tag
 
 		$this->button = new Tag('button', '', 'btn dropdown-toggle');
 		$this->setButton($title);
-		$this->button->addAttribute('data-toggle', 'dropdown');
 		parent::append($this->button);
 
 		$this->menu = new Tag('ul', '', 'dropdown-menu');
@@ -61,7 +73,30 @@ class ToggleMenu extends Tag
 	 */
 	public function setButton($title, $iconclass = "icon-cog")
 	{
-		$this->button->set('<i class="' . $iconclass . '"></i> ' . $title . ' <span class="caret"></span>');
+		$this->buttonTitle = $title;
+		$this->buttonIconClass = $iconclass;
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public function showEmpty()
+	{
+		$this->withoutCaret = true;
+	}
+
+	/**
+	 * @param bool $noCaret
+	 * @return void
+	 */
+	private function createButton($noCaret = false)
+	{
+		$this->button->set('<i class="' . $this->buttonIconClass . '"></i> ' . $this->buttonTitle . ($noCaret ? '' : ' <span class="caret"></span>'));
+		if (!$noCaret)
+		{
+			$this->button->addAttribute('data-toggle', 'dropdown');
+		}
 	}
 
 	/**
@@ -128,11 +163,14 @@ class ToggleMenu extends Tag
 		*/
 
 		$checkEmpty = $this->menu->getInnerAsString();
-		if (empty($checkEmpty))
+		if (empty($checkEmpty) && !$this->withoutCaret)
 		{
 			return '';
 		}
+
+		$this->createButton(empty($checkEmpty));
 		parent::append($this->menu);
+
 		return parent::toString();
 	}
 }
