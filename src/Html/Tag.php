@@ -58,10 +58,12 @@ class Tag
 			$tag = 'div';
 		}
 		$this->tagName = strtolower($tag);
-		if (!empty($inner))
+
+		if ($this->isValueSet($inner))
 		{
 			$this->set($inner);
 		}
+
 		if (!empty($classOrAttributes))
 		{
 			if (is_array($classOrAttributes))
@@ -444,6 +446,10 @@ class Tag
 		return $this->stylesheets;
 	}
 
+	/**
+	 * @param string $value
+	 * @return void
+	 */
 	public function addCssFile($value)
 	{
 		$this->stylesheets[] = $value;
@@ -575,12 +581,17 @@ class Tag
 	 */
 	public function append($value)
 	{
-		if (is_string($value) && trim($value) == '')
+		/*if (is_string($value) && trim($value) == '')
 		{
 			return $this;
 		}
 
 		if (is_array($value) && empty($value))
+		{
+			return $this;
+		}*/
+
+		if(!$this->isValueSet($value))
 		{
 			return $this;
 		}
@@ -703,5 +714,24 @@ class Tag
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param mixed $value
+	 * @return bool
+	 */
+	private function isValueSet($value)
+	{
+		if (is_string($value) && trim($value) == '')
+		{
+			return false;
+		}
+
+		if (is_array($value) && empty($value))
+		{
+			return false;
+		}
+
+		return true;
 	}
 }
