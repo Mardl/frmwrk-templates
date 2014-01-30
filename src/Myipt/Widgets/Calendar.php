@@ -81,12 +81,12 @@ class Calendar extends \Templates\Myipt\Widget
 	private function initDays()
 	{
 		$today = $this->today;
-		$first = new \DateTime( $today->format("Y-m-1") );
+		$first = new \DateTime($today->format("Y-m-1"));
 		$this->first = $first;
 		$last = clone($today);
 		$last->add(new \DateInterval("P1M"));
 		$last->setDate($last->format("Y"), $last->format("m"), 1);
-		$last->setTime(0,0,0);
+		$last->setTime(0, 0, 0);
 		$last->sub(new \DateInterval("P0DT1S"));
 		$this->lastday = $last->format('j');
 		$this->last = $last;
@@ -95,7 +95,7 @@ class Calendar extends \Templates\Myipt\Widget
 		$temp = clone($first);
 		for ($i = $first->format("W"); $i <= $last->format("W"); $i++)
 		{
-			$cal[$i] = array();
+			$cal[sprintf("%02d", $i)] = array();
 		}
 
 		for ($i = $temp->format("j"); $i <= $last->format("j"); $i++)
