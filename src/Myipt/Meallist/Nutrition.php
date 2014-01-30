@@ -35,14 +35,14 @@ class Nutrition extends \Templates\Myipt\Meallist
 			$div = new \Templates\Html\Tag("div", '', 'meal');
 			$this->content->append($div);
 
-			$info =  new \Templates\Html\Tag("div", '0', 'info');
+			$info =  new \Templates\Html\Tag("div", '', 'info');
 			$info->append(new \Templates\Html\Tag("span", $meal->getFile()->getThumbnail(96, 96, '', ''), 'img'));
 
 			$div->append($info);
 			$controls = new \Templates\Html\Tag("div", '', 'controls');
-			$fett =  new \Templates\Html\Tag("div", '0', 'substrat');
-			$kh =  new \Templates\Html\Tag("div", '0', 'substrat');
-			$kcal =  new \Templates\Html\Tag("div", '0', 'substrat');
+			$fett =  new \Templates\Html\Tag("div", '', 'substrat');
+			$kh =  new \Templates\Html\Tag("div", '', 'substrat');
+			$kcal =  new \Templates\Html\Tag("div", '', 'substrat');
 			$div->append($fett);
 			$div->append($kh);
 			$div->append($kcal);
