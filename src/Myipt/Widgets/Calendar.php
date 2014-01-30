@@ -84,7 +84,16 @@ class Calendar extends \Templates\Myipt\Widget
 		$first = new \DateTime($today->format("Y-m-1"));
 		$this->first = $first;
 		$last = clone($today);
-		$last->add(new \DateInterval("P1M"));
+
+		/**
+		 * wenn man sich im januar befindet und der tag >= dem 29. ist, darf man nicht einen monat
+		 * hinzufügen, weil sonst PHP in den März springt. Daher Workaround mit 10 Tagen
+		 */
+		if ($last->format('n') == 1 && $last->format('j') > 28){
+			$last->add(new \DateInterval("P10D"));
+		} else {
+			$last->add(new \DateInterval("P1M"));
+		}
 		$last->setDate($last->format("Y"), $last->format("m"), 1);
 		$last->setTime(0, 0, 0);
 		$last->sub(new \DateInterval("P0DT1S"));
@@ -93,12 +102,14 @@ class Calendar extends \Templates\Myipt\Widget
 
 		$cal = array();
 		$temp = clone($first);
-		for ($i = $first->format("W"); $i <= $last->format("W"); $i++)
+		//Zuerst die Wochen aufbauen
+		for ($w = $first->format("W"); $w <= $last->format("W"); $w++)
 		{
-			$cal[sprintf("%02d", $i)] = array();
+			$cal[sprintf("%02d", $w)] = array();
 		}
 
-		for ($i = $temp->format("j"); $i <= $last->format("j"); $i++)
+		//dann die Tage in die entsprechende Woche schieben
+		for ($d = $temp->format("j"); $d <= $last->format("j"); $d++)
 		{
 			$cal[$temp->format("W")][($temp->format("N") - 1)] = $temp->format("d");
 			$temp->add(new \DateInterval("P1D"));
