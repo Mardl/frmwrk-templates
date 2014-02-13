@@ -79,20 +79,20 @@ class Entry extends \Templates\Html\Tag
 			$this->addAttribute("data-unit", $this->unit);
 		}
 
-		$vzRel = $vzAbs = "";
+		$this->vzRel = $this->vzAbs = "";
 		//Wenn Rel-Differenz größer 0, dann verschlechtert
 		if ($this->rel <= 0)
 		{
-			$vzRel = "+";
+			$this->vzRel = "+";
 		}
 		//Wenn Abs Differenz kleiner 0, dann verbessert
 		if ($this->abs >= 0)
 		{
-			$vzAbs = "+";
+			$this->vzAbs = "+";
 		}
 
-		$this->addAttribute("data-val-rel", sprintf("%s%0.1f", $vzRel, abs($this->rel)));
-		$this->addAttribute("data-val-abs", sprintf("%s%0.1f", $vzAbs, abs($this->abs)));
+		$this->addAttribute("data-val-rel", sprintf("%s%0.1f", $this->vzRel, abs($this->rel)));
+		$this->addAttribute("data-val-abs", sprintf("%s%0.1f", $this->vzAbs, abs($this->abs)));
 	}
 
 	/**
@@ -140,7 +140,7 @@ class Entry extends \Templates\Html\Tag
 				$class = "compare up";
 			}
 
-			$value = sprintf("<span class='".$class."'></span> %0.1f %%", $this->rel);
+			$value = sprintf("<span class='".$class."'></span> %s%0.1f %%", $this->vzRel, abs($this->rel));
 		} else {
 			if ($this->abs < 0)
 			{
@@ -150,7 +150,7 @@ class Entry extends \Templates\Html\Tag
 			{
 				$class = "compare up";
 			}
-			$value = sprintf("<span class='".$class."'></span> %0.1f %s", $this->abs, $this->unit);
+			$value = sprintf("<span class='".$class."'></span> %s%0.1f %s", $this->vzAbs, abs($this->abs), $this->unit);
 		}
 
 		$this->addCell($value, "208px");
