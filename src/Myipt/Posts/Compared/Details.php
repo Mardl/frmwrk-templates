@@ -82,8 +82,8 @@ class Details extends \Templates\Html\Tag
 		/**
 		 * Differenz Rel / Abs
 		 **/
-		$this->diffRel = $startRel - $endRel;
-		$this->diffAbs = $startAbs - $endAbs;
+		$this->diffRel = $endRel - $startRel;
+		$this->diffAbs = $endAbs - $startAbs;
 
 		/**
 		 * Verlaufsdaten Rel / Abs
