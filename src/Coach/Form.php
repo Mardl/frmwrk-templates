@@ -42,12 +42,12 @@ class Form extends \Templates\Html\Form
 	 * @param unknown_type $legend
 	 * @return \Templates\Myipt\Block
 	 */
-	public function newDivset($legend = null)
+	public function newDivset($legend = null, $legendTag = 'h3')
 	{
 		$fieldset = new \Templates\Coach\Block("div");
 		if ($legend != null){
 			if (!($legend instanceof \Templates\Html\Tag)){
-				$legend = new \Templates\Html\Tag('h3', $legend);
+				$legend = new \Templates\Html\Tag($legendTag, $legend);
 			}
 			$fieldset->append($legend);
 		}
