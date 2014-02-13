@@ -81,12 +81,12 @@ class Entry extends \Templates\Html\Tag
 
 		$vzRel = $vzAbs = "";
 		//Wenn Rel-Differenz größer 0, dann verschlechtert
-		if ($this->rel >= 0)
+		if ($this->rel <= 0)
 		{
-			$vzRel = "-";
+			$vzRel = "+";
 		}
 		//Wenn Abs Differenz kleiner 0, dann verbessert
-		if ($this->abs <= 0)
+		if ($this->abs >= 0)
 		{
 			$vzAbs = "+";
 		}
