@@ -160,11 +160,11 @@ class Details extends \Templates\Html\Tag
 	private function addDiffRel()
 	{
 		$class = "compareB none";
-		if ($this->diffRel > 0)
+		if ($this->diffRel < 0)
 		{
 			$class = "compareB down";
 		}
-		else if ($this->diffRel < 0)
+		else if ($this->diffRel > 0)
 		{
 			$class = "compareB up";
 		}
