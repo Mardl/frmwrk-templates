@@ -79,20 +79,30 @@ class Entry extends \Templates\Html\Tag
 			$this->addAttribute("data-unit", $this->unit);
 		}
 
-		$this->vzRel = $this->vzAbs = "";
-		//Wenn Rel-Differenz größer 0, dann verschlechtert
-		if ($this->rel <= 0)
+		$this->vzRel = $this->vzAbs = "-";
+		//Wenn Rel-Differenz kleiner 0, dann verschlechtert
+		if ($this->rel >= 0)
 		{
-			$this->vzRel = "+";
+			$this->addAttribute("data-val-rel", sprintf("+%0.1f", $this->rel));
 		}
-		//Wenn Abs Differenz kleiner 0, dann verbessert
-		if ($this->abs >= 0)
+		else
 		{
-			$this->vzAbs = "+";
+			$this->addAttribute("data-val-rel", sprintf("%0.1f", $this->rel));
 		}
 
-		$this->addAttribute("data-val-rel", sprintf("%s%0.1f", $this->vzRel, abs($this->rel)));
-		$this->addAttribute("data-val-abs", sprintf("%s%0.1f", $this->vzAbs, abs($this->abs)));
+
+		//Wenn Abs Differenz größer 0, dann verbessert
+		if ($this->abs >= 0)
+		{
+			$this->addAttribute("data-val-abs", sprintf("+%0.1f", $this->abs));
+		}
+		else
+		{
+			$this->addAttribute("data-val-abs", sprintf("%0.1f", $this->abs));
+		}
+
+
+
 	}
 
 	/**
@@ -118,7 +128,7 @@ class Entry extends \Templates\Html\Tag
 		$first = array_pop($first);
 		$last = array_slice($this->toCompare, -1, 1);
 		$last = array_pop($last);
-		return ($first[$index] - $last[$index]);
+		return ($last[$index] - $first[$index]);
 	}
 
 	/**
@@ -131,16 +141,17 @@ class Entry extends \Templates\Html\Tag
 		$class = "compare none";
 		if ($this->type == "0")
 		{
-			if ($this->rel > 0)
+			if ($this->rel < 0)
 			{
 				$class = "compare down";
 			}
-			else if ($this->rel < 0)
+			else if ($this->rel > 0)
 			{
 				$class = "compare up";
 			}
 
-			$value = sprintf("<span class='".$class."'></span> %s%0.1f %%", $this->vzRel, abs($this->rel));
+			$value = sprintf("<span class='".$class."'></span> %0.1f %%", $this->rel);
+
 		} else {
 			if ($this->abs < 0)
 			{
@@ -150,7 +161,7 @@ class Entry extends \Templates\Html\Tag
 			{
 				$class = "compare up";
 			}
-			$value = sprintf("<span class='".$class."'></span> %s%0.1f %s", $this->vzAbs, abs($this->abs), $this->unit);
+			$value = sprintf("<span class='".$class."'></span> %0.1f %s", $this->abs, $this->unit);
 		}
 
 		$this->addCell($value, "208px");
