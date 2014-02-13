@@ -55,13 +55,27 @@ class Details extends \Templates\Html\Tag
 		$absArray = array();
 		$relArray = array();
 
-		foreach ($this->rawData as $a)
+		$lastRel = -99999999;
+		$lastAbs = -99999999;
+
+		$counter = count($this->rawData) - 1;
+
+		foreach ($this->rawData as $index => $a)
 		{
 			$created = new \DateTime($a['datum']);
 			$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
 
-			$absArray[] = '['.$datum.','.$a['abs'].']';
-			$relArray[] = '['.$datum.','.$a['rel'].']';
+			if (($lastRel != $a['rel']) || $index == $counter)
+			{
+				$relArray[] = '['.$datum.','.$a['rel'].']';
+				$lastrel = $a['rel'];
+			}
+
+			if (($lastAbs != $a['abs']) || $index == $counter)
+			{
+				$absArray[] = '['.$datum.','.$a['abs'].']';
+				$lastAbs = $a['abs'];
+			}
 
 			$endRel = $a['rel'];
 			$endAbs = $a['abs'];
