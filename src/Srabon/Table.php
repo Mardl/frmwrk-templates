@@ -30,6 +30,8 @@ class Table extends \Templates\Html\Table
 		$this->flat = false;
 	}
 
+
+
 	public function widget()
 	{
 		$this->tools = false;
@@ -87,6 +89,7 @@ class Table extends \Templates\Html\Table
 			$this->setOption('sPaginationType',"full_numbers",true);
 			$this->setOption('iDisplayLength',10,true);
 			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
+			$this->setOption('bStateSave', true);
 			$this->setInternalisation();
 		}
 
