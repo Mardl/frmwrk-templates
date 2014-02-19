@@ -184,7 +184,7 @@ class Entry extends \Templates\Html\Tag
 		{
 			$last = array_slice($this->toCompare, -1, 1);
 			$last = array_pop($last);
-			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['value']['zindex']), "208px");
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "208px");
 		}
 	}
 
