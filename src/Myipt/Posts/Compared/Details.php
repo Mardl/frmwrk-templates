@@ -49,8 +49,8 @@ class Details extends \Templates\Html\Tag
 	protected function generate()
 	{
 
-		$startRel = $this->rawData[0]['rel'];
-		$startAbs = $this->rawData[0]['abs'];
+		$startRel = null; //$this->rawData[0]['rel'];
+		$startAbs = null; //$this->rawData[0]['abs'];
 
 		$endRel = $startRel;
 		$endAbs = $startAbs;
@@ -67,6 +67,15 @@ class Details extends \Templates\Html\Tag
 		{
 			if ($a["zindex"] > 0)
 			{
+				if ($startRel == null)
+				{
+					$startRel = $a['rel'];
+					$startAbs = $a['abs'];
+
+					$endRel = $startRel;
+					$endAbs = $startAbs;
+				}
+
 				$created = new \DateTime($a['datum']);
 				$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
 
