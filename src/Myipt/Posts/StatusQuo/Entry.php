@@ -25,6 +25,11 @@ class Entry extends \Templates\Html\Tag
 	protected $data;
 
 	/**
+	 * @var boolean
+	 */
+	protected $active = false;
+
+	/**
 	 * @param string $typ
 	 * @param array  $classOrAttributes
 	 */
@@ -41,6 +46,8 @@ class Entry extends \Templates\Html\Tag
 
 		$this->rawData = $entry;
 		$this->defineAttributes();
+
+		$this->active = $active;
 
 		$this->data = new \Templates\Html\Tag("div", '', 'data');
 		$this->append($this->data);
@@ -89,6 +96,19 @@ class Entry extends \Templates\Html\Tag
 	{
 		$this->addCell($entry['title'], null, "title");
 
+		if (!$this->active)
+		{
+			$this->addValues($entry);
+		}
+		else
+		{
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $entry['value']['zindex']), "308px");
+		}
+
+	}
+
+	protected function addValues(array $entry)
+	{
 		if ($entry["chart"] == "0" || $entry["chart"] == "2" )
 		{
 			$value = sprintf("%0.1f%%", $entry['value']['rel']);
