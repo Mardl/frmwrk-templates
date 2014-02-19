@@ -13,16 +13,52 @@ namespace Templates\Myipt\Posts\Compared;
  */
 class Entry extends \Templates\Html\Tag
 {
-
+	/**
+	 * @var array
+	 */
 	protected $data;
 
+	/**
+	 * Rohdaten
+	 *
+	 * @var array
+	 */
 	protected $toCompare;
 
+	/**
+	 * @var string
+	 */
 	protected $title;
+
+	/**
+	 * Anzeige von Rel / Abs / beides
+	 *
+	 * @var integer
+	 */
 	protected $type;
+
+	/**
+	 * Einheit z.B. kg
+	 * @var string
+	 */
 	protected $unit;
+
+	/**
+	 * Relativer Wert
+	 * @var float
+	 */
 	protected $rel = 0;
+
+	/**
+	 * Absoluter Wert
+	 * @var float
+	 */
 	protected $abs = 0;
+
+	/**
+	 * @var boolean
+	 */
+	protected $active = false;
 
 	/**
 	 * @param string $typ
@@ -38,6 +74,8 @@ class Entry extends \Templates\Html\Tag
 		}
 
 		parent::__construct('div', '', $class);
+
+		$this->active = $active;
 
 		$this->toCompare = $entry;
 
@@ -138,6 +176,20 @@ class Entry extends \Templates\Html\Tag
 	{
 		$this->addCell($this->title, null, "title");
 
+		if (!$this->active)
+		{
+			$this->addValues();
+		}
+		else
+		{
+			$last = array_slice($this->toCompare, -1, 1);
+			$last = array_pop($last);
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['value']['zindex']), "208px");
+		}
+	}
+
+	protected function addValues()
+	{
 		$class = "compare none";
 		if ($this->type == "0")
 		{
