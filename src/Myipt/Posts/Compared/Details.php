@@ -52,6 +52,9 @@ class Details extends \Templates\Html\Tag
 		$startRel = $this->rawData[0]['rel'];
 		$startAbs = $this->rawData[0]['abs'];
 
+		$endRel = $startRel;
+		$endAbs = $startAbs;
+
 		$absArray = array();
 		$relArray = array();
 
@@ -62,23 +65,27 @@ class Details extends \Templates\Html\Tag
 
 		foreach ($this->rawData as $index => $a)
 		{
-			$created = new \DateTime($a['datum']);
-			$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
-
-			if (($lastRel != $a['rel']) || $index == $counter)
+			if ($a["zindex"] > 0)
 			{
-				$relArray[] = '['.$datum.','.$a['rel'].']';
-				$lastrel = $a['rel'];
+				$created = new \DateTime($a['datum']);
+				$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
+
+				if ((($lastRel != $a['rel']) || $index == $counter))
+				{
+					$relArray[] = '['.$datum.','.$a['rel'].']';
+					$lastrel = $a['rel'];
+				}
+
+				if (($lastAbs != $a['abs']) || $index == $counter)
+				{
+					$absArray[] = '['.$datum.','.$a['abs'].']';
+					$lastAbs = $a['abs'];
+				}
+
+				$endRel = $a['rel'];
+				$endAbs = $a['abs'];
 			}
 
-			if (($lastAbs != $a['abs']) || $index == $counter)
-			{
-				$absArray[] = '['.$datum.','.$a['abs'].']';
-				$lastAbs = $a['abs'];
-			}
-
-			$endRel = $a['rel'];
-			$endAbs = $a['abs'];
 		}
 
 		/**
