@@ -192,11 +192,11 @@ class Details extends \Templates\Html\Tag
 		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
 		$this->append($div);
 
-		/*
-		 $span = new \Templates\Html\Tag("span", sprintf("Difference<br/>%0.1f %%", $this->diffRel));
+
+		$span = new \Templates\Html\Tag("span", sprintf("Difference<br/>%0.1f %%", $this->diffRel));
 		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
-		*/
+
 	}
 
 	/**
@@ -222,11 +222,10 @@ class Details extends \Templates\Html\Tag
 		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
 		$this->append($div);
 
-		/*
-		 $span = new \Templates\Html\Tag("span", sprintf("Difference<br/>%0.1f %s", $this->diffAbs, $this->unit));
+		$span = new \Templates\Html\Tag("span", sprintf("Difference<br/>%0.1f %s", $this->diffAbs, $this->unit));
 		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
-		*/
+
 	}
 
 	/**
