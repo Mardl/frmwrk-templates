@@ -162,10 +162,29 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function getDiffValue($index)
 	{
-		$first = array_slice($this->toCompare, 0, 1);
-		$first = array_pop($first);
-		$last = array_slice($this->toCompare, -1, 1);
-		$last = array_pop($last);
+		$first = null;
+		$last = null;
+
+		foreach ($this->toCompare as $entry)
+		{
+			if ($entry['zindex'] > 0)
+			{
+				if ($first == null)
+				{
+					$first = $entry;
+				}
+
+				$last = $entry;
+			}
+		}
+
+		if ($first == null){
+			$first = array($index=>0);
+		}
+		if ($last == null){
+			$last = array($index=>0);
+		}
+
 		return ($last[$index] - $first[$index]);
 	}
 
