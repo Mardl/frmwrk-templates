@@ -28,7 +28,7 @@ class SelectBlock extends \Templates\Html\Tag
 		$this->addAttribute('data-rel', $id);
 		$this->addAttribute('for', $id);
 
-		$table = new \Templates\Html\Tag("table", "<tr><td>{$text}</td></tr>");
+		$table = new \Templates\Html\Tag("table", "<tr><td>{$text} <span class='checkbox'></span></td></tr>");
 		$this->append($table);
 
 		$checkbox = new \Templates\Html\Tag('input');
