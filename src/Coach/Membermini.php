@@ -20,11 +20,11 @@ class Membermini extends Tag
 		parent::__construct('div', '', 'userInfo');
 		$this->member = $member;
 		$this->url = $url;
-		#$this->append("Gewählter Benutzer: ".$this->user->getFullname());
+		$this->addInfos();
 	}
 
-	public function toString(){
-		//Avatar
+	public function addInfos()
+	{
 		$file = $this->member->getAvatarFile();
 		if (!$file){
 			$avatar = new \Templates\Html\Image($this->member->getAvatar());
@@ -40,7 +40,7 @@ class Membermini extends Tag
 		$h = new \Templates\Html\Tag("h4", $anchor);
 		$this->append($h);
 
-		return parent::toString();
 	}
+
 
 }

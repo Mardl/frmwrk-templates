@@ -91,4 +91,8 @@ class Section extends Tag
 		return parent::toString();
 	}
 
+	public function addContentClass($class)
+	{
+		$this->content->addClass($class);
+	}
 }
