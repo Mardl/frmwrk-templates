@@ -30,6 +30,8 @@ class Table extends \Templates\Html\Table
 		$this->flat = false;
 	}
 
+
+
 	public function widget()
 	{
 		$this->tools = false;

@@ -92,7 +92,7 @@ class Tag
 	/**
 	 * Setzen von Attribut ID
 	 *
-	 * @param int $id
+	 * @param string $id
 	 * @return Tag
 	 */
 	public function setId($id)
