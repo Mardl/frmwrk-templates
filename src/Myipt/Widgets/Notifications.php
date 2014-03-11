@@ -39,7 +39,7 @@ class Notifications extends \Templates\Myipt\Widget
 					"%s %s",
 					new \Templates\Html\Anchor(
 						$this->view->url(array('module'=>'notifications', 'controller'=>'index', 'action'=>'redirect', 'id' => $noti->getId())),
-						substr($noti->getText(), 0, 100)
+						substr($noti->getPreparedText(), 0, 100)
 					),
 					new \Templates\Myipt\Iconanchor(
 						$this->view->url(array('module'=>'notifications', 'controller'=>'index', 'action'=>'redirect', 'id' => $noti->getId())),
@@ -64,10 +64,9 @@ class Notifications extends \Templates\Myipt\Widget
 
 		$this->append($list);
 
-
-
-
-
 	}
+
+
+
 
 }

@@ -38,6 +38,11 @@ class Calendar extends \Templates\Myipt\Widget
 	protected $last;
 
 	/**
+	 * @var boolean
+	 */
+	protected $draggable = false;
+
+	/**
 	 * @param string $headerText
 	 * @param array  $value
 	 * @param bool   $style2
@@ -171,6 +176,15 @@ class Calendar extends \Templates\Myipt\Widget
 	}
 
 	/**
+	 * Defines draggable true or false
+	 * @param boolean $bool
+	 */
+	public function setDraggable($bool)
+	{
+		$this->draggable = $bool;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function toString()
@@ -210,7 +224,8 @@ class Calendar extends \Templates\Myipt\Widget
 			{
 				if (intval($day) == 1 && $class == "inactive")
 				{
-					$class = "active";
+					#$class = "active";
+					$class = "";
 				}
 				else if (intval($day) == 1 && $class == "active")
 				{
@@ -230,9 +245,15 @@ class Calendar extends \Templates\Myipt\Widget
 					$currentCount++;
 				}
 
+				if ($this->draggable)
+				{
+					$temp .= ' makeMeDroppable';
+				}
+
 				$anchor = new \Templates\Html\Anchor("#", $day);
 				$anchor->addAttribute("data-rel", "{$wnr}-{$day}");
-				$weeklist->append($anchor, $temp);
+				$li = $weeklist->append($anchor, $temp);
+				$li->addAttribute("data-datetime", $day.$this->first->format('.m.Y'));
 			}
 
 			$counter++;

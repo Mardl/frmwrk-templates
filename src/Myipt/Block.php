@@ -70,6 +70,8 @@ class Block extends \Templates\Html\Tag
 	 * @param \Templates\Html\Tag $container
 	 * @param String $label
 	 * @param array $selects
+	 *
+	 * @return array
 	 */
 	public function addSelects($label, array $selects)
 	{
@@ -78,6 +80,8 @@ class Block extends \Templates\Html\Tag
 			$label = new \Templates\Html\Tag('label', $label);
 			$this->append($label);
 		}
+
+		$selectBoxes = array();
 
 		foreach ($selects as $box)
 		{
@@ -101,7 +105,7 @@ class Block extends \Templates\Html\Tag
 			{
 				if(isset($opt['optgroup']) && ($opt['optgroup'] != null))
 				{
-					$select->addOptionGrouped($opt["value"], $opt["tag"], (isset($opt["selected"]))?$opt["selected"]:false, $opt["optgroup"]);
+					$select->addOptionGrouped($opt["value"], $opt["tag"], $opt["optgroup"], (isset($opt["selected"]))?$opt["selected"]:false);
 				}
 				else
 				{
@@ -109,6 +113,9 @@ class Block extends \Templates\Html\Tag
 				}
 			}
 			$this->append($select);
+			$selectBoxes[] = $select;
 		}
+
+		return $selectBoxes;
 	}
 }
