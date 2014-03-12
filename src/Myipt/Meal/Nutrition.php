@@ -9,7 +9,7 @@ namespace Templates\Myipt\Meal;
  * @package  Templates\Myipt\Meal
  * @author   Alex Jonser <alex@dreiwerken.de>
  */
-class Nutrition extends \Templates\Html\Tag
+class Nutrition extends \Templates\Myipt\BigBlock
 {
 
 	/**
@@ -54,10 +54,7 @@ class Nutrition extends \Templates\Html\Tag
 		$this->view = $view;
 		$this->mealId = $mealId;
 
-		parent::__construct('div', '', 'colFull box meals');
-		$this->addAttribute("id", "bigBlock");
-
-		$this->append(new \Templates\Html\Tag('h2', $nutrition->getName(), 'headline'));
+		parent::__construct($nutrition->getName(), 'meals');
 
 		$this->initImageBlock();
 		$this->initSubstratBlock();
