@@ -14,6 +14,10 @@ namespace Templates\Myipt\Posts\Compared;
 class Details extends \Templates\Html\Tag
 {
 
+	/**
+	 * Speichert die Rohdaten
+	 * @var array
+	 */
 	protected $rawData = array();
 
 	/**
@@ -48,16 +52,19 @@ class Details extends \Templates\Html\Tag
 	 */
 	protected function generate()
 	{
+		//Startwerte
+		$startRel = null;
+		$startAbs = null;
 
-		$startRel = null; //$this->rawData[0]['rel'];
-		$startAbs = null; //$this->rawData[0]['abs'];
-
+		//Endwerte
 		$endRel = $startRel;
 		$endAbs = $startAbs;
 
+		//Array für die Plot Daten
 		$absArray = array();
 		$relArray = array();
 
+		//Vordefinierter Vergleichswert, da nur Werteänderungen dargestellt werden sollen
 		$lastRel = -99999999;
 		$lastAbs = -99999999;
 
@@ -65,8 +72,10 @@ class Details extends \Templates\Html\Tag
 
 		foreach ($this->rawData as $index => $a)
 		{
+			//nur Werte deren Z-Index > 0 hinzufügen
 			if ($a["zindex"] > 0)
 			{
+				//Ersten gültigen Wert übernehmen
 				if ($startRel == null)
 				{
 					$startRel = $a['rel'];
@@ -77,20 +86,22 @@ class Details extends \Templates\Html\Tag
 				}
 
 				$created = new \DateTime($a['datum']);
+				//Datumsformat für Highcharts
 				$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
 
 				if ((($lastRel != $a['rel']) || $index == $counter))
 				{
-					$relArray[] = '['.$datum.','.$a['rel'].']';
-					$lastrel = $a['rel'];
+					$relArray[] = sprintf("[%s,%s]", $datum, $a['rel']);
+					$lastRel = $a['rel'];
 				}
 
 				if (($lastAbs != $a['abs']) || $index == $counter)
 				{
-					$absArray[] = '['.$datum.','.$a['abs'].']';
+					$absArray[] = sprintf("[%s,%s]", $datum, $a['abs']);
 					$lastAbs = $a['abs'];
 				}
 
+				//Letzten Wert übernehmen
 				$endRel = $a['rel'];
 				$endAbs = $a['abs'];
 			}
@@ -163,7 +174,7 @@ class Details extends \Templates\Html\Tag
 		}
 
 
-		if ($this->viewType == 1 || $this->viewType == 2)
+		if ($this->viewType > 0)
 		{
 			$this->addDiffAbs();
 		}
@@ -185,18 +196,7 @@ class Details extends \Templates\Html\Tag
 			$class = "compareB up";
 		}
 
-		$span = new \Templates\Html\Tag("span", '', $class);
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->startRel), 'von'));
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->endRel), 'bis'));
-
-		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
-		$this->append($div);
-
-
-		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %%", $this->diffRel));
-		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
-		$this->append($div);
-
+		$this->addKacheln($class, $this->startRel, $this->endRel, $this->diffRel);
 	}
 
 	/**
@@ -214,18 +214,35 @@ class Details extends \Templates\Html\Tag
 			$class = "compareB up";
 		}
 
+		$this->addKacheln($class, $this->startAbs, $this->endAbs, $this->diffRel, $this->unit);
+	}
+
+	/**
+	 * Erstellt die Kacheln
+	 *
+	 * @param string $class
+	 * @param string $start
+	 * @param string $ende
+	 * @param string $diff
+	 * @param string $unit
+	 */
+	private function addKacheln($class, $start, $ende, $diff, $unit = null)
+	{
 		$span = new \Templates\Html\Tag("span", '', $class);
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $this->startAbs), 'von'));
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $this->endAbs), 'bis'));
-		$span->append(new \Templates\Html\Tag("span", $this->unit, 'unit'));
+		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $start), 'von'));
+		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $ende), 'bis'));
+
+		if ($unit)
+		{
+			$span->append(new \Templates\Html\Tag("span", $unit, 'unit'));
+		}
 
 		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
 		$this->append($div);
 
-		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %s", $this->diffAbs, $this->unit));
+		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %%", $diff));
 		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
-
 	}
 
 	/**
@@ -235,17 +252,7 @@ class Details extends \Templates\Html\Tag
 	{
 		if ($this->viewType == 0 || $this->viewType == 2)
 		{
-			$container = new \Templates\Html\Tag('div', '', 'chart');
-
-			$container->addAttribute('id', $this->id.'-plot-rel');
-			$container->addAttribute('data-type', "plot");
-			$container->addAttribute('data-series-rel', '['.implode(',', $this->arrRel).']');
-			$container->addAttribute('data-series-abs', '[]');
-			$container->addAttribute('data-abs-title', "");
-
-			$container->addAttribute('width', 588);
-			$container->addAttribute('height', 384);
-
+			$container = $this->createContainer($this->id.'-plot-rel', implode(',', $this->arrRel), '', '');
 			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
 			$this->append($div);
 		}
@@ -258,20 +265,39 @@ class Details extends \Templates\Html\Tag
 	{
 		if ($this->viewType == 1 || $this->viewType == 2)
 		{
-			$container = new \Templates\Html\Tag('div', '', 'chart');
-
-			$container->addAttribute('id', $this->id.'-plot-abs');
-			$container->addAttribute('data-type', "plot");
-			$container->addAttribute('data-series-rel', '[]');
-			$container->addAttribute('data-series-abs', '['.implode(',', $this->arrAbs).']');
-			$container->addAttribute('data-abs-title', $this->unit);
-
-			$container->addAttribute('width', 588);
-			$container->addAttribute('height', 384);
-
+			$container = $this->createContainer($this->id.'-plot-abs', '', implode(',', $this->arrAbs), $this->unit);
 			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
 			$this->append($div);
 		}
+	}
+
+	/**
+	 * Erstellt den Plot-Container
+	 *
+	 * @param string $id
+	 * @param string $seriesRel
+	 * @param string $seriesAbs
+	 * @param string $unit
+	 *
+	 * @return \Templates\Html\Tag
+	 */
+	protected function createContainer($id, $seriesRel, $seriesAbs, $unit)
+	{
+
+		$container = new \Templates\Html\Tag('div', '', 'chart');
+		$container->addAttribute('id', $id);
+		$container->addAttribute('data-type', "plot");
+		$container->addAttribute('data-series-rel', '['.$seriesRel.']');
+		$container->addAttribute('data-series-abs', '['.$seriesAbs.']');
+		$container->addAttribute('data-abs-title', $unit);
+		$container->addAttribute('width', 608);
+		$container->addAttribute('height', 384);
+		$container->addAttribute('data-plot-background', '#ffffff');
+		$container->addAttribute('data-plot-grid', '#dddddd');
+		$container->addAttribute('data-plot-container-background', '#f7f7f7');
+
+		return $container;
+
 	}
 
 }

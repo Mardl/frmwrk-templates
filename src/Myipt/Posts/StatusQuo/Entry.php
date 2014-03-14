@@ -41,13 +41,12 @@ class Entry extends \Templates\Html\Tag
 		} else {
 			$class .= ' active';
 		}
-
 		parent::__construct('div', '', $class);
 
 		$this->rawData = $entry;
-		$this->defineAttributes();
-
 		$this->active = $active;
+
+		$this->defineAttributes();
 
 		$this->data = new \Templates\Html\Tag("div", '', 'data');
 		$this->append($this->data);
@@ -94,48 +93,69 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function createEntry(array $entry)
 	{
-		$this->addCell($entry['title'], null, "title");
+		//Titel
+		$this->addCell($entry['title'], null, "title head");
 
 		if (!$this->active)
 		{
+			//wenn der Eintrag nicht aktiv ist, dann nur die Werte anzeigen
 			$this->addValues($entry);
 		}
 		else
 		{
-			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $entry['value']['zindex']), "308px");
+			//Ansonsten nur die Datenaktualität und das Datum des letzten Standes ausgeben
+			$this->addCell(
+				sprintf("Datenaktualität: <b>%0.1f%%</b><br/> Stand vom: <b>%s</b>", $entry['value']['zindex'], $entry['created']),
+				"284px",
+				"head"
+			);
 		}
 
 	}
 
+	/**
+	 * Anzeige der Werte
+	 *
+	 * @param array $entry
+	 */
 	protected function addValues(array $entry)
 	{
+		//Wenn der rel-Wert ausgegeben werden muss
 		if ($entry["chart"] == "0" || $entry["chart"] == "2" )
 		{
 			$value = sprintf("%0.1f%%", $entry['value']['rel']);
 		} else {
 			$value = '&nbsp;';
 		}
-		$this->addCell($value, "100px");
+		$this->addCell($value, "114px");
 
-
-		if ($entry["chart"] == "1" || $entry["chart"] == "2" )
+		//Wenn der abs-Wert ausgegeben werden muss
+		if ($entry["chart"] > 0)
 		{
 			$value = sprintf("%0.1f %s", $entry['value']['abs'], $entry['unit']);
 		} else {
 			$value = '&nbsp;';
 		}
-		$this->addCell($value, "208px");
+		$this->addCell($value, "170px");
 	}
 
 	/**
-	 * Url für Detail link
+	 * Detaillink anfügen
 	 *
 	 * @param string $uri
 	 */
 	public function addDetailLink($uri)
 	{
-		$link = new \Templates\Html\Anchor($uri, "Details", "get-ajax");
+		//Detaillink
+		$span = new \Templates\Html\Tag("span",'','icon info tiny');
+		$link = new \Templates\Html\Anchor($uri, $span, "get-ajax");
+		$link->append("Details");
+
+		//grüner Haken versteckt
 		$cell = new \Templates\Html\Tag("div", $link, 'fLeft detailLink');
+		$check = new \Templates\Html\Tag("span",'','icon check green hide');
+		$cell->append($check);
+
 		$this->append($cell);
 	}
 
@@ -149,7 +169,8 @@ class Entry extends \Templates\Html\Tag
 	protected function addCell($value, $size = null, $class = '')
 	{
 		$cell = new \Templates\Html\Tag("div", $value, 'fLeft '.$class);
-		if ($size){
+		if ($size)
+		{
 			$cell->addStyle("width", $size);
 		}
 		$this->data->append($cell);

@@ -28,13 +28,15 @@ class Details extends \Templates\Html\Tag
 		parent::__construct('div', '', 'details');
 		$this->data = $data;
 
-		$this->addUpdate();
+	//	$this->addUpdate();
 		$this->createCharts();
 		$this->addTexts();
 	}
 
 	/**
 	 * Box für Referenzdatum
+	 *
+	 * @deprecated
 	 */
 	protected function addUpdate()
 	{
@@ -77,7 +79,7 @@ class Details extends \Templates\Html\Tag
 	{
 		$div = new \Templates\Html\Tag("div",'','chartRel');
 		$chartRel = new \Templates\Myipt\Chart($this->data, "rel");
-		$chartRel->setWidth(196);
+		$chartRel->setWidth(214);
 		$chartRel->setHeight(150);
 		$div->append($chartRel);
 		$this->append($div);
@@ -90,7 +92,7 @@ class Details extends \Templates\Html\Tag
 	{
 		$div = new \Templates\Html\Tag("div",'','chartAbs');
 		$chartRel = new \Templates\Myipt\Chart($this->data, "abs");
-		$chartRel->setWidth(222);
+		$chartRel->setWidth(214);
 		$chartRel->setHeight(160);
 		$div->append($chartRel);
 		$this->append($div);
@@ -111,8 +113,11 @@ class Details extends \Templates\Html\Tag
 		$container->addAttribute('data-series-abs', '['.implode(',', $this->data['verlauf']["abs"]).']');
 		$container->addAttribute('data-series-rel', '['.implode(',', $this->data['verlauf']["rel"]).']');
 		$container->addAttribute('data-abs-title', $this->data['title']);
-		$container->addAttribute('width', 588);
+		$container->addAttribute('width', 608);
 		$container->addAttribute('height', 384);
+		$container->addAttribute('data-plot-background', '#ffffff');
+		$container->addAttribute('data-plot-grid', '#dddddd');
+		$container->addAttribute('data-plot-container-background', '#f7f7f7');
 
 		$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
 		$this->append($div);

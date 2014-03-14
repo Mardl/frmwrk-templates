@@ -118,6 +118,7 @@ class Entry extends \Templates\Html\Tag
 		}
 
 		$this->vzRel = $this->vzAbs = "-";
+
 		//Wenn Rel-Differenz kleiner 0, dann verschlechtert
 		if ($this->rel >= 0)
 		{
@@ -178,11 +179,14 @@ class Entry extends \Templates\Html\Tag
 			}
 		}
 
-		if ($first == null){
-			$first = array($index=>0);
+		if ($first == null)
+		{
+			$first = array($index => 0);
 		}
-		if ($last == null){
-			$last = array($index=>0);
+
+		if ($last == null)
+		{
+			$last = array($index => 0);
 		}
 
 		return ($last[$index] - $first[$index]);
@@ -193,7 +197,7 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function createEntry()
 	{
-		$this->addCell($this->title, null, "title");
+		$this->addCell($this->title, null, "title head");
 
 		if (!$this->active)
 		{
@@ -203,10 +207,13 @@ class Entry extends \Templates\Html\Tag
 		{
 			$last = array_slice($this->toCompare, -1, 1);
 			$last = array_pop($last);
-			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "208px");
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "284px", 'head');
 		}
 	}
 
+	/**
+	 * Erstellt die Header werte
+	 */
 	protected function addValues()
 	{
 		$class = "compare none";
@@ -243,8 +250,14 @@ class Entry extends \Templates\Html\Tag
 	 */
 	public function addDetailLink($uri)
 	{
-		$link = new \Templates\Html\Anchor($uri, "Details", "get-ajax");
+		$span = new \Templates\Html\Tag("span",'','icon info tiny');
+		$link = new \Templates\Html\Anchor($uri, $span, "get-ajax");
+		$link->append("Details");
+
 		$cell = new \Templates\Html\Tag("div", $link, 'fLeft detailLink');
+		$check = new \Templates\Html\Tag("span",'','icon check green hide');
+		$cell->append($check);
+
 		$this->append($cell);
 	}
 
@@ -258,7 +271,8 @@ class Entry extends \Templates\Html\Tag
 	protected function addCell($value, $size = null, $class = '')
 	{
 		$cell = new \Templates\Html\Tag("div", $value, 'fLeft '.$class);
-		if ($size){
+		if ($size)
+		{
 			$cell->addStyle("width", $size);
 		}
 		$this->data->append($cell);

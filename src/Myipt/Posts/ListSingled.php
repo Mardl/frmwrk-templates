@@ -102,13 +102,6 @@ class ListSingled extends \Templates\Html\Tag
 			);
 
 			$this->append( $entry );
-
-			/*
-			if (!empty($entryData['childs']))
-			{
-				$this->addEntries($entryData['childs']);
-			}
-			*/
 		}
 	}
 
