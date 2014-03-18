@@ -263,7 +263,7 @@ class Member extends Tag
 		}
 		else
 		{
-			$avatar =  $file->getThumbnail(96, 96, '', '');
+			$avatar =  $file->getThumbnail(96, 96, '', '', null, false, true);
 		}
 		return $avatar;
 	}

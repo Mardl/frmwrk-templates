@@ -47,7 +47,7 @@ class Friendlist extends \Templates\Html\Tag
 			if (!$file){
 				$avatar = new \Templates\Html\Image($u->getAvatar());
 			} else {
-				$avatar =  $file->getThumbnail(96,96,'','');
+				$avatar =  $file->getThumbnail(96,96,'','', null, false, true);
 			}
 			$span = new \Templates\Html\Tag("span", $avatar, 'img');
 			$infos->append($span);
