@@ -45,8 +45,8 @@ class Jobs extends \Templates\Myipt\Widget
 			);
 
 			$item->addAttribute("data-id", $noti->getId());
-			$item->addAttribute("data-title", $noti->getTitle());
-
+			$item->addAttribute("data-title", $noti->getPreparedText());
+			$item->addAttribute("data-userid", $noti->getReceiver()->getId());
 
 			$counter++;
 		}

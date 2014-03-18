@@ -185,6 +185,43 @@ class Calendar extends \Templates\Myipt\Widget
 	}
 
 	/**
+	 * Setzt den Count der Kalendertage anhand der Termine des Benutzers
+	 *
+	 * @param array $events Die Termine des Users
+	 *
+	 * @return void
+	 */
+	public function setTerminCounts(array $events)
+	{
+		$counts = array();
+		foreach ($events as $event)
+		{
+			//Wenn Termin verschoben oder abgesagt nicht mit rechnen
+			if (($event->getStatus() == 2) || ($event->getStatus() == 3))
+			{
+				continue;
+			}
+
+			//Index formatieren
+			$date = $event->getDateFrom()->format("Y-m-d");
+
+			//wenn es für das Datum noch keinen Eintrag gibt, vorbelegen
+			if (!isset($counts[$date]))
+			{
+				$counts[$date] = array($event->getDateFrom(), 0);
+			}
+
+			$counts[$date][1]++;
+
+		}
+
+		foreach ($counts as $date)
+		{
+			$this->setTerminCount($date[0], $date[1]);
+		}
+	}
+
+	/**
 	 * @return string
 	 */
 	public function toString()
@@ -195,7 +232,6 @@ class Calendar extends \Templates\Myipt\Widget
 		$head->append(new \Templates\Myipt\Iconanchor("#", "prev"));
 		$head->append($this->today->format("M"));
 		$head->append(new \Templates\Myipt\Iconanchor("#", "next", null, "fRight"));
-
 
 		$list = new \Templates\Myipt\UnsortedList();
 		$this->append($list);
@@ -224,10 +260,9 @@ class Calendar extends \Templates\Myipt\Widget
 			{
 				if (intval($day) == 1 && $class == "inactive")
 				{
-					#$class = "active";
 					$class = "";
 				}
-				else if (intval($day) == 1 && $class == "active")
+				else if (intval($day) == 1 && $class == "")
 				{
 					$class = "inactive";
 				}
@@ -263,4 +298,7 @@ class Calendar extends \Templates\Myipt\Widget
 
 		return parent::toString();
 	}
+
+
+
 }
