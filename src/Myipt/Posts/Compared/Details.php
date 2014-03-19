@@ -250,7 +250,7 @@ class Details extends \Templates\Html\Tag
 	 */
 	protected function createChartRel()
 	{
-		if ($this->viewType == 0 || $this->viewType == 2)
+		if ($this->viewType == 0)// || $this->viewType == 2)
 		{
 			$container = $this->createContainer($this->id.'-plot-rel', implode(',', $this->arrRel), '', '');
 			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');

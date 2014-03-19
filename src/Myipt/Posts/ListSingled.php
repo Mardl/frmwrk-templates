@@ -39,9 +39,13 @@ class ListSingled extends \Templates\Html\Tag
 	 */
 	protected $view;
 
+
 	/**
-	 * @param string $typ
-	 * @param array  $classOrAttributes
+	 * Konstruktor
+	 *
+	 * @param array            $entries
+	 * @param string           $headline
+	 * @param \App\Models\User $user
 	 */
 	public function __construct(array $entries, $headline, \App\Models\User $user)
 	{
@@ -62,6 +66,8 @@ class ListSingled extends \Templates\Html\Tag
 	 * Setter für den View, wichtig für die URL
 	 *
 	 * @param \Core\View $view
+	 *
+	 * @return void
 	 */
 	public function setView(\Core\View  $view)
 	{
@@ -70,11 +76,13 @@ class ListSingled extends \Templates\Html\Tag
 
 	/**
 	 * Erstellt die Headline
+	 *
+	 * @return void
 	 */
 	protected function addHeadline()
 	{
 		$headline = new \Templates\Myipt\Posts\Headline();
-		$headline->addCell("Bezeichnung", "300px");
+		$headline->addCell("Bezeichnung", "318px");
 		$headline->addCell("Bewertung", "100px");
 		$headline->addCell("Wert", "208px");
 		$headline->addCell("", "100px");
@@ -84,6 +92,8 @@ class ListSingled extends \Templates\Html\Tag
 
 	/**
 	 * Erstellt für die vorhandenen Einträg ein Entry und fügt es zur Liste hinzu
+	 *
+	 * @return void
 	 */
 	protected function addEntries()
 	{
@@ -101,13 +111,15 @@ class ListSingled extends \Templates\Html\Tag
 				)
 			);
 
-			$this->append( $entry );
+			$this->append($entry);
 		}
 	}
 
 	/**
 	 * (non-PHPdoc)
 	 * @see \Templates\Html\Tag::toString()
+	 *
+	 * @return string
 	 */
 	public function toString()
 	{

@@ -30,15 +30,18 @@ class Entry extends \Templates\Html\Tag
 	protected $active = false;
 
 	/**
-	 * @param string $typ
-	 * @param array  $classOrAttributes
+	 * @param array   $entry
+	 * @param boolean $active
 	 */
 	public function __construct(array $entry, $active = false)
 	{
 		$class = 'entry makeMeDraggable';
-		if (!$active){
+		if (!$active)
+		{
 			$class .= ' whitened';
-		} else {
+		}
+		else
+		{
 			$class .= ' active';
 		}
 		parent::__construct('div', '', $class);
@@ -55,6 +58,8 @@ class Entry extends \Templates\Html\Tag
 
 	/**
 	 * Definiert die Attribute des Entry, wichtig für Drag 'n' Drop Funktion
+	 *
+	 * @return void
 	 */
 	private function defineAttributes()
 	{
@@ -90,6 +95,8 @@ class Entry extends \Templates\Html\Tag
 	 * Bereitet die Werte auf
 	 *
 	 * @param array $entry
+	 *
+	 * @return void
 	 */
 	protected function createEntry(array $entry)
 	{
@@ -106,7 +113,7 @@ class Entry extends \Templates\Html\Tag
 			//Ansonsten nur die Datenaktualität und das Datum des letzten Standes ausgeben
 			$this->addCell(
 				sprintf("Datenaktualität: <b>%0.1f%%</b><br/> Stand vom: <b>%s</b>", $entry['value']['zindex'], $entry['created']),
-				"284px",
+				"266px",
 				"head"
 			);
 		}
@@ -117,6 +124,8 @@ class Entry extends \Templates\Html\Tag
 	 * Anzeige der Werte
 	 *
 	 * @param array $entry
+	 *
+	 * @return void
 	 */
 	protected function addValues(array $entry)
 	{
@@ -136,24 +145,26 @@ class Entry extends \Templates\Html\Tag
 		} else {
 			$value = '&nbsp;';
 		}
-		$this->addCell($value, "170px");
+		$this->addCell($value, "150px");
 	}
 
 	/**
 	 * Detaillink anfügen
 	 *
 	 * @param string $uri
+	 *
+	 * @return void
 	 */
 	public function addDetailLink($uri)
 	{
 		//Detaillink
-		$span = new \Templates\Html\Tag("span",'','icon info tiny');
+		$span = new \Templates\Html\Tag("span", '', 'icon info tiny');
 		$link = new \Templates\Html\Anchor($uri, $span, "get-ajax");
 		$link->append("Details");
 
 		//grüner Haken versteckt
 		$cell = new \Templates\Html\Tag("div", $link, 'fLeft detailLink');
-		$check = new \Templates\Html\Tag("span",'','icon check green hide');
+		$check = new \Templates\Html\Tag("span", '', 'icon check green hide');
 		$cell->append($check);
 
 		$this->append($cell);
@@ -165,6 +176,8 @@ class Entry extends \Templates\Html\Tag
 	 * @param string $value
 	 * @param string $size
 	 * @param string $class
+	 *
+	 * @return void
 	 */
 	protected function addCell($value, $size = null, $class = '')
 	{
@@ -180,6 +193,8 @@ class Entry extends \Templates\Html\Tag
 	 * Fügt dem Eintrag die Detailinfos hinzu
 	 *
 	 * @param \Templates\Myipt\Posts\StatusQuo\Details $details
+	 *
+	 * @return void
 	 */
 	public function addDetails(\Templates\Myipt\Posts\StatusQuo\Details $details)
 	{

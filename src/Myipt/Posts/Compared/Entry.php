@@ -61,15 +61,21 @@ class Entry extends \Templates\Html\Tag
 	protected $active = false;
 
 	/**
-	 * @param string $typ
-	 * @param array  $classOrAttributes
+	 * Konstruktor
+	 *
+	 * @param array   $entry
+	 * @param boolean $active
+	 * @param integer $positionId
 	 */
-	public function __construct(array $entry, $active = false, $positionId)
+	public function __construct(array $entry, $active = false, $positionId = 0)
 	{
 		$class = 'entry makeMeDraggable';
-		if (!$active){
+		if (!$active)
+		{
 			$class .= ' whitened';
-		} else {
+		}
+		else
+		{
 			$class .= ' active';
 		}
 
@@ -101,6 +107,7 @@ class Entry extends \Templates\Html\Tag
 
 	/**
 	 * Definiert die Attribute für Post
+	 * @return void
 	 */
 	private function defineAttributes()
 	{
@@ -139,8 +146,6 @@ class Entry extends \Templates\Html\Tag
 		{
 			$this->addAttribute("data-val-abs", sprintf("%0.1f", $this->abs));
 		}
-
-
 
 	}
 
@@ -193,7 +198,8 @@ class Entry extends \Templates\Html\Tag
 	}
 
 	/**
-	 * Erstellt den Eintag
+	 * Erstellt den Eintrag
+	 * @return void
 	 */
 	protected function createEntry()
 	{
@@ -207,12 +213,13 @@ class Entry extends \Templates\Html\Tag
 		{
 			$last = array_slice($this->toCompare, -1, 1);
 			$last = array_pop($last);
-			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "284px", 'head');
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "266px", 'head');
 		}
 	}
 
 	/**
 	 * Erstellt die Header werte
+	 * @return void
 	 */
 	protected function addValues()
 	{
@@ -247,15 +254,19 @@ class Entry extends \Templates\Html\Tag
 
 	/**
 	 * Fügt den Detaillink hinzu
+	 *
+	 * @param string $uri
+	 *
+	 * @return void
 	 */
 	public function addDetailLink($uri)
 	{
-		$span = new \Templates\Html\Tag("span",'','icon info tiny');
+		$span = new \Templates\Html\Tag("span", '', 'icon info tiny');
 		$link = new \Templates\Html\Anchor($uri, $span, "get-ajax");
 		$link->append("Details");
 
 		$cell = new \Templates\Html\Tag("div", $link, 'fLeft detailLink');
-		$check = new \Templates\Html\Tag("span",'','icon check green hide');
+		$check = new \Templates\Html\Tag("span", '', 'icon check green hide');
 		$cell->append($check);
 
 		$this->append($cell);
@@ -267,6 +278,8 @@ class Entry extends \Templates\Html\Tag
 	 * @param string $value
 	 * @param string $size
 	 * @param string $class
+	 *
+	 * @return void
 	 */
 	protected function addCell($value, $size = null, $class = '')
 	{
@@ -282,6 +295,8 @@ class Entry extends \Templates\Html\Tag
 	 * Fügt Detailinformationen hinzu
 	 *
 	 * @param \Templates\Myipt\Posts\Compared\Details $details
+	 *
+	 * @return void
 	 */
 	public function addDetails(\Templates\Myipt\Posts\Compared\Details $details)
 	{

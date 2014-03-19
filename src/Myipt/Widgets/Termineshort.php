@@ -2,39 +2,46 @@
 
 namespace Templates\Myipt\Widgets;
 
-
+/**
+ * Class Termineshort
+ *
+ * @category Lifemeter
+ * @package  Templates\Myipt\Widgets
+ * @author   Alexander Jonser <aj@whm-gmbh.net>
+ */
 class Termineshort extends \Templates\Myipt\Widget
 {
 
 	/**
-	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * Konstruktor
+	 *
+	 * @param array       $termine
+	 * @param \Core\View  $view
+	 * @param string|null $moreUrl
 	 */
 	public function __construct(array $termine, $view, $moreUrl = null)
 	{
 		parent::__construct("Termine", null, "colHalf flow");
 		$this->setView($view);
 
-		if (!is_null($moreUrl)){
+		if (!is_null($moreUrl))
+		{
 			$this->setMoreLink($moreUrl, "alle Termine >");
 		}
 
-
-
-		if (!empty($termine)){
+		if (!empty($termine))
+		{
 			$week = null;
-			foreach ($termine as $termin){
-				if ($week != $termin->getDateFrom()->format("W")){
+			foreach ($termine as $termin)
+			{
+				if ($week != $termin->getDateFrom()->format("W"))
+				{
 					$list = new \Templates\Myipt\UnsortedList('', array(), 'termine '.$termin->getDateFrom()->format("W-d"));
 					$this->append($list);
 				}
 
-
 				$anchor = new \Templates\Html\Anchor(
-					$this->view->url(array("id"=>$termin->getId()), "termindetails"),
+					$this->view->url(array("id"=>$termin->getId(), "userid" => $termin->getUser()->getId()), "termindetails"),
 					sprintf(
 						"%s %s %s %s",
 						$termin->getSubject(),
@@ -46,20 +53,17 @@ class Termineshort extends \Templates\Myipt\Widget
 				);
 
 				$list->append(
-						$anchor,
-						($termin->getStatus()>=3)?'rejected':null
+					$anchor,
+					($termin->getStatus()>=3)?'rejected':null
 				);
 			}
-		} else {
+		}
+		else
+		{
 			$list = new \Templates\Myipt\UnsortedList('', array(), 'termine ');
 			$this->append($list);
 			$list->append("Keine offenen Termine", "noBorder");
 		}
-
-
-
-
-
 
 	}
 

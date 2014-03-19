@@ -20,15 +20,16 @@ class Details extends \Templates\Html\Tag
 	protected $data = array();
 
 	/**
-	 * @param string $typ
-	 * @param array  $classOrAttributes
+	 * Konstruktor
+	 *
+	 * @param array $data
 	 */
 	public function __construct(array $data)
 	{
 		parent::__construct('div', '', 'details');
 		$this->data = $data;
 
-	//	$this->addUpdate();
+		//$this->addUpdate();
 		$this->createCharts();
 		$this->addTexts();
 	}
@@ -37,24 +38,27 @@ class Details extends \Templates\Html\Tag
 	 * Box für Referenzdatum
 	 *
 	 * @deprecated
+	 * @return void
 	 */
 	protected function addUpdate()
 	{
 		$span = new \Templates\Html\Tag("span", "Stand vom ".$this->data['created']);
-		$div = new \Templates\Html\Tag("div",$span,'upToDate');
+		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
 
 	}
 
 	/**
 	 * Erstellt die Graphen
+	 *
+	 * @return void
 	 */
 	protected function createCharts()
 	{
 		if (!$this->data["noChart"] && $this->data['value']['zindex'] > 0)
 		{
-			//Wenn Rel angezeigt werden darf oder beide Werte, dann adden den Tacho
-			if ($this->data["chart"] == "0" || $this->data["chart"] == "2")
+			//Wenn Rel angezeigt werden darf dann adde den Tacho
+			if ($this->data["chart"] == "0")// || $this->data["chart"] == "2")
 			{
 				$this->addChartRel();
 			}
@@ -67,17 +71,18 @@ class Details extends \Templates\Html\Tag
 
 			//Verlauf anzeigen
 			$this->addVerlauf();
-
 		}
 
 	}
 
 	/**
 	 * Tacho Box mit Rel Wert
+	 *
+	 * @return void
 	 */
 	private function addChartRel()
 	{
-		$div = new \Templates\Html\Tag("div",'','chartRel');
+		$div = new \Templates\Html\Tag("div", '', 'chartRel');
 		$chartRel = new \Templates\Myipt\Chart($this->data, "rel");
 		$chartRel->setWidth(214);
 		$chartRel->setHeight(150);
@@ -87,10 +92,12 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Balken Box mit Abs Wert
+	 *
+	 * @return void
 	 */
 	private function addChartAbs()
 	{
-		$div = new \Templates\Html\Tag("div",'','chartAbs');
+		$div = new \Templates\Html\Tag("div", '', 'chartAbs');
 		$chartRel = new \Templates\Myipt\Chart($this->data, "abs");
 		$chartRel->setWidth(214);
 		$chartRel->setHeight(160);
@@ -100,11 +107,14 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Verlaufdaten
+	 *
+	 * @return void
 	 */
 	private function addVerlauf()
 	{
 		$container = new \Templates\Html\Tag('div', '', 'chart');
-		if (isset($this->data['class'])){
+		if (isset($this->data['class']))
+		{
 			$container = new \Templates\Html\Tag('div', '', 'chart '.$this->data['verlauf']['class']);
 		}
 
@@ -125,21 +135,43 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Persönliche Bewertung hinzufügen
+	 *
+	 * @return void
 	 */
 	protected function addTexts()
 	{
-		$div = new \Templates\Html\Tag("div",'','texts');
+		$div = new \Templates\Html\Tag("div", '', 'texts');
 
 		$count = 0;
+
+		$texts = array(
+			0 => array(), //mine
+			1 => array()  //common
+		);
+
 		foreach ($this->data['outputtexts'] as $text)
 		{
-			if ($text[2] != "1"){
-				$div->append(
-					new \Templates\Html\Tag("p", $text[0])
-				);
-				$count++;
+			if ($text[2] != "1")
+			{
+				$texts[0][] = new \Templates\Html\Tag("p", $text[0]);
 			}
+			else
+			{
+				$texts[1][] = new \Templates\Html\Tag("p", $text[0]);
+			}
+			$count++;
 		}
+
+		foreach ($texts as $parts)
+		{
+			foreach ($parts as $text)
+			{
+				$div->append($text);
+			}
+			$div->append(new \Templates\Html\Tag("p", '<br/>'));
+		}
+
+		/**/
 
 		//Wenn persönliche Bewertung vorhanden
 		if ($count > 0)
