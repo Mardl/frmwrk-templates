@@ -23,8 +23,8 @@ class Details extends \Templates\Html\Tag
 	/**
 	 * Konstruktor
 	 *
-	 * @param int $id
-	 * @param array $data
+	 * @param int       $id
+	 * @param array     $data
 	 * @param \DateTime $von
 	 * @param \DateTime $bis
 	 */
@@ -49,6 +49,8 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Erstellt Verlaufsgraphen
+	 *
+	 * @return void
 	 */
 	protected function generate()
 	{
@@ -136,6 +138,8 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Box für Vergleichszeitraum
+	 *
+	 * @return void
 	 */
 	protected function addTimeframe()
 	{
@@ -165,6 +169,8 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Boxen mit den Vergleichsdaten (Start / Ende)
+	 *
+	 * @return void
 	 */
 	protected function addDifference()
 	{
@@ -183,6 +189,8 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Rel Box
+	 *
+	 * @return void
 	 */
 	private function addDiffRel()
 	{
@@ -196,11 +204,13 @@ class Details extends \Templates\Html\Tag
 			$class = "compareB up";
 		}
 
-		$this->addKacheln($class, $this->startRel, $this->endRel, $this->diffRel);
+		$this->addKacheln($class, $this->startRel, $this->endRel, $this->diffRel, "%");
 	}
 
 	/**
 	 * Abs Box
+	 *
+	 * @return void
 	 */
 	private function addDiffAbs()
 	{
@@ -225,12 +235,14 @@ class Details extends \Templates\Html\Tag
 	 * @param string $ende
 	 * @param string $diff
 	 * @param string $unit
+	 *
+	 * @return void
 	 */
 	private function addKacheln($class, $start, $ende, $diff, $unit = null)
 	{
 		$span = new \Templates\Html\Tag("span", '', $class);
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $start), 'von'));
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f %%", $ende), 'bis'));
+		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $start), 'von'));
+		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $ende), 'bis'));
 
 		if ($unit)
 		{
@@ -240,17 +252,19 @@ class Details extends \Templates\Html\Tag
 		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
 		$this->append($div);
 
-		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %%", $diff));
+		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %s", $diff, $unit));
 		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
 	}
 
 	/**
 	 * Verlauf Rel-Werte
+	 *
+	 * @return void
 	 */
 	protected function createChartRel()
 	{
-		if ($this->viewType == 0)// || $this->viewType == 2)
+		if ($this->viewType == 0 && !empty($this->arrRel))
 		{
 			$container = $this->createContainer($this->id.'-plot-rel', implode(',', $this->arrRel), '', '');
 			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
@@ -260,10 +274,12 @@ class Details extends \Templates\Html\Tag
 
 	/**
 	 * Verlauf Abs-Werte
+	 *
+	 * @return void
 	 */
 	protected function createChartAbs()
 	{
-		if ($this->viewType == 1 || $this->viewType == 2)
+		if ($this->viewType >= 1 && !empty($this->arrAbs))
 		{
 			$container = $this->createContainer($this->id.'-plot-abs', '', implode(',', $this->arrAbs), $this->unit);
 			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
