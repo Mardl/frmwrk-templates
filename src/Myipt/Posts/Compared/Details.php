@@ -36,6 +36,9 @@ class Details extends \Templates\Html\Tag
 		$this->bis = $bis;
 		$this->id = $id;
 
+		$this->viewType = $this->rawData[0]['view'];
+		$this->unit = $this->rawData[0]['unit'];
+
 		$this->generate();
 
 		$this->addTimeframe();
