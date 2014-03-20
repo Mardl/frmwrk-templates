@@ -227,7 +227,7 @@ class Details extends \Templates\Html\Tag
 			$class = "compareB up";
 		}
 
-		$this->addKacheln($class, $this->startAbs, $this->endAbs, $this->diffRel, $this->unit);
+		$this->addKacheln($class, $this->startAbs, $this->endAbs, $this->diffAbs, $this->unit);
 	}
 
 	/**
