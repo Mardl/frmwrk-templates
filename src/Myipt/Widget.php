@@ -2,9 +2,15 @@
 
 namespace Templates\Myipt;
 
-use	Templates\Html\Tag;
 
-class Widget extends Tag
+/**
+ * Base class Widget
+ *
+ * @category Templates
+ * @package  Templates\Html
+ * @author   Alexander Jonser <aj@whm-gmbh.net>
+ */
+class Widget extends \Templates\Html\Tag
 {
 	/**
 	 * @var Tag
@@ -29,11 +35,12 @@ class Widget extends Tag
 	protected $view;
 
 	/**
+	 * Konstruktor
+	 *
 	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * @param array  $value
+	 * @param array  $classOrAttributes
+	 * @param bool   $showhidden
 	 */
 	public function __construct($headerText='', $value=array(), $classOrAttributes = array(), $showhidden = false)
 	{
@@ -45,14 +52,13 @@ class Widget extends Tag
 
 		if(!empty($headerText))
 		{
-			$this->setHeader($headerText);
+			$this->addHeader($headerText);
 		}
+
 		if (!empty($value))
 		{
 			$this->append($value);
 		}
-
-
 
 	}
 
@@ -62,14 +68,19 @@ class Widget extends Tag
 	 */
 	protected function initHead()
 	{
-		$this->header = new Tag('span');
-		$h3 = new Tag('h3',$this->header);
+		$this->header = new \Templates\Html\Tag('span');
+		$h3 = new \Templates\Html\Tag('h3', $this->header);
 		parent::append($h3);
 	}
 
+	/**
+	 * Erstellt den FooterBereich
+	 *
+	 * @return void
+	 */
 	protected function initFoot()
 	{
-		$this->footer = new Tag('div','','footer');
+		$this->footer = new \Templates\Html\Tag('div', '', 'footer');
 	}
 
 	/**
@@ -78,15 +89,16 @@ class Widget extends Tag
 	 */
 	protected function initContent()
 	{
-		$this->content = new Tag('div','','content');
+		$this->content = new \Templates\Html\Tag('div', '', 'content');
 		parent::append($this->content);
 	}
 
 	/**
 	 * Setter für den Header-Text der Widget-Box
 	 * @param string|mixed $header
+	 * @return void
 	 */
-	public function setHeader($header)
+	public function addHeader($header)
 	{
 		$this->header->append($header);
 	}
@@ -94,6 +106,8 @@ class Widget extends Tag
 	/**
 	 * Setter für den Footer-Text der Widget-Box
 	 * @param string|mixed $footer
+	 * @param string       $class
+	 * @return void
 	 */
 	public function setFooter($footer, $class = '')
 	{
@@ -102,29 +116,66 @@ class Widget extends Tag
 		parent::append($this->footer);
 	}
 
-	public function setMoreLink($href, $text){
+	/**
+	 * Setzt den Tag für den "mehr" Link
+	 *
+	 * @param string $href
+	 * @param string $text
+	 *
+	 * @return void
+	 */
+	public function setMoreLink($href, $text)
+	{
 		$this->more = new \Templates\Html\Anchor($href, $text, array());
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @param string|\Templates\Html\Tag $value
+	 * @return void
+	 * @see \Templates\Html\Tag::append()
+	 */
 	public function append($value)
 	{
 		$this->content->append($value);
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 *
+	 * @param string|\Templates\Html\Tag $value
+	 * @return void
+	 * @see \Templates\Html\Tag::prepend()
+	 */
 	public function prepend($value)
 	{
 		$this->content->prepend($value);
 	}
 
-	public function setView($view){
+	/**
+	 * setzt den View
+	 *
+	 * @param \Core\View $view
+	 *
+	 * @return void
+	 */
+	public function setView($view)
+	{
 		$this->view = $view;
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see \Templates\Html\Tag::toString()
+	 *
+	 * @return void
+	 */
 	public function toString()
 	{
 		$this->addClass('widget');
 
-		if ($this->more){
+		if ($this->more)
+		{
 			$this->header->append($this->more);
 		}
 
