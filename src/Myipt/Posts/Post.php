@@ -185,7 +185,18 @@ class Post extends \Templates\Html\Tag
 	 */
 	private function addControls()
 	{
-		$anchorDelete = new \Templates\Html\Anchor($this->view->url(array('action'=>'deletePost', 'format' => 'json','id'=>$this->post->getId())), "x");
+		$anchorDelete = new \Templates\Html\Anchor(
+			$this->view->url(
+				array(
+					"module" => "auswertungen",
+					"controller" => "scan",
+					'action'=>'deletePost',
+					'format' => 'json',
+					'id'=>$this->post->getId()
+				)
+			),
+			"x"
+		);
 		$anchorDelete->addClass("deletePost");
 		$anchorDelete->addClass("get-ajax");
 		$this->append($anchorDelete);
@@ -194,6 +205,8 @@ class Post extends \Templates\Html\Tag
 		$anchorEdit = new \Templates\Html\Anchor(
 			$this->view->url(
 				array(
+					"module" => "auswertungen",
+					"controller" => "scan",
 					"action" => "editPost",
 					"format" => "html",
 					"userid" => $this->post->getUser()->getId(),

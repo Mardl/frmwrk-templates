@@ -181,4 +181,13 @@ class Widget extends \Templates\Html\Tag
 
 		return parent::toString();
 	}
+
+	/**
+	 * @param string $class
+	 * @return void
+	 */
+	public function addContentClass($class)
+	{
+		$this->content->addClass($class);
+	}
 }
