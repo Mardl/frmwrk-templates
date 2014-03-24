@@ -86,6 +86,8 @@ class Post extends \Templates\Html\Tag
 		$anchor = new \Templates\Html\Anchor(
 			$this->view->url(
 				array(
+					"module" => "auswertungen",
+					"controller" => "scan",
 					'action' => 'urkunde',
 					'format' => 'html',
 					'id' => $this->post->getUser()->getId(),
