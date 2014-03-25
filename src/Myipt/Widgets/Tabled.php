@@ -18,6 +18,11 @@ class Tabled extends \Templates\Myipt\Widget
 	protected $sections = array();
 
 	/**
+	 * @var string
+	 */
+	protected $noHeaderSectionTitle = 'noheader';
+
+	/**
 	 * Konstruktor
 	 *
 	 * @param string $title
@@ -108,6 +113,10 @@ class Tabled extends \Templates\Myipt\Widget
 	 */
 	public function addRow($section, $title, array $values = array())
 	{
+		if (empty($section))
+		{
+			$section = $this->noHeaderSectionTitle;
+		}
 		$this->sections[$section][$title] = $values;
 	}
 
@@ -121,7 +130,11 @@ class Tabled extends \Templates\Myipt\Widget
 	{
 		foreach ($this->sections as $sectionTitle => $sectionContents)
 		{
-			$this->addContentHeadline($sectionTitle);
+			if ($sectionTitle != $this->noHeaderSectionTitle = 'noheader')
+			{
+				$this->addContentHeadline($sectionTitle);
+			}
+
 
 			foreach ($sectionContents as $title => $columns)
 			{
