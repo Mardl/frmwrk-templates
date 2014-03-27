@@ -61,6 +61,16 @@ class Entry extends \Templates\Html\Tag
 	protected $active = false;
 
 	/**
+	 * @var array
+	 */
+	protected $first;
+
+	/**
+	 * @var array
+	 */
+	protected $last;
+
+	/**
 	 * Konstruktor
 	 *
 	 * @param array   $entry
@@ -82,15 +92,8 @@ class Entry extends \Templates\Html\Tag
 		parent::__construct('div', '', $class);
 
 		$this->active = $active;
-
 		$this->toCompare = $entry;
-
-		$last = array_slice($entry, -1, 1);
-		$last = array_pop($last);
-
-		$this->type = $last["view"];
-		$this->unit = $last['unit'];
-		$this->title = $last['title'];
+		$this->prepare();
 
 		$this->setId($positionId);
 
@@ -102,6 +105,52 @@ class Entry extends \Templates\Html\Tag
 		$this->data = new \Templates\Html\Tag("div", '', 'data');
 		$this->append($this->data);
 		$this->createEntry();
+
+	}
+
+	/**
+	 * Aufbereitung der daten
+	 *
+	 * @return void
+	 */
+	private function prepare()
+	{
+		foreach ($this->toCompare as $entry)
+		{
+			if ($entry['zindex'] > 0)
+			{
+				if ($this->first == null)
+				{
+					$this->first = $entry;
+				}
+
+				$this->last = $entry;
+			}
+		}
+
+		$dummyArray = array(
+			"rel" => 0,
+			"abs" => 0,
+			"view" => $this->toCompare[0]["view"],
+			"unit" => $this->toCompare[0]["unit"],
+			"title" => $this->toCompare[0]["title"],
+			"datum" => $this->toCompare[0]["datum"]
+		);
+
+		if ($this->first == null)
+		{
+			$this->first = $dummyArray;
+		}
+
+		if ($this->last == null)
+		{
+			$this->last = $dummyArray;
+		}
+
+		$this->type = $this->last["view"];
+		$this->unit = $this->last['unit'];
+		$this->title = $this->last['title'];
+
 
 	}
 
@@ -168,33 +217,33 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function getDiffValue($index)
 	{
-		$first = null;
-		$last = null;
+		return ($this->last[$index] - $this->first[$index]);
+	}
 
-		foreach ($this->toCompare as $entry)
+	/**
+	 * Liefert den span für den Main diff
+	 *
+	 * @return \Templates\Html\Tag
+	 */
+	protected function getMainDiffCell()
+	{
+		if (!$this->active)
 		{
-			if ($entry['zindex'] > 0)
+			$val = sprintf("%1.1f %s", $this->abs, $this->unit);
+			if ($this->type == 0)
 			{
-				if ($first == null)
-				{
-					$first = $entry;
-				}
-
-				$last = $entry;
+				$val = sprintf("%1.1f %%", $this->rel);
 			}
 		}
-
-		if ($first == null)
+		else
 		{
-			$first = array($index => 0);
+			$datum = new \DateTime($this->last['datum']);
+			$val = "Stand vom " . $datum->format('d.m.Y');
 		}
 
-		if ($last == null)
-		{
-			$last = array($index => 0);
-		}
+		return new \Templates\Html\Tag("span", $val);
 
-		return ($last[$index] - $first[$index]);
+
 	}
 
 	/**
@@ -203,7 +252,8 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function createEntry()
 	{
-		$this->addCell($this->title, null, "title head");
+		$titleCell = $this->addCell(new \Templates\Html\Tag("h2", $this->title), null, "title head");
+		$titleCell->append($this->getMainDiffCell());
 
 		if (!$this->active)
 		{
@@ -213,7 +263,7 @@ class Entry extends \Templates\Html\Tag
 		{
 			$last = array_slice($this->toCompare, -1, 1);
 			$last = array_pop($last);
-			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "266px", 'head');
+			$this->addCell(sprintf("Datenaktualität: <b>%0.1f%%</b>", $last['zindex']), "233px", 'head');
 		}
 	}
 
@@ -235,7 +285,9 @@ class Entry extends \Templates\Html\Tag
 				$class = "compare up";
 			}
 
-			$value = sprintf("<span class='".$class."'></span> %0.1f %%", $this->rel);
+			$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->first['rel']), "fLeft");
+			$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->last['rel']), "fLeft");
+			$spanIcon = new \Templates\Html\Tag("span", '', $class);
 
 		} else {
 			if ($this->abs < 0)
@@ -246,10 +298,19 @@ class Entry extends \Templates\Html\Tag
 			{
 				$class = "compare up";
 			}
-			$value = sprintf("<span class='".$class."'></span> %0.1f %s", $this->abs, $this->unit);
+
+			$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f", $this->first['abs']), "fLeft");
+			$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %s", $this->last['abs'], $this->unit), "fLeft");
+			$spanIcon = new \Templates\Html\Tag("span", '', $class);
+
+
+
 		}
 
-		$this->addCell($value, "208px");
+		$cell = $this->addCell('', "208px", 'verlauf');
+		$cell->append($spanFrom);
+		$cell->append($spanIcon);
+		$cell->append($spanTil);
 	}
 
 	/**
@@ -289,6 +350,7 @@ class Entry extends \Templates\Html\Tag
 			$cell->addStyle("width", $size);
 		}
 		$this->data->append($cell);
+		return $cell;
 	}
 
 	/**

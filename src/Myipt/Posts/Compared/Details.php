@@ -21,6 +21,16 @@ class Details extends \Templates\Html\Tag
 	protected $rawData = array();
 
 	/**
+	 * @var \DateTime
+	 */
+	protected $enddatum;
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $startDatum;
+
+	/**
 	 * Konstruktor
 	 *
 	 * @param int       $id
@@ -41,10 +51,16 @@ class Details extends \Templates\Html\Tag
 
 		$this->generate();
 
-		$this->addTimeframe();
-		$this->addDifference();
+		$this->addPersonalMessage();
+
+		$this->addChartRel();
+		$this->addChartAbs();
+
 		$this->createChartRel();
 		$this->createChartAbs();
+		$this->addDiffTexts();
+		$this->addCommonMessage();
+
 	}
 
 	/**
@@ -72,11 +88,19 @@ class Details extends \Templates\Html\Tag
 
 		$counter = count($this->rawData) - 1;
 
+		$this->viewType = $this->rawData[0]['view'];
+		$this->title = $this->rawData[0]['title'];
+		$this->unit = $this->rawData[0]['unit'];
+		$this->outputtexts = $this->rawData[0]['outputtexts'];
+		$this->serialized = $this->rawData[0]['serialized'];
+
 		foreach ($this->rawData as $index => $a)
 		{
 			//nur Werte deren Z-Index > 0 hinzufügen
 			if ($a["zindex"] > 0)
 			{
+				$created = new \DateTime($a['datum']);
+
 				//Ersten gültigen Wert übernehmen
 				if ($startRel == null)
 				{
@@ -85,9 +109,12 @@ class Details extends \Templates\Html\Tag
 
 					$endRel = $startRel;
 					$endAbs = $startAbs;
+
+					$this->startDatum = $created;
 				}
 
-				$created = new \DateTime($a['datum']);
+				$this->endDatum = $created;
+
 				//Datumsformat für Highcharts
 				$datum = '['.$created->format('Y').','.($created->format('n')-1).','.$created->format('j').']';
 
@@ -108,7 +135,10 @@ class Details extends \Templates\Html\Tag
 				$endAbs = $a['abs'];
 
 				$this->viewType = $a['view'];
+				$this->title = $a['title'];
 				$this->unit = $a['unit'];
+				$this->outputtexts = $a['outputtexts'];
+				$this->serialized = $a['serialized'];
 			}
 
 		}
@@ -140,124 +170,94 @@ class Details extends \Templates\Html\Tag
 	}
 
 	/**
-	 * Box für Vergleichszeitraum
+	 * Erstellt die persönliche Bewertung
 	 *
 	 * @return void
 	 */
-	protected function addTimeframe()
+	protected function addPersonalMessage()
 	{
+		$div = new \Templates\Html\Tag("div", null, 'texts compared');
 
-		$diffDuration = round(($this->bis->getTimestamp() - $this->von->getTimestamp()) / 604800, 0, PHP_ROUND_HALF_DOWN);
-		$diffDurationType = 0;
-		$durationText = sprintf("%d Woche(n)", $diffDuration);
-
-		if ($diffDuration > 8)
+		foreach ($this->outputtexts as $textArray)
 		{
-			$diffDuration = round(($diffDuration / 4), 0, PHP_ROUND_HALF_DOWN);
-			$diffDurationType = 1;
-			$durationText = sprintf("%d Monat(e)", $diffDuration);
-			if ($diffDuration > 18)
+			if ($textArray[2] != "1")
 			{
-				$diffDuration = round(($diffDuration / 12), 1, PHP_ROUND_HALF_DOWN);
-				$diffDurationType = 2;
-				$durationText = sprintf("%d Jahr(e)", $diffDuration);
+				$div->append(new \Templates\Html\Tag("p", $textArray[0]));
 			}
 		}
 
-		$span = new \Templates\Html\Tag("span", "Zeitraum<br/>".$durationText.'<br/>');
-		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
 		$this->append($div);
+	}
+
+	/**
+	 * Erstellt die allgemeine Bewertung
+	 *
+	 * @return void
+	 */
+	protected function addCommonMessage()
+	{
+		$div = new \Templates\Html\Tag("div", null, 'texts compared common');
+		$span = new \Templates\Html\Tag("span", "Allgmeine Informationen", 'bold head');
+		$span->append(new \Templates\Html\Tag("span", "öffnen", 'fRight pleaseOpenNext'));
+		$div->append($span);
+
+		$commonTag = new \Templates\Html\Tag("p", '', 'hide');
+		foreach ($this->outputtexts as $textArray)
+		{
+			if ($textArray[2] == "1")
+			{
+				$commonTag->append($textArray[0]);
+			}
+		}
+		$div->append($commonTag);
+		$this->append($div);
+	}
+
+	/**
+	 * Tacho Box mit Rel Wert
+	 *
+	 * @return void
+	 */
+	private function addChartRel()
+	{
+		if ($this->viewType == 2 || $this->viewType == 0)
+		{
+			$div = new \Templates\Html\Tag("div", '', 'chartRel');
+			$div->append(new \Templates\Html\Tag("p", "Aktuelle Bewertung von: " . $this->title, 'bold'));
+
+			$divC = new \Templates\Html\Tag("div", '', 'chartContainer');
+			$chartRel = new \Templates\Myipt\Chart($this->serialized, "rel", array(), true);
+			$chartRel->setWidth(200);
+			$chartRel->setHeight(160);
+			$divC->append($chartRel);
+			$div->append($divC);
+			$div->append(new \Templates\Html\Tag("div", new \Templates\Html\Tag("span", $this->endRel .' %'), 'upToDate'));
+			$this->append($div);
+		}
 
 	}
 
 	/**
-	 * Boxen mit den Vergleichsdaten (Start / Ende)
+	 * Balken Box mit Abs Wert
 	 *
 	 * @return void
 	 */
-	protected function addDifference()
+	private function addChartAbs()
 	{
-		if ($this->viewType == 0 || $this->viewType == 2)
-		{
-			$this->addDiffRel();
-		}
-
-
 		if ($this->viewType > 0)
 		{
-			$this->addDiffAbs();
+			$div = new \Templates\Html\Tag("div", '', 'chartAbs');
+			$div->append(new \Templates\Html\Tag("p", "Aktueller Wert von: " . $this->title, 'bold'));
+
+			$divC = new \Templates\Html\Tag("div", '', 'chartContainer');
+			$chartRel = new \Templates\Myipt\Chart($this->serialized, "abs", array(), true);
+			$chartRel->setWidth(200);
+			$chartRel->setHeight(160);
+			$divC->append($chartRel);
+			$div->append($divC);
+			$div->append(new \Templates\Html\Tag("div", new \Templates\Html\Tag("span", $this->endAbs .' '.$this->unit), 'upToDate'));
+			$this->append($div);
 		}
-
-	}
-
-	/**
-	 * Rel Box
-	 *
-	 * @return void
-	 */
-	private function addDiffRel()
-	{
-		$class = "compareB none";
-		if ($this->diffRel < 0)
-		{
-			$class = "compareB down";
-		}
-		else if ($this->diffRel > 0)
-		{
-			$class = "compareB up";
-		}
-
-		$this->addKacheln($class, $this->startRel, $this->endRel, $this->diffRel, "%");
-	}
-
-	/**
-	 * Abs Box
-	 *
-	 * @return void
-	 */
-	private function addDiffAbs()
-	{
-		$class = "compareB none";
-		if ($this->diffAbs < 0)
-		{
-			$class = "compareB down";
-		}
-		else if ($this->diffAbs > 0)
-		{
-			$class = "compareB up";
-		}
-
-		$this->addKacheln($class, $this->startAbs, $this->endAbs, $this->diffAbs, $this->unit);
-	}
-
-	/**
-	 * Erstellt die Kacheln
-	 *
-	 * @param string $class
-	 * @param string $start
-	 * @param string $ende
-	 * @param string $diff
-	 * @param string $unit
-	 *
-	 * @return void
-	 */
-	private function addKacheln($class, $start, $ende, $diff, $unit = null)
-	{
-		$span = new \Templates\Html\Tag("span", '', $class);
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $start), 'von'));
-		$span->append(new \Templates\Html\Tag("span", sprintf("%0.1f", $ende), 'bis'));
-
-		if ($unit)
-		{
-			$span->append(new \Templates\Html\Tag("span", $unit, 'unit'));
-		}
-
-		$div = new \Templates\Html\Tag("div", $span, 'fromuntil');
-		$this->append($div);
-
-		$span = new \Templates\Html\Tag("span", sprintf("Veränderung<br/>%0.1f %s", $diff, $unit));
-		$div = new \Templates\Html\Tag("div", $span, 'upToDate');
-		$this->append($div);
 	}
 
 	/**
@@ -270,7 +270,9 @@ class Details extends \Templates\Html\Tag
 		if ($this->viewType == 0 && !empty($this->arrRel))
 		{
 			$container = $this->createContainer($this->id.'-plot-rel', implode(',', $this->arrRel), '', '');
-			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
+			$div = new \Templates\Html\Tag("div", new \Templates\Html\Tag("p", "Entwicklung und Zielplanung", 'bold'), 'chartPlot');
+			$div->append($container);
+			$div->append($this->getZeitraum());
 			$this->append($div);
 		}
 	}
@@ -285,9 +287,25 @@ class Details extends \Templates\Html\Tag
 		if ($this->viewType >= 1 && !empty($this->arrAbs))
 		{
 			$container = $this->createContainer($this->id.'-plot-abs', '', implode(',', $this->arrAbs), $this->unit);
-			$div = new \Templates\Html\Tag("div", $container, 'chartPlot');
+			$div = new \Templates\Html\Tag("div", new \Templates\Html\Tag("p", "Entwicklung und Zielplanung", 'bold'), 'chartPlot');
+			$div->append($container);
+			$div->append($this->getZeitraum());
 			$this->append($div);
 		}
+	}
+
+	/**
+	 * Liefert den Zeitraum Tag
+	 *
+	 * @return \Templates\Html\Tag
+	 */
+	private function getZeitraum()
+	{
+		$timeInterval = $this->endDatum->diff($this->startDatum);
+		$span = new \Templates\Html\Tag("span", "Zeitraum " . $timeInterval->format("%m Monate %d Tage"), 'timeframe');
+		$span->append("<br/>");
+		$span->append("vom ".$this->startDatum->format('d.m.Y').' bis '.$this->endDatum->format('d.m.Y'));
+		return $span;
 	}
 
 	/**
@@ -317,6 +335,47 @@ class Details extends \Templates\Html\Tag
 
 		return $container;
 
+	}
+
+	/**
+	 * fügt veränderungne hinzu
+	 *
+	 * @return void
+	 */
+	protected function addDiffTexts()
+	{
+		$div = new \Templates\Html\Tag("div", '', 'diffs');
+
+		if ($this->viewType >= 1)
+		{
+			$unit = $this->unit;
+			$startWert = $this->startAbs;
+			$endWert = $this->endAbs;
+		}
+		else
+		{
+			$unit = "%";
+			$startWert = $this->startRel;
+			$endWert = $this->endRel;
+		}
+
+		$p = new \Templates\Html\Tag("p", sprintf("Startwert: %0.1f %s | Endwert: %0.1f %s", $startWert, $unit, $endWert, $unit));
+		$div->append($p);
+
+		if ($this->viewType >= 1)
+		{
+			$div->append(new \Templates\Html\Tag("span", (($this->diffAbs > 0)?'+':'') . $this->diffAbs, 'big'));
+			$div->append(new \Templates\Html\Tag("span", ' ' . $this->unit, 'small'));
+		}
+
+		if ($this->viewType == 0)
+		{
+			$div->append(new \Templates\Html\Tag("span", (($this->diffRel > 0)?'+':'') . $this->diffRel, 'big'));
+			$div->append(new \Templates\Html\Tag("span", ' %', 'small'));
+		}
+
+
+		$this->append($div);
 	}
 
 }

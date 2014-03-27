@@ -66,7 +66,7 @@ class ListCompared extends \Templates\Html\Tag
 	 */
 	public function __construct(array $entries, $headline, \App\Models\User $user, \DateTime $from, \DateTime $until)
 	{
-		parent::__construct('div', '', 'colThreeQuarter fLeft cornered shadowed box posts');
+		parent::__construct('div', '', 'colThreeQuarter fLeft cornered shadowed box posts verlauf');
 		$this->setId("postable");
 		$this->entries = $entries;
 		$this->from = $from;
@@ -98,7 +98,7 @@ class ListCompared extends \Templates\Html\Tag
 	protected function addHeadline()
 	{
 		$headline = new \Templates\Myipt\Posts\Headline();
-		$headline->addCell("Bezeichnung", "318px");
+		$headline->addCell("Bezeichnung", "352px");
 		$headline->addCell("Veränderung", "308px");
 		$headline->addCell("", "100px");
 

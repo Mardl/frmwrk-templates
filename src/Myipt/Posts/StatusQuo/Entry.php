@@ -101,7 +101,7 @@ class Entry extends \Templates\Html\Tag
 	protected function createEntry(array $entry)
 	{
 		//Titel
-		$this->addCell($entry['title'], null, "title head");
+		$this->addCell(new \Templates\Html\Tag("h2", $entry['title']), null, "title head");
 
 		if (!$this->active)
 		{
@@ -113,7 +113,7 @@ class Entry extends \Templates\Html\Tag
 			//Ansonsten nur die Datenaktualität und das Datum des letzten Standes ausgeben
 			$this->addCell(
 				sprintf("Datenaktualität: <b>%0.1f%%</b><br/> Stand vom: <b>%s</b>", $entry['value']['zindex'], $entry['created']),
-				"266px",
+				"233px",
 				"head"
 			);
 		}
@@ -136,7 +136,7 @@ class Entry extends \Templates\Html\Tag
 		} else {
 			$value = '&nbsp;';
 		}
-		$this->addCell($value, "114px");
+		$this->addCell($value, "92px");
 
 		//Wenn der abs-Wert ausgegeben werden muss
 		if ($entry["chart"] > 0)
@@ -145,7 +145,7 @@ class Entry extends \Templates\Html\Tag
 		} else {
 			$value = '&nbsp;';
 		}
-		$this->addCell($value, "150px");
+		$this->addCell($value, "138px");
 	}
 
 	/**

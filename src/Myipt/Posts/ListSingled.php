@@ -82,8 +82,8 @@ class ListSingled extends \Templates\Html\Tag
 	protected function addHeadline()
 	{
 		$headline = new \Templates\Myipt\Posts\Headline();
-		$headline->addCell("Bezeichnung", "318px");
-		$headline->addCell("Bewertung", "100px");
+		$headline->addCell("Bezeichnung", "352px");
+		$headline->addCell("Bewertung", "80px");
 		$headline->addCell("Wert", "208px");
 		$headline->addCell("", "100px");
 

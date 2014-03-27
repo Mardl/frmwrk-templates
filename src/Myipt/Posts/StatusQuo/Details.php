@@ -58,7 +58,7 @@ class Details extends \Templates\Html\Tag
 		if (!$this->data["noChart"] && $this->data['value']['zindex'] > 0)
 		{
 			//Wenn Rel angezeigt werden darf dann adde den Tacho
-			if ($this->data["chart"] == "0")// || $this->data["chart"] == "2")
+			if ($this->data["chart"] == "0")
 			{
 				$this->addChartRel();
 			}
@@ -83,10 +83,15 @@ class Details extends \Templates\Html\Tag
 	private function addChartRel()
 	{
 		$div = new \Templates\Html\Tag("div", '', 'chartRel');
-		$chartRel = new \Templates\Myipt\Chart($this->data, "rel");
-		$chartRel->setWidth(214);
-		$chartRel->setHeight(150);
-		$div->append($chartRel);
+		$div->append(new \Templates\Html\Tag("p", "Aktuelle Bewertung von: " .  $this->data['title'], 'bold'));
+
+		$divC = new \Templates\Html\Tag("div", '', 'chartContainer');
+		$chartRel = new \Templates\Myipt\Chart($this->data, "rel", array(), true);
+		$chartRel->setWidth(200);
+		$chartRel->setHeight(160);
+		$divC->append($chartRel);
+		$div->append($divC);
+		$div->append(new \Templates\Html\Tag("div", new \Templates\Html\Tag("span", $this->data['value']['rel'] .' %'), 'upToDate'));
 		$this->append($div);
 	}
 
@@ -98,10 +103,15 @@ class Details extends \Templates\Html\Tag
 	private function addChartAbs()
 	{
 		$div = new \Templates\Html\Tag("div", '', 'chartAbs');
-		$chartRel = new \Templates\Myipt\Chart($this->data, "abs");
-		$chartRel->setWidth(214);
+		$div->append(new \Templates\Html\Tag("p", "Aktueller Wert von: " .  $this->data['title'], 'bold'));
+
+		$divC = new \Templates\Html\Tag("div", '', 'chartContainer');
+		$chartRel = new \Templates\Myipt\Chart($this->data, "abs", array(), true);
+		$chartRel->setWidth(200);
 		$chartRel->setHeight(160);
-		$div->append($chartRel);
+		$divC->append($chartRel);
+		$div->append($divC);
+		$div->append(new \Templates\Html\Tag("div", new \Templates\Html\Tag("span", $this->data['value']['abs'] .' '.$this->data['unit']), 'upToDate'));
 		$this->append($div);
 	}
 

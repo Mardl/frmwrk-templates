@@ -13,11 +13,12 @@ class Chart extends \Templates\Html\Tag
 {
 
 	/**
-	 * @param string $chartData
-	 * @param array  $type
-	 * @param array  $classOrAttributes
+	 * @param string  $chartData
+	 * @param array   $type
+	 * @param array   $classOrAttributes
+	 * @param boolean $landscape
 	 */
-	public function __construct($chartData, $type, $classOrAttributes = array())
+	public function __construct($chartData, $type, $classOrAttributes = array(), $landscape = false)
 	{
 		parent::__construct('canvas', '', $classOrAttributes);
 
@@ -27,6 +28,13 @@ class Chart extends \Templates\Html\Tag
 		}
 
 		$this->addClass('chart');
+
+
+		if ($landscape)
+		{
+			$this->addAttribute('data-landscape', true);
+		}
+
 		$this->addAttribute('data-value-rel',       $chartData['value']['rel']);
 		$this->addAttribute('data-value-rel-max',   $chartData['max']['rel']);
 		$this->addAttribute('data-value-abs',       $chartData['value']['abs']);
@@ -45,6 +53,8 @@ class Chart extends \Templates\Html\Tag
 		$this->addAttribute('data-legend-green',    $chartData['legend']['green']);
 		$this->addAttribute('data-unit-rel',        '%');
 		$this->addAttribute('data-unit-abs',        $chartData['unit']);
+
+
 		$this->setId($chartData['id'].$type);
 		$this->setType($type);
 		$this->setHeight(168);
