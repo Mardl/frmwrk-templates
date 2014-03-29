@@ -130,20 +130,43 @@ class Tabled extends \Templates\Myipt\Widget
 	{
 		foreach ($this->sections as $sectionTitle => $sectionContents)
 		{
-			if ($sectionTitle != $this->noHeaderSectionTitle = 'noheader')
+			if ($sectionTitle != $this->noHeaderSectionTitle)
 			{
-				$this->addContentHeadline($sectionTitle);
+				$section = $this->addContentHeadline($sectionTitle);
 			}
 
 
 			foreach ($sectionContents as $title => $columns)
 			{
-				$div = $this->addContentRow($title);
+				if ($title != "addSectionColumn")
+				{
+					$div = $this->addContentRow($title);
+				}
+
 
 				foreach ($columns as $column)
 				{
-					$span = new \Templates\Html\Tag("span", $column, "column");
-					$div->append($span);
+					if ($title != "addSectionColumn")
+					{
+						$span = new \Templates\Html\Tag("span", $column, "column");
+						$div->append($span);
+					}
+					else
+					{
+						if (is_array($column))
+						{
+							foreach ($column as $sub)
+							{
+								$span = new \Templates\Html\Tag("span", $sub, "column");
+								$section->append($span);
+							}
+						}
+						else
+						{
+							$span = new \Templates\Html\Tag("span", $column, "column");
+							$section->append($span);
+						}
+					}
 				}
 
 			}

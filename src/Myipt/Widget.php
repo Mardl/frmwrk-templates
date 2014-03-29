@@ -121,12 +121,13 @@ class Widget extends \Templates\Html\Tag
 	 *
 	 * @param string $href
 	 * @param string $text
+	 * @param string $class
 	 *
 	 * @return void
 	 */
-	public function setMoreLink($href, $text)
+	public function setMoreLink($href, $text, $class = '')
 	{
-		$this->more = new \Templates\Html\Anchor($href, $text, array());
+		$this->more = new \Templates\Html\Anchor($href, $text, $class);
 	}
 
 	/**
