@@ -12,6 +12,9 @@ namespace Templates\MandyLane;
 class Table extends \Templates\Html\Table
 {
 
+	/**
+	 * @var string
+	 */
 	protected $headline = '';
 
 	/**
@@ -22,29 +25,35 @@ class Table extends \Templates\Html\Table
 	 */
 	public function __construct($headline='', $classOrAttributes = array())
 	{
-		parent::__construct($classOrAttributes,'\Templates\MandyLane\Row');
+		parent::__construct($classOrAttributes, '\Templates\MandyLane\Row');
 
 		$this->addClass('dyntable');
 		$this->addClass('dataTable');
 		$this->headline = $headline;
 	}
 
+	/**
+	 * @return void
+	 */
 	public function setColumnEvenOdd()
 	{
 		for ($i = 0; $i < $this->maxCell; $i++)
 		{
 			if ($i % 2 == false)
 			{
-				$this->addAttrColumn($i,'con0');
+				$this->addAttrColumn($i, 'con0');
 			}
 			else
 			{
-				$this->addAttrColumn($i,'con1');
+				$this->addAttrColumn($i, 'con1');
 			}
 		}
 	}
 
 
+	/**
+	 * @return string
+	 */
 	public function toString()
 	{
 		$typeWidget = 'nonboxy-widget';
@@ -66,7 +75,5 @@ class Table extends \Templates\Html\Table
 		return $divWidget->toString();
 
 	}
-
-
 
 }
