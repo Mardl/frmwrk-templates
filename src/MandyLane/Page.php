@@ -105,6 +105,15 @@ class Page extends \Templates\Html\Tag
 		return $this->dataContent;
 	}
 
+	/**
+	 * @param mixed $value
+	 * @return \Templates\Html\Tag|void
+	 */
+	public function append($value)
+	{
+		$this->dataContent[] = $value;
+	}
+
 
 	/**
 	 * @return string
@@ -122,7 +131,7 @@ class Page extends \Templates\Html\Tag
 		$contentContainer->addClass('left');
 		$contentContainer->append(array($header, $this->errorMessage, $this->getDataContent()));
 
-		$this->append(array($view->html->viewBreadcrumbs(), $contentContainer));
+		parent::append(array($view->html->viewBreadcrumbs(), $contentContainer));
 
 		return parent::toString();
 	}
