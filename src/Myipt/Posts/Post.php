@@ -197,7 +197,7 @@ class Post extends \Templates\Html\Tag
 					'id'=>$this->post->getId()
 				)
 			),
-			"x"
+			''
 		);
 		$anchorDelete->addClass("deletePost");
 		$anchorDelete->addClass("get-ajax");
@@ -216,7 +216,7 @@ class Post extends \Templates\Html\Tag
 					"ajax" => 'true'
 				)
 			),
-			"+",
+			'',
 			'fancybox fancybox.ajax'
 		);
 
