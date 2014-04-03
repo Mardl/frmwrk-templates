@@ -24,9 +24,14 @@ class Dialog extends Tag
 	protected $footer = null;
 
 	/**
-	 * @var Div
+	 * @var Tag
 	 */
 	protected $content = null;
+
+	/**
+	 * @var Tag
+	 */
+	protected $closeButton = '';
 
 
 	/**
@@ -62,10 +67,15 @@ class Dialog extends Tag
 	protected function initHead()
 	{
 		$this->header = new Tag('h3');
-		$button = new Tag('button','×',array('class'=>'close','data-dismiss'=>'modal','type'=>'button'));
-		$div = new Tag('div',array($button,$this->header),'modal-header');
+		$this->closeButton = new Tag('button','×',array('class'=>'close','data-dismiss'=>'modal','type'=>'button'));
+		$div = new Tag('div',array($this->closeButton,$this->header),'modal-header');
 
 		parent::append($div);
+	}
+
+	public function noCloseButton()
+	{
+		$this->closeButton->removeInner();
 	}
 
 	protected function initFoot()
