@@ -31,20 +31,29 @@ class Details extends \Templates\Html\Tag
 	protected $startDatum;
 
 	/**
+	 * @var \App\Models\Objects\Position
+	 */
+	protected $position;
+
+	/**
 	 * Konstruktor
 	 *
-	 * @param int       $id
-	 * @param array     $data
-	 * @param \DateTime $von
-	 * @param \DateTime $bis
+	 * @param \App\Models\User $user
+	 * @param int              $id
+	 * @param array            $data
+	 * @param \DateTime        $von
+	 * @param \DateTime        $bis
 	 */
-	public function __construct($id, array $data, \DateTime $von, \DateTime $bis)
+	public function __construct($user, $id, array $data, \DateTime $von, \DateTime $bis)
 	{
 		parent::__construct('div', '', 'details');
 		$this->rawData = $data;
+		$this->user = $user;
 		$this->von = $von;
 		$this->bis = $bis;
 		$this->id = $id;
+
+		$this->position = \Lifemeter\ObjectFactory::getById($id, false);
 
 		$this->viewType = $this->rawData[0]['view'];
 		$this->unit = $this->rawData[0]['unit'];
@@ -60,7 +69,6 @@ class Details extends \Templates\Html\Tag
 		$this->createChartAbs();
 		$this->addDiffTexts();
 		$this->addCommonMessage();
-
 	}
 
 	/**
@@ -326,6 +334,7 @@ class Details extends \Templates\Html\Tag
 		$container->addAttribute('data-type', "plot");
 		$container->addAttribute('data-series-rel', '['.$seriesRel.']');
 		$container->addAttribute('data-series-abs', '['.$seriesAbs.']');
+		$container->addAttribute('data-series-target', '['.implode(',', $this->getZieldata()).']');
 		$container->addAttribute('data-abs-title', $unit);
 		$container->addAttribute('width', 608);
 		$container->addAttribute('height', 384);
@@ -376,6 +385,84 @@ class Details extends \Templates\Html\Tag
 
 
 		$this->append($div);
+	}
+
+
+	/**
+	 * @return array
+	 */
+	protected function getZieldata()
+	{
+		$startdatum = $this->position->getZp10();
+		$startdate = new \DateTime($startdatum);
+		$analyseManager = new \App\Manager\Analyses();
+		$analyse = $analyseManager->getLastetAnalysesByUserAndObjectAndDate($this->user, $this->position, $startdate);
+		$startwert = $analyse->getAbs();
+
+		$enddatum = $this->position->getZp6();
+		$enddate = new \DateTime($enddatum);
+		$endwert = $this->position->getZp7();
+
+
+		$diffInterval = $enddate->diff($startdate);
+		$diff = $diffInterval->format("%a");
+		$m = ($endwert - $startwert) / $diff;
+		$t = $endwert - ($m * $diff);
+		$calc = create_function('$x', 'return $x * ' . $m . ' + ' . $t . ';');
+
+		$x1 = $this->startDatum;
+		$x2 = $this->endDatum;
+		$x3 = null;
+
+		$y1 = $startwert;
+		$y2 = $endwert;
+		$y3 = $endwert;
+
+		$diffX1Interval = $x1->diff($startdate);
+		$diffX1 = $diffX1Interval->format("%a");
+
+		$diffX2Interval = $x2->diff($enddate);
+		$diffX2 = $diffX2Interval->format("%a");
+
+		if ($diffX1 != 0)
+		{
+			if ($diffX1Interval->invert == 1)
+			{
+				$y1 = $calc($diffX1);
+			}
+			else
+			{
+				$x1 = $startdate;
+			}
+		}
+
+		if ($diffX2 != 0)
+		{
+			if ($diffX2Interval->invert == 1)
+			{
+				$x2 = $enddate;
+				$x3 = $this->endDatum;
+			}
+			else
+			{
+				$diff = $startdate->diff($this->endDatum)->format("%a");
+				$y2 = $calc($diff);
+			}
+		}
+
+
+
+		$series = array(
+			sprintf("[%s,%s]", '['.$x1->format('Y').','.($x1->format('n')-1).','.$x1->format('j').']', $y1),
+			sprintf("[%s,%s]", '['.$x2->format('Y').','.($x2->format('n')-1).','.$x2->format('j').']', $y2)
+		);
+
+		if ($x3 != null)
+		{
+			$series[] = sprintf("[%s,%s]", '['.$x3->format('Y').','.($x3->format('n')-1).','.$x3->format('j').']', $y3);
+		}
+
+		return $series;
 	}
 
 }

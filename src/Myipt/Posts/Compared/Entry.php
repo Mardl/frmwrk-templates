@@ -70,6 +70,7 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected $last;
 
+
 	/**
 	 * Konstruktor
 	 *
