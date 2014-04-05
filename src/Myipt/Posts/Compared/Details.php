@@ -404,6 +404,7 @@ class Details extends \Templates\Html\Tag
 		else
 		{
 			$startwert = $this->startAbs;
+			$startdate = $this->startDatum;
 		}
 
 
@@ -431,6 +432,7 @@ class Details extends \Templates\Html\Tag
 
 		$diffX2Interval = $x2->diff($enddate);
 		$diffX2 = $diffX2Interval->format("%a");
+
 
 		if ($diffX1 != 0)
 		{
