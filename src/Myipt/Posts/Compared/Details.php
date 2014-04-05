@@ -397,7 +397,15 @@ class Details extends \Templates\Html\Tag
 		$startdate = new \DateTime($startdatum);
 		$analyseManager = new \App\Manager\Analyses();
 		$analyse = $analyseManager->getLastetAnalysesByUserAndObjectAndDate($this->user, $this->position, $startdate);
-		$startwert = $analyse->getAbs();
+		if ($analyse)
+		{
+			$startwert = $analyse->getAbs();
+		}
+		else
+		{
+			$startwert = $this->startAbs;
+		}
+
 
 		$enddatum = $this->position->getZp6();
 		$enddate = new \DateTime($enddatum);
