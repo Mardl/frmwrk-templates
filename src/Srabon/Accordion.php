@@ -2,7 +2,6 @@
 
 namespace Templates\Srabon;
 
-use App\Base\Template\Anchor;
 use Templates\Html\Tag;
 
 /**
