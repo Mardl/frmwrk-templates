@@ -430,6 +430,11 @@ class Details extends \Templates\Html\Tag
 
 
 		$enddatum = $this->position->getZp6($this->user, $this->now);
+		if (!$enddatum)
+		{
+			return array();
+		}
+
 		if (is_numeric($enddatum))
 		{
 			$enddate = new \DateTime();
