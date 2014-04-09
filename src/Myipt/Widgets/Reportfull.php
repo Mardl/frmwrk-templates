@@ -91,7 +91,8 @@ class Reportfull extends \Templates\Myipt\Widget
 		if (!$this->fancy)
 		{
 			if ($analyseData['value']['zindex'] > 0){
-				$this->setFooter("<a href='".$detaillink."' class='fancybox fancybox.ajax'>mehr Informationen</a>");
+				//$this->setFooter("<a href='".$detaillink."' class='fancybox fancybox.ajax'>mehr Informationen</a>");
+				$this->setFooter("<a href='".$detaillink."' class='get-ajax'>mehr Informationen</a>");
 			}
 		}
 	}
