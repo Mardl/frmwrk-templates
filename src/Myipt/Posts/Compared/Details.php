@@ -400,6 +400,11 @@ class Details extends \Templates\Html\Tag
 	protected function getZieldata()
 	{
 		$startdatum = $this->position->getZp10($this->user, $this->now);
+		if (!$startdatum)
+		{
+			return array();
+		}
+
 		if (is_numeric($startdatum))
 		{
 			$startdate = new \DateTime();
