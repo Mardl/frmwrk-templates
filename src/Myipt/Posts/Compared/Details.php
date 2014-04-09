@@ -31,6 +31,11 @@ class Details extends \Templates\Html\Tag
 	protected $startDatum;
 
 	/**
+	 * @var \DateTime
+	 */
+	protected $now;
+
+	/**
 	 * @var \App\Models\Objects\Position
 	 */
 	protected $position;
@@ -52,6 +57,7 @@ class Details extends \Templates\Html\Tag
 		$this->von = $von;
 		$this->bis = $bis;
 		$this->id = $id;
+		$this->now = new \DateTime();
 
 		$this->position = \Lifemeter\ObjectFactory::getById($id, false);
 
@@ -393,8 +399,18 @@ class Details extends \Templates\Html\Tag
 	 */
 	protected function getZieldata()
 	{
-		$startdatum = $this->position->getZp10();
-		$startdate = new \DateTime($startdatum);
+		$startdatum = $this->position->getZp10($this->user, $this->now);
+		if (is_numeric($startdatum))
+		{
+			$startdate = new \DateTime();
+			$startdate->setTimestamp($startdatum);
+		}
+		else
+		{
+			$startdate = new \DateTime($startdatum);
+		}
+
+
 		$analyseManager = new \App\Manager\Analyses();
 		$analyse = $analyseManager->getLastetAnalysesByUserAndObjectAndDate($this->user, $this->position, $startdate);
 		if ($analyse)
@@ -408,14 +424,31 @@ class Details extends \Templates\Html\Tag
 		}
 
 
-		$enddatum = $this->position->getZp6();
-		$enddate = new \DateTime($enddatum);
-		$endwert = $this->position->getZp7();
+		$enddatum = $this->position->getZp6($this->user, $this->now);
+		if (is_numeric($enddatum))
+		{
+			$enddate = new \DateTime();
+			$enddate->setTimestamp($enddatum);
+		}
+		else
+		{
+			$enddate = new \DateTime($enddatum);
+		}
 
+		$endwert = $this->position->getZp7($this->user, $this->now);
 
 		$diffInterval = $enddate->diff($startdate);
 		$diff = $diffInterval->format("%a");
-		$m = ($endwert - $startwert) / $diff;
+		$m = 0;
+		if ($diff > 0)
+		{
+			$m = ($endwert - $startwert) / $diff;
+		}
+		else
+		{
+			return array();
+		}
+
 		$t = $endwert - ($m * $diff);
 		$calc = create_function('$x', 'return $x * ' . $m . ' + ' . $t . ';');
 
