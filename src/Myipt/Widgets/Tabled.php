@@ -3,7 +3,7 @@
 namespace Templates\Myipt\Widgets;
 
 /**
- * Class Mahlzeiten
+ * Class Tabled
  *
  * @category Lifemeter
  * @package  Templates\Myipt\Widgets
