@@ -420,11 +420,26 @@ class Details extends \Templates\Html\Tag
 		$analyse = $analyseManager->getLastetAnalysesByUserAndObjectAndDate($this->user, $this->position, $startdate);
 		if ($analyse)
 		{
-			$startwert = $analyse->getAbs();
+			if ($this->viewType >= 1)
+			{
+				$startwert = $analyse->getAbs();
+			}
+			else
+			{
+				$startwert = $analyse->getRel();
+			}
 		}
 		else
 		{
-			$startwert = $this->startAbs;
+			if ($this->viewType >= 1)
+			{
+				$startwert = $this->startAbs;
+			}
+			else
+			{
+				$startwert = $this->startRel;
+			}
+
 			$startdate = $this->startDatum;
 		}
 
