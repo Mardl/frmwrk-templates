@@ -70,6 +70,10 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected $last;
 
+	/**
+	 * @var boolean
+	 */
+	protected $disableValues = false;
 
 	/**
 	 * Konstruktor
@@ -139,6 +143,11 @@ class Entry extends \Templates\Html\Tag
 			"title" => $this->toCompare[0]["title"],
 			"datum" => $this->toCompare[0]["datum"]
 		);
+
+		if ($this->first == null && $this->last == null)
+		{
+			$this->disableValues = true;
+		}
 
 		if ($this->first == null)
 		{
@@ -276,44 +285,52 @@ class Entry extends \Templates\Html\Tag
 	 */
 	protected function addValues()
 	{
-		$class = "compare none";
-		if ($this->type == "0")
-		{
-			if ($this->rel < 0)
-			{
-				$class = "compare down";
-			}
-			else if ($this->rel > 0)
-			{
-				$class = "compare up";
-			}
-
-			$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->first['rel']), "fLeft");
-			$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->last['rel']), "fLeft");
-			$spanIcon = new \Templates\Html\Tag("span", '', $class);
-
-		} else {
-			if ($this->abs < 0)
-			{
-				$class = "compare down";
-			}
-			else if ($this->abs > 0)
-			{
-				$class = "compare up";
-			}
-
-			$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f", $this->first['abs']), "fLeft");
-			$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %s", $this->last['abs'], $this->unit), "fLeft");
-			$spanIcon = new \Templates\Html\Tag("span", '', $class);
-
-
-
-		}
-
 		$cell = $this->addCell('', "208px", 'verlauf');
-		$cell->append($spanFrom);
-		$cell->append($spanIcon);
-		$cell->append($spanTil);
+
+		if (!$this->disableValues)
+		{
+			$class = "compare none";
+			if ($this->type == "0")
+			{
+				if ($this->rel < 0)
+				{
+					$class = "compare down";
+				}
+				else if ($this->rel > 0)
+				{
+					$class = "compare up";
+				}
+
+				$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->first['rel']), "fLeft");
+				$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %%", $this->last['rel']), "fLeft");
+				$spanIcon = new \Templates\Html\Tag("span", '', $class);
+
+			} else {
+				if ($this->abs < 0)
+				{
+					$class = "compare down";
+				}
+				else if ($this->abs > 0)
+				{
+					$class = "compare up";
+				}
+
+				$spanFrom = new \Templates\Html\Tag("span", sprintf("%0.1f", $this->first['abs']), "fLeft");
+				$spanTil = new \Templates\Html\Tag("span", sprintf("%0.1f %s", $this->last['abs'], $this->unit), "fLeft");
+				$spanIcon = new \Templates\Html\Tag("span", '', $class);
+
+
+
+			}
+
+			$cell->append($spanFrom);
+			$cell->append($spanIcon);
+			$cell->append($spanTil);
+		}
+		else
+		{
+			$cell->append("keine Daten vorhanden");
+		}
 	}
 
 	/**
