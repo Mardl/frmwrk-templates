@@ -244,10 +244,14 @@ class Entry extends \Templates\Html\Tag
 			$val = null;
 			if (!$this->disableValues)
 			{
-				$val = sprintf("%1.1f %s", $this->abs, $this->unit);
+				$aVz = ($this->abs > 0) ? '+' : null;
+				$rVz = ($this->rel > 0) ? '+' : null;
+
+
+				$val = sprintf("%s%1.1f %s", $aVz, $this->abs, $this->unit);
 				if ($this->type == 0)
 				{
-					$val = sprintf("%1.1f %%", $this->rel);
+					$val = sprintf("%s%1.1f %%", $rVz, $this->rel);
 				}
 
 				$datum = new \DateTime($this->last['datum']);
