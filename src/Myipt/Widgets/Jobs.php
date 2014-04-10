@@ -2,16 +2,25 @@
 
 namespace Templates\Myipt\Widgets;
 
-
+/**
+ * Widget für Aufgaben
+ *
+ * @category Widgets
+ * @package  Templates\Myipt\Widgets
+ * @author   Alexander Jonser <aj@whm-gmbh.net>
+ */
 class Jobs extends \Templates\Myipt\Widget
 {
 
 	/**
-	 * @param string $headerText
-	 * @param array $value
-	 * @param bool $style2
-	 * @param array $classOrAttributes
-	 * @param bool $showhidden
+	 * Konstruktor
+	 *
+	 * @param \Core\View $view
+	 * @param string     $headline
+	 * @param array      $notifications
+	 * @param boolean    $limit
+	 * @param string     $moreUrl
+	 * @param string     $size
 	 */
 	public function __construct($view, $headline = null, $notifications = array(), $limit = false, $moreUrl = null, $size = 'colThreeQuarter')
 	{
@@ -22,14 +31,17 @@ class Jobs extends \Templates\Myipt\Widget
 		$list = new \Templates\Myipt\UnsortedList();
 
 		$counter = 0;
-		foreach ($notifications as $noti){
-			if ($limit && $counter >= $limit){
+		foreach ($notifications as $noti)
+		{
+			if ($limit && $counter >= $limit)
+			{
 				break;
 			}
 
 			$class = '';
 			$icon = '';
-			if ($noti->getNotificationposition() && $noti->getNotificationposition()->getAlert() == 1){
+			if ($noti->getNotificationposition() && $noti->getNotificationposition()->getAlert() == 1)
+			{
 				$class = 'alert';
 				$icon = 'white';
 			}
@@ -48,13 +60,26 @@ class Jobs extends \Templates\Myipt\Widget
 			$item->addAttribute("data-title", $noti->getPreparedText());
 			$item->addAttribute("data-userid", $noti->getReceiver()->getId());
 
+			if ($noti->getTarget() > 1)
+			{
+				$target = \Lifemeter\ObjectFactory::getById($noti->getTarget(), false);
+				if ($target)
+				{
+					$item->addAttribute("data-objectid", $noti->getTarget());
+				}
+			}
+
+
+
 			$counter++;
 		}
 
 
-		if ($limit && count($notifications) > $limit){
+		if ($limit && count($notifications) > $limit)
+		{
 			$url = $this->view->url(array('module'=>'notifications', 'controller'=>'index', 'action'=>'index'));
-			if (!is_null($moreUrl)){
+			if (!is_null($moreUrl))
+			{
 				$url = $moreUrl;
 			}
 
@@ -66,6 +91,11 @@ class Jobs extends \Templates\Myipt\Widget
 
 	}
 
+	/**
+	 * @param \App\Models\Notification $noti
+	 *
+	 * @return string
+	 */
 	private function getListItem($noti)
 	{
 		if (!$noti->linkDisabled())
