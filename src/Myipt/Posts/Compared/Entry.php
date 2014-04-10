@@ -127,6 +127,8 @@ class Entry extends \Templates\Html\Tag
 
 				$this->last = $entry;
 			}
+
+			$this->title = $entry['title'];
 		}
 
 		$dummyArray = array(
@@ -150,7 +152,7 @@ class Entry extends \Templates\Html\Tag
 
 		$this->type = $this->last["view"];
 		$this->unit = $this->last['unit'];
-		$this->title = $this->last['title'];
+
 
 
 	}
