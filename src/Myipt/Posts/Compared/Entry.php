@@ -241,10 +241,26 @@ class Entry extends \Templates\Html\Tag
 	{
 		if (!$this->active)
 		{
-			$val = sprintf("%1.1f %s", $this->abs, $this->unit);
-			if ($this->type == 0)
+			$val = null;
+			if (!$this->disableValues)
 			{
-				$val = sprintf("%1.1f %%", $this->rel);
+				$val = sprintf("%1.1f %s", $this->abs, $this->unit);
+				if ($this->type == 0)
+				{
+					$val = sprintf("%1.1f %%", $this->rel);
+				}
+
+				$datum = new \DateTime($this->last['datum']);
+				$dDiff = $datum->diff(new \DateTime($this->first['datum']));
+
+				if ($dDiff->format("%a") > 7)
+				{
+					$val .= ' ('.floor($dDiff->format("%a") / 7).' Wochen)';
+				}
+				else
+				{
+					$val .= ' ('.$dDiff->format("%a").' Tage)';
+				}
 			}
 		}
 		else
