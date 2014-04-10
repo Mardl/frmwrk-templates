@@ -40,6 +40,11 @@ class Member extends Tag
 	protected $itemlink;
 
 	/**
+	 * @var \DateTime
+	 */
+	protected $loggedIn = null;
+
+	/**
 	 *@var false
 	 */
 	protected $showZielChart = false;
@@ -78,6 +83,15 @@ class Member extends Tag
 	public function setView($view)
 	{
 		$this->view = $view;
+	}
+
+	/**
+	 * @param \DateTime $loggedin
+	 * @return void
+	 */
+	public function setLoggedIn(\DateTime $loggedin)
+	{
+		$this->loggedIn = $loggedin;
 	}
 
 	/**
@@ -173,13 +187,35 @@ class Member extends Tag
 		$wrapper = new \Templates\Html\Tag('div', '');
 		$controls->append($wrapper);
 
-		$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('module'=>'users', 'controller'=>'index', 'action'=>'edit', 'id' => $this->member->getId())), 'icon edit', "Bearbeiten");
+		$anchor = new \Templates\Coach\Iconanchor(
+			$this->view->url(
+				array(
+					'module'=>'users',
+					'controller'=>'index',
+					'action'=>'edit',
+					'id' => $this->member->getId()
+				)
+			),
+			'icon edit',
+			"Bearbeiten"
+		);
 		$wrapper->append($anchor);
 
 		$wrapper = new \Templates\Html\Tag('div', '');
 		$controls->append($wrapper);
 
-		$anchor = new \Templates\Coach\Iconanchor($this->view->url(array('module'=>'users', 'controller'=>'index', 'action'=>'status', 'id' => $this->member->getId())), 'icon speed', "Statusfoto");
+		$anchor = new \Templates\Coach\Iconanchor(
+			$this->view->url(
+				array(
+					'module'=>'users',
+					'controller'=>'index',
+					'action'=>'status',
+					'id' => $this->member->getId()
+				)
+			),
+			'icon speed',
+			"Statusfoto"
+		);
 		$wrapper->append($anchor);
 
 		$wrapper = new \Templates\Html\Tag('div', '');
@@ -300,7 +336,13 @@ class Member extends Tag
 							$states[] = "online";
 							break;
 						case \App\Models\User\Login::TYPE_STUDIO:
-							$states[] = "im Training";
+							$string = "im Training ";
+							if ($this->loggedIn != null)
+							{
+								$string .= $this->loggedIn->format("(H:i)");
+							}
+
+							$states[] = $string;
 							break;
 					}
 				}
