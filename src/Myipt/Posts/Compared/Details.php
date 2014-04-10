@@ -41,6 +41,16 @@ class Details extends \Templates\Html\Tag
 	protected $position;
 
 	/**
+	 * @var string
+	 */
+	protected $targetEndValue;
+
+	/**
+	 * @var \DateTime
+	 */
+	protected $targetDeadline;
+
+	/**
 	 * Konstruktor
 	 *
 	 * @param \App\Models\User $user
@@ -377,6 +387,14 @@ class Details extends \Templates\Html\Tag
 		$p = new \Templates\Html\Tag("p", sprintf("Startwert: %0.1f %s | Endwert: %0.1f %s", $startWert, $unit, $endWert, $unit));
 		$div->append($p);
 
+		if ($this->targetEndValue != null)
+		{
+			$p->append(
+				sprintf(" | <b>Ziel: %0.1f %s | Erreicht am: %s</b>", $this->targetEndValue, $unit, $this->targetDeadline->format('d.m.Y'))
+			);
+		}
+
+
 		if ($this->viewType >= 1)
 		{
 			$div->append(new \Templates\Html\Tag("span", (($this->diffAbs > 0)?'+':'') . $this->diffAbs, 'big'));
@@ -461,6 +479,9 @@ class Details extends \Templates\Html\Tag
 		}
 
 		$endwert = $this->position->getZp7($this->user, $enddate);
+		$this->targetEndValue = $endwert;
+		$this->targetDeadline = $enddate;
+
 
 		$diffInterval = $enddate->diff($startdate);
 		$diff = $diffInterval->format("%a");
