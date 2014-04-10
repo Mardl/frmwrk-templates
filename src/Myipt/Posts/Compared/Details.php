@@ -513,8 +513,19 @@ class Details extends \Templates\Html\Tag
 			}
 			else
 			{
-				$diff = $startdate->diff($this->endDatum)->format("%a");
-				$y2 = $calc($diff);
+				$diffX2Interval = $this->bis->diff($enddate);
+				$diffX2 = $diffX2Interval->format("%a");
+
+				if ($diffX2Interval->invert == 1)
+				{
+					$x2 = $enddate;
+				}
+				else
+				{
+					$diff = $startdate->diff($this->bis)->format("%a");
+					$x2 = $this->bis;
+					$y2 = $calc($diff);
+				}
 			}
 		}
 
