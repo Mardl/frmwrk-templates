@@ -445,7 +445,7 @@ class Details extends \Templates\Html\Tag
 			$enddate = new \DateTime($enddatum);
 		}
 
-		$endwert = $this->position->getZp7($this->user, $this->now);
+		$endwert = $this->position->getZp7($this->user, $enddate);
 
 		$diffInterval = $enddate->diff($startdate);
 		$diff = $diffInterval->format("%a");
