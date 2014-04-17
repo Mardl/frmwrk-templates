@@ -39,7 +39,7 @@ class Chart extends \Templates\Html\Tag
 		$this->addAttribute('data-value-rel-max',   $chartData['max']['rel']);
 		$this->addAttribute('data-value-abs',       $chartData['value']['abs']);
 		$this->addAttribute('data-value-abs-max',   $chartData['max']['abs']);
-		$this->addAttribute('data-zvalue',          $chartData['value']['zindex']);
+		$this->addAttribute('data-zvalue',          ($chartData['value']['zindex'] != null) ? $chartData['value']['zindex'] : 1);
 		$this->addAttribute('data-title',           $chartData['title']);
 		$this->addAttribute('data-c-red-rel',       $chartData['percent']['rel']['orange']);
 		$this->addAttribute('data-c-orange-rel',    $chartData['percent']['rel']['green']);
