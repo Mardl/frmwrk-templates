@@ -148,7 +148,7 @@ class Nutrition extends \Templates\Myipt\BigBlock
 		{
 			$food = new \Templates\Html\Tag("span", '', 'icon little food');
 			$addfood = new \Templates\Html\Anchor(
-				$this->view->url(array("action"=>"add", "id"=>$this->nutrition->getId())),
+				$this->view->url(array("action"=>"add", "id"=>$this->nutrition->getId(), 'format' => 'html')),
 				$food,
 				"fancybox fancybox.ajax"
 			);
@@ -329,7 +329,6 @@ class Nutrition extends \Templates\Myipt\BigBlock
 		{
 			$list->append(new \Templates\Html\Tag('span', "Vitamin E <span>".$this->roundNaerwerte($vitaminE)."</span>"));
 		}
-
 
 		$br = new \Templates\Html\Tag("br", '', 'clear');
 		$this->append($br);

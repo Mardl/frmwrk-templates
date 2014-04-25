@@ -57,7 +57,7 @@ class Receipt extends \Templates\Myipt\BigBlock
 			$this->nutritions[$nutrition->getId()] = $nutrition;
 		}
 
-		parent::__construct( $receipt->getName() , 'meals');
+		parent::__construct($receipt->getName(), 'meals');
 
 		$this->initImageBlock();
 		$this->initSubstratBlock();
@@ -152,7 +152,6 @@ class Receipt extends \Templates\Myipt\BigBlock
 		if ($this->isMeal)
 		{
 			$remove = new \Templates\Html\Tag("span", '', 'icon little remove');
-
 			$anchor = new \Templates\Html\Anchor($this->view->url(array('action'=>'remove', 'format' => 'json', 'id' => 'rec_'.$this->receipt->getId(), 'date' => date('Y-m-d'), 'type' => 'meal')), $remove);
 			$anchor->addClass('get-ajax');
 			$anchor->append("aus Mahlzeiten entfernen");
@@ -163,7 +162,7 @@ class Receipt extends \Templates\Myipt\BigBlock
 		{
 			$food = new \Templates\Html\Tag("span", '', 'icon little food');
 			$addfood = new \Templates\Html\Anchor(
-				$this->view->url(array("action"=>"add", "id"=>$this->receipt->getId())),
+				$this->view->url(array("action"=>"add", "id"=>$this->receipt->getId(), 'format' => 'html')),
 				$food,
 				"fancybox fancybox.ajax"
 			);
