@@ -29,6 +29,15 @@ class Input extends \Templates\Html\Input
 	}
 
 	/**
+	 * @param string $step
+	 * @return void
+	 */
+	public function setStep($step)
+	{
+		$this->addAttribute('step', $step);
+	}
+
+	/**
 	 * @param string $url
 	 * @return void
 	 */
