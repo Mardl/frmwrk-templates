@@ -116,7 +116,8 @@ class Form extends Tag
 		{
 			foreach ($container->getInner() as $tag)
 			{
-				$checkup = $checkup && $this->validateInner($tag);
+				$check = $this->validateInner($tag);
+				$checkup = $checkup && $check;
 			}
 		}
 		elseif ($container instanceof \Templates\Html\Input)
