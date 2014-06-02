@@ -11,7 +11,7 @@ class ControlGroup extends \Templates\Html\Tag
 	protected $required = false;
 	/**
 	 * @param $label
-	 * @param array $value
+	 * @param mixed $value
 	 * @param bool $required
 	 * @param array $classOrAttributes
 	 */
