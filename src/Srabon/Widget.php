@@ -72,7 +72,7 @@ class Widget extends Tag
 	 */
 	protected function initContent()
 	{
-		$this->content = new Tag('div', '', 'well');
+		$this->content = new Tag('div', '', 'well clearfix');
 		if (!$this->flat) {
 			$this->content->addClass('white-box');
 		}

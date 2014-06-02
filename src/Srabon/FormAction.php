@@ -5,7 +5,7 @@ namespace Templates\Srabon;
 class FormAction extends \Templates\Html\Tag
 {
 	/**
-	 * @param array $buttons
+	 * @param mixed $buttons
 	 * @param array $classOrAttributes
 	 */
 	public function __construct($buttons=array(), $classOrAttributes = array())
