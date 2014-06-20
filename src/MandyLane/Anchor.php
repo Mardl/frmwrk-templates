@@ -5,7 +5,15 @@ namespace Templates\MandyLane;
 class Anchor extends \Templates\Html\Anchor
 {
 
+	/**
+	 * @var array|string
+	 */
 	private $defaultClass = '';
+
+	/**
+	 * @var bool
+	 */
+	protected $socketIODataArray = array();
 
 	/**
 	 * @param string       $href
@@ -35,6 +43,26 @@ class Anchor extends \Templates\Html\Anchor
 	}
 
 	/**
+	 * @return void
+	 */
+	public function setButtonColorRed()
+	{
+		$this->removeClass('button_green');
+		$this->addClass('iconlink');
+		$this->addClass('button_red');
+	}
+
+	/**
+	 * @return void
+	 */
+	public function setButtonColorGreen()
+	{
+		$this->removeClass('button_red');
+		$this->addClass('iconlink');
+		$this->addClass('button_green');
+	}
+
+	/**
 	 * @param        $operation
 	 * @param string $selector
 	 * @param array  $options
@@ -46,5 +74,31 @@ class Anchor extends \Templates\Html\Anchor
 		$this->addAttribute('data-ajax-operation', $operation);
 		$this->addAttribute('data-ajax-options', base64_encode(json_encode($options)));
 		$this->addAttribute('data-ajax-selector', $selector);
+	}
+
+
+	/**
+	 * @param boolean $socketIOCall
+	 * @return void
+	 */
+	public function setSocketIODataArray($socketIODataArray)
+	{
+		$this->socketIODataArray = $socketIODataArray;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function toString()
+	{
+		if(!empty($this->socketIODataArray))
+		{
+			$this->addJsFile('/static/js/custom/mandy/queueMessageOnClick.js');
+			$this->addAttribute('data-on-click-socketio', 1);
+			$this->addAttribute('data-socket-values', htmlspecialchars(json_encode($this->socketIODataArray)), ENT_QUOTES);
+		}
+
+		return parent::toString();
 	}
 }
