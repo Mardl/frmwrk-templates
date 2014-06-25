@@ -187,6 +187,9 @@ class Tabs extends \Templates\Srabon\Widget
 			$this->setActive(0);
 		}
 
+		$this->container->removeClass('tabs-left');
+		$this->container->removeClass('tabs-right');
+		$this->container->removeClass('tabs-below');
 		switch ($this->orientation)
 		{
 			case self::ORIENTATION_LEFT : $this->container->addClass('tabs-left');
