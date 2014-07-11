@@ -24,6 +24,16 @@ class Table extends \Templates\Html\Table
 		$this->headline = $headline;
 	}
 
+	/**
+	 * @param string $headline
+	 */
+	public function setHeadline($headline)
+	{
+		$this->headline = $headline;
+	}
+
+
+
 	public function toolbox()
 	{
 		$this->tools = true;
