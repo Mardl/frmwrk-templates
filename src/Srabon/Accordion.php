@@ -7,7 +7,7 @@ use Templates\Html\Tag;
 /**
  * Class Accordion
  *
- * @category Thomann
+ * @category Dreiwerken
  * @package  Templates\Srabon
  * @author   Cindy Paulitz <cindy@dreiwerken.de>
  */

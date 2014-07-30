@@ -5,7 +5,7 @@ namespace Templates\Srabon;
 /**
  * Class Button
  *
- * @category Thomann
+ * @category Dreiwerken
  * @package  Templates\Srabon
  * @author   Martin Eisenführer <martin@dreiwerken.de>
  */

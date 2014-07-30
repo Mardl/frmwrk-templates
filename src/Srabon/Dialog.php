@@ -7,7 +7,7 @@ use	Templates\Html\Tag;
 /**
  * Class Dialog
  *
- * @category Thomann
+ * @category Dreiwerken
  * @package  Templates\Srabon
  * @author   Martin Eisenführer <martin@dreiwerken.de>
  */
