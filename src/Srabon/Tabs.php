@@ -38,7 +38,7 @@ class Tabs extends \Templates\Srabon\Widget
 	 */
 	private $activePage = -1;
 
-	public function __construct($headerText='', $flat=false, $classOrAttributes = array())
+	public function __construct($headerText='', $flat=true, $classOrAttributes = array())
 	{
 		parent::__construct($headerText, '', $flat, $classOrAttributes);
 	}
