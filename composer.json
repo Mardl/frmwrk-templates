@@ -2,7 +2,7 @@
     "name": "frameworks/templates",
     "type": "package",
     "description": "",
-    "homepage": "http://repo.dreiwerken.intern/frameworks/templates"
+    "homepage": "http://repo.dreiwerken.intern/frameworks/templates",
     "autoload": {
         "classmap": ["src/"]
     }
