@@ -92,13 +92,24 @@ class Table extends \Templates\Html\Table
 	{
 		$typeWidget = 'nonboxy-widget';
 		$type = 'data-tbl-nothing table-bordered';
+
+		$this->setOption('sPaginationType',"full_numbers",true);
+		$this->setOption('iDisplayLength',10,true);
+		if ($this->tools)
+		{
+			$this->setOption('sDom','<"tbl-tools-searchbox"fl<"clear">>,<"tbl_tools"CT<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
+			$this->setOptions('oTableTools','sSwfPath','/static/swf/copy_cvs_xls_pdf.swf',true);
+		}
+		else
+		{
+			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
+		}
+
+
 		if ($this->datatable)
 		{
 			$this->addClass('dataTable');
 			$type = 'data-tbl-simple table-bordered';
-			$this->setOption('sPaginationType',"full_numbers",true);
-			$this->setOption('iDisplayLength',10,true);
-			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
 			$this->setInternalisation();
 		}
 
@@ -109,9 +120,6 @@ class Table extends \Templates\Html\Table
 				array(1, 'asc'),
 				array(2, 'asc'),
 			));
-			$this->setOption('sPaginationType',"full_numbers",true);
-			$this->setOption('iDisplayLength',10,true);
-			$this->setOption('sDom','<"table_top clearfix"fl<"clear">>,<"table_content"t>,<"table_bottom"p<"clear">>',true);
 			$this->setInternalisation();
 		}
 		if ($this->nosearch && $this->datatable)
@@ -129,19 +137,12 @@ class Table extends \Templates\Html\Table
 		{
 			$type = 'data-tbl-boxy';
 			$typeWidget = 'widget-block';
-			$this->setOption('sPaginationType',"full_numbers",true);
-			$this->setOption('iDisplayLength',10,true);
-			$this->setOption('sDom','<"tbl-searchbox clearfix"fl<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
 			$this->setInternalisation();
 		}
 		if ($this->tools && $this->datatable)
 		{
 			$type = 'data-tbl-tools';
 			$typeWidget = 'widget-block';
-			$this->setOption('sPaginationType',"full_numbers",true);
-			$this->setOption('iDisplayLength',10,true);
-			$this->setOption('sDom','<"tbl-tools-searchbox"fl<"clear">>,<"tbl_tools"CT<"clear">>,<"table_content"t>,<"widget-bottom"p<"clear">>',true);
-			$this->setOptions('oTableTools','sSwfPath','swf/copy_cvs_xls_pdf.swf',true);
 			$this->setInternalisation();
 		}
 
