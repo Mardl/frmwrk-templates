@@ -435,7 +435,10 @@ class Tag
 	 */
 	public function addJsFile($value)
 	{
-		$this->javascript[] = $value;
+		if (!in_array($value, $this->javascript))
+		{
+			$this->javascript[] = $value;
+		}
 	}
 
 	/**
@@ -452,7 +455,10 @@ class Tag
 	 */
 	public function addCssFile($value)
 	{
-		$this->stylesheets[] = $value;
+		if (!in_array($value, $this->stylesheets))
+		{
+			$this->stylesheets[] = $value;
+		}
 	}
 
 	/**
