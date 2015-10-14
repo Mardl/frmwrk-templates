@@ -69,21 +69,24 @@ class Grid extends Tag
 	/**
 	 * @param int $key
 	 * @param mixed $value
+	 * @return \Templates\Html\Tag
 	 */
 	public function addContent($key, $value)
 	{
 		$col = $this->getCol($key);
 		/** @var $col Div */
 		$col->append($value);
+		return $col;
 	}
 
 	/**
 	 * @param mixed $value
-	 * @return \Templates\Html\Tag|void
+	 * @return \Templates\Html\Tag
 	 */
 	public function append($value)
 	{
 		$col = $this->initCol(12);
 		$col->append($value);
+		return $col;
 	}
 }
