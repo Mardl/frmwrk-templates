@@ -192,31 +192,30 @@ class Tag
 	 */
 	protected function renderToString($value)
 	{
-		if (is_string($value) || is_int($value))
+		if (is_object($value))
+		{
+			return $this->renderObject($value);
+		}
+
+		if (is_array($value))
+		{
+			$string = '';
+			foreach ($value as $vals)
+			{
+				$string .= $this->renderToString($vals); // . "\r\n";
+			}
+			return $string;
+		}
+
+		if (is_string($value) || is_int($value) || is_float($value))
 		{
 			if (!empty($this->formatOutput))
 			{
 				return sprintf($this->formatOutput, $value);
 			}
 
-			return $value;
 		}
-
-		if (is_object($value))
-		{
-			return $this->renderObject($value);
-		}
-
-		$string = '';
-		if (is_array($value))
-		{
-			foreach ($value as $vals)
-			{
-				$string .= $this->renderToString($vals); // . "\r\n";
-			}
-		}
-
-		return $string;
+		return $value;
 	}
 
 	/**
