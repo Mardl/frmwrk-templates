@@ -17,7 +17,7 @@ class Widget extends Tag
 	protected $footer = null;
 
 	/**
-	 * @var Div
+	 * @var Tag
 	 */
 	protected $content = null;
 
@@ -25,6 +25,16 @@ class Widget extends Tag
 	 * @var bool
 	 */
 	protected $flat = true;
+
+    /**
+     * @var Tag
+     */
+    private $wrapContent = '';
+
+    /**
+     * @var Tag
+     */
+    private $wrapHeader = '';
 
 	/**
 	 * @param string $headerText
@@ -56,9 +66,9 @@ class Widget extends Tag
 	protected function initHead()
 	{
 		$this->header = new Tag('h5');
-		$div = new Tag('div', $this->header, 'widget-head');
+		$this->wrapHeader = new Tag('div', $this->header, 'widget-head');
 
-		parent::append($div);
+		parent::append($this->wrapHeader);
 	}
 
 	protected function initFoot()
@@ -77,10 +87,26 @@ class Widget extends Tag
 			$this->content->addClass('white-box');
 		}
 		$wrap1 = new Tag('div', $this->content, 'widget-box');
-		$wrap2 = new Tag('div', $wrap1, 'widget-content');
+		$this->wrapContent = new Tag('div', $wrap1, 'widget-content');
 
-		parent::append($wrap2);
+		parent::append($this->wrapContent);
 	}
+
+    /**
+     * @return Tag
+     */
+    public function getWrapContent()
+    {
+        return $this->wrapContent;
+    }
+
+    /**
+     * @return Tag
+     */
+    public function getWrapHeader()
+    {
+        return $this->wrapHeader;
+    }
 
 	/**
 	 * Setter für den Header-Text der Widget-Box
