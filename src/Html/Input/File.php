@@ -11,7 +11,7 @@ class File extends \Templates\Html\Input {
      * @param string $placeholder
      * @param array  $classOrAttributes
      */
-    public function __construct($name, $value = '', $opt = [], $required = false, $placeholder = '', $classOrAttributes = []) {
+    public function __construct($name, $value = '', $opt = array(), $required = false, $placeholder = '', $classOrAttributes = []) {
         parent::__construct($name, $value, $opt, $required, $placeholder = '', $classOrAttributes);
         $this->setType("file");
         $this->addClass('file');
