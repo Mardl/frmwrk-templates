@@ -55,10 +55,10 @@ class FormTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function testSetData()
 	{
-		$this->form->setData('test');
+		$this->form->setData(array('test'));
 		$ret = $this->readAttribute($this->form, 'values');
 
-		$this->assertEquals('test', $ret);
+		$this->assertEquals(array('test'), $ret);
 	}
 
 

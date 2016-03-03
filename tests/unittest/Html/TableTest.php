@@ -95,7 +95,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
 		$row = new Row(array('foo', 'test', 'test2', 'test3', 'test4', 'test5'), true);
 
-		$this->setExpectedException('Templates\Exceptions\Layout', "Spaltenanzahl ungültig in (tbody) Row 7. Erste Definition: 5 Columns.");
+		$this->setExpectedException('Templates\Exceptions\Layout', "Spaltenanzahl ungültig in (tbody) Row (7 Columns). Erste Definition: 5 Columns.");
 		$this->table->addRow($row);
 	}
 
