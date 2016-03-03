@@ -20,7 +20,7 @@ class Progress extends Tag {
      * @param string $name
      * @param array  $classOrAttributes
      */
-    public function __construct($name = "", $classOrAttributes = []) {
+    public function __construct($name = "", $classOrAttributes = array()) {
 
         $classOrAttributes = 'progress' . (is_string($classOrAttributes) ? " $classOrAttributes" : '');
         parent::__construct('div', '', $classOrAttributes);
