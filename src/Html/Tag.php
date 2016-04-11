@@ -126,7 +126,14 @@ class Tag
 	 */
 	public function __toString()
 	{
-		return $this->toString();
+        try
+        {
+            return (string)$this->toString();
+        }
+        catch (\Exception $exception)
+        {
+            return $exception->getMessage();
+        }
 	}
 
 	/**
