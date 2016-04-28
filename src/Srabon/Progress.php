@@ -33,7 +33,19 @@ class Progress extends Tag {
         $this->append($this->objBar);
     }
 
+    /**
+     * @return null|Tag
+     */
     public function getBar() {
         return $this->objBar;
+    }
+
+    /**
+     * Setzt den Fortschritt des Balkens
+     * @param float $progress
+     */
+    public function setProgress($progress)
+    {
+        $this->getBar()->addStyle('width', $progress.'%');
     }
 }

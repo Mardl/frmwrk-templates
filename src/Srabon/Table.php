@@ -15,6 +15,7 @@ class Table extends \Templates\Html\Table
 	private $headline = '';
 	private $inbox = false;
 	private $options = array();
+	//private $firstColumnFixed = false;
 
 	public function __construct($headline='', $classOrAttributes = array())
 	{
@@ -58,6 +59,12 @@ class Table extends \Templates\Html\Table
 	{
 		$this->datatable=false;
 	}
+
+	/*public function setFirstColumnFixed()
+	{
+		$this->firstColumnFixed = true;
+
+	}*/
 
 	public function setOption($key, $value, $notOverride=false)
 	{
@@ -145,6 +152,16 @@ class Table extends \Templates\Html\Table
 			$typeWidget = 'widget-block';
 			$this->setInternalisation();
 		}
+
+		/*if ($this->firstColumnFixed && $this->datatable)
+		{
+			$this->setOption("bSort",false,true);
+			$this->setOption("paging",false,true);
+			$this->setOption("fixedColumns",true,true);
+			$this->setOption("scrollCollapse",true,true);
+			$this->setOption("scrollX",true,true);
+			$this->setOption("scrollY",'800px',true);
+		}*/
 
 		$this->addClass($type);
 
