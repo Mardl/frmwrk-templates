@@ -103,7 +103,7 @@ class Tabs extends \Templates\Srabon\Widget
 		}
 	}
 
-	public function addPage($headline,$value,$hideIfEmpty=false)
+	public function addPage($headline,$value,$hideIfEmpty=false, array $classOrAttributes = array())
 	{
 		if ($hideIfEmpty)
 		{
@@ -125,6 +125,9 @@ class Tabs extends \Templates\Srabon\Widget
 		$pane->setId($id);
 		$pane->addClass('tab-pane');
 		$pane->addClass('pane'.count($this->page));
+		foreach($classOrAttributes as $tabClass) {
+			$pane->addClass($tabClass);
+		}
 
 		if (false) // aktive
 		{
