@@ -312,4 +312,18 @@ class Table extends Tag
 
 		return $this;
 	}
+
+    /**
+     * @param $inklFooterAndHeader
+     * @return int
+     */
+	public function countRows($inklFooterAndHeader) {
+        $allRows = $this->getInner();
+        $rows = count($allRows);
+        if ($inklFooterAndHeader) {
+            $rows += count($this->headerRow);
+            $rows += count($this->footerRow);
+        }
+        return $rows;
+    }
 }

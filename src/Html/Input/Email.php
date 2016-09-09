@@ -11,6 +11,10 @@ namespace Templates\Html\Input;
 class Email extends \Templates\Html\Input
 {
 
+    private function isValidEmail($email) {
+        return filter_var($email, FILTER_VALIDATE_EMAIL)
+        && preg_match('/@.+\./', $email);
+    }
 	/**
 	 * @return bool|string
 	 */
@@ -26,7 +30,7 @@ class Email extends \Templates\Html\Input
 		{
 			if (!empty($val))
 			{
-				if (!filter_var($val, FILTER_VALIDATE_EMAIL))
+				if (!$this->isValidEmail($val))
 				{
 					return "Die Emailadresse wird als ungültig angesehen";
 				}
