@@ -172,6 +172,7 @@ class Table extends \Templates\Html\Table
 		$strOutTable = parent::toString();
 
 		// Widget Bauen
+
 		$divWidget = new Tag('div','',$typeWidget);
 		if (!empty($this->headline))
 		{
@@ -190,9 +191,15 @@ class Table extends \Templates\Html\Table
 			$divWidget->append($strOutTable);
 		}
 
+		$this->addAdditionalClassToWidget($divWidget);
+
 		return $divWidget->toString();
 
 	}
+
+	protected function addAdditionalClassToWidget(Tag $divWidget) {
+        // Muss abgeleitet werden und gemacht was gemacht werden muss
+    }
 
 	private function setInternalisation()
 	{
