@@ -14,6 +14,7 @@ class Table extends \Templates\Html\Table
 	private $datatable = true;
 	private $headline = '';
 	private $inbox = false;
+	private $noNiceScroll = false;
 	private $options = array();
 	//private $firstColumnFixed = false;
 
@@ -59,6 +60,12 @@ class Table extends \Templates\Html\Table
 	{
 		$this->datatable=false;
 	}
+
+    public function noNiceScroll() {
+        $this->noNiceScroll = true;
+    }
+
+
 
 	/*public function setFirstColumnFixed()
 	{
@@ -174,6 +181,9 @@ class Table extends \Templates\Html\Table
 		// Widget Bauen
 
 		$divWidget = new Tag('div','',$typeWidget);
+        if ($this->noNiceScroll) {
+            $divWidget->addClass('noNiceScroll');
+        }
 		if (!empty($this->headline))
 		{
 			$div = new Tag('div',new Tag('h5',$this->headline),'widget-head');
