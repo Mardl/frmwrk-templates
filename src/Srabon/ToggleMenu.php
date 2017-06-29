@@ -50,6 +50,7 @@ class ToggleMenu extends Tag
 	{
 		parent::__construct('div', '', $classOrAttributes);
 		$this->addClass('btn-group');
+		$this->addClass('dropdown');
 
 		$this->button = new Tag('button', '', 'btn dropdown-toggle');
 		$this->setButton($title);
@@ -65,6 +66,17 @@ class ToggleMenu extends Tag
 			}
 		}
 	}
+
+    /**
+     * @return Tag
+     */
+	public function getMenu() {
+	    return $this->menu;
+    }
+
+	public function setMenu($value) {
+	    $this->menu = $value;
+    }
 
 	/**
 	 * @param string $title
@@ -152,7 +164,7 @@ class ToggleMenu extends Tag
 		$this->right ? $this->addClass('pull-right') : $this->addClass('pull-left');
 		/*
 
-		<div class="btn-group pull-right">
+		<div class="btn-group pull-right dropdown">
                         <button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-cog"></i><span class="caret"></span></button>
                         <ul class="dropdown-menu">
                           <li>'.$details.'</li>
