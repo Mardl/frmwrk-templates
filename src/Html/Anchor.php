@@ -46,6 +46,7 @@ class Anchor extends Tag
 	 */
 	public function external()
 	{
+        $this->addClass('extern');
 		return $this->addAttribute('target', '_blank');
 	}
 }
