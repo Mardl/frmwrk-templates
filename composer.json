@@ -1,8 +1,7 @@
 {
-    "name": "frameworks/templates",
+    "name": "Mardl/frmwrk-templates",
     "type": "package",
     "description": "",
-    "homepage": "http://repo.dreiwerken.intern/frameworks/templates",
     "autoload": {
         "classmap": ["src/"]
     }
